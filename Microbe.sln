@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microbe.Plugins", "Microbe.Plugins.csproj", "{988BB632-0E43-6AC5-5D42-E0E1CF6E5DB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microbe", "Microbe.csproj", "{4AAC48FB-9CFF-107E-C45F-D0ECE78D9586}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microbe.Editor", "Microbe.Editor.csproj", "{404CD1C7-7B46-03C8-C320-71A69BD210B5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{988BB632-0E43-6AC5-5D42-E0E1CF6E5DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{988BB632-0E43-6AC5-5D42-E0E1CF6E5DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{988BB632-0E43-6AC5-5D42-E0E1CF6E5DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{988BB632-0E43-6AC5-5D42-E0E1CF6E5DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AAC48FB-9CFF-107E-C45F-D0ECE78D9586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AAC48FB-9CFF-107E-C45F-D0ECE78D9586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AAC48FB-9CFF-107E-C45F-D0ECE78D9586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AAC48FB-9CFF-107E-C45F-D0ECE78D9586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{404CD1C7-7B46-03C8-C320-71A69BD210B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{404CD1C7-7B46-03C8-C320-71A69BD210B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{404CD1C7-7B46-03C8-C320-71A69BD210B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{404CD1C7-7B46-03C8-C320-71A69BD210B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
