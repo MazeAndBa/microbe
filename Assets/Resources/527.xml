@@ -1,10 +1,8 @@
 <Loadfile>
-  <User ID="1" name="測試者1" level="1">
+  <User ID="527" name="527" level="1" money="100">
     <current_icon icon="" />
-    <getmoney count="0" />
     <compete>
       <enemy />
-      <enemy enemy_id="9" searchTime="2018-04-13 16:25:51" startTime="2018-04-13 16:25:52" />
     </compete>
     <learningtask star_all_count="0" listen_all_count="0" speak_all_count="0" state_count="1">
       <task1 time="" star="0" listen_count_learn="0" listen_count_practice="0" speak_count="0" state="1" />
@@ -35,11 +33,17 @@
   <show_list />
   <log_record>
     <time_history>
-      <time_history_day day="2018-04-13">
-        <time_history_record scence="login" startTime="16:25:49" duration="" />
-        <time_history_record scence="Login" startTime="2018-04-13" endTime="16:25:49" />
-        <time_history_record scence="compete" startTime="16:25:50" endTime="16:25:50" />
-        <time_history_record scence="SearchEnemy" startTime="2018-04-13 16:25:51" endTime="16:25:51" />
+      <time_history_day day="2018-05-27">
+        <time_history_record scence="login" startTime="16:31:20" duration="0:0" />
+        <time_history_record scence="Register" startTime="16:31:21" duration="" />
+        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:31:30" />
+        <time_history_record scence="compete" startTime="16:31:33" endTime="16:31:33" />
+        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:32:35" />
+        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:34:55" />
+        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:35:04" />
+        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:36:24" />
+        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:37:35" />
+        <time_history_record scence="compete" startTime="16:37:37" endTime="16:37:37" />
       </time_history_day>
     </time_history>
     <touch>

@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class PersonalInfo : MonoBehaviour {
     Xmlprocess xmlprocess;
+    string []userInfo;
 	public Text userName;
     
 	void Start(){
         xmlprocess = new Xmlprocess ();
-        userName.text = xmlprocess.getName ();
+        userInfo = xmlprocess.getUserInfo();
+        userName.text = userInfo[1];
 
 	}
+
 }

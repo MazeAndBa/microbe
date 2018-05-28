@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{404CD1C7-7B46-03C8-C320-71A69BD210B5}</ProjectGuid>
+    <ProjectGuid>{0D6D6F74-19D5-9969-C250-6D2124CA3206}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -118,21 +118,21 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets/Photon Unity Networking/Editor/PhotonNetwork/Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Microbe.Plugins.csproj">
-      <Project>{988BB632-0E43-6AC5-5D42-E0E1CF6E5DB6}</Project>
-      <Name>Microbe.Plugins</Name>
+    <ProjectReference Include="microbe.Plugins.csproj">
+      <Project>{21D1B80B-9E5F-3792-DCED-9F2D085D97D3}</Project>
+      <Name>microbe.Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="Microbe.csproj">
-      <Project>{4AAC48FB-9CFF-107E-C45F-D0ECE78D9586}</Project>
-      <Name>Microbe</Name>
+    <ProjectReference Include="microbe.csproj">
+      <Project>{C0BFF35C-A8F9-557F-05D2-0077B373121D}</Project>
+      <Name>microbe</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -165,8 +165,7 @@
     <None Include="Assets\Photon Unity Networking\readme.txt" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
-    <None Include="Assets\Resources\0.xml" />
-    <None Include="Assets\Resources\1.xml" />
+    <None Include="Assets\Resources\527.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

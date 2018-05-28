@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4AAC48FB-9CFF-107E-C45F-D0ECE78D9586}</ProjectGuid>
+    <ProjectGuid>{C0BFF35C-A8F9-557F-05D2-0077B373121D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -84,9 +84,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Microbe.Plugins.csproj">
-      <Project>{988BB632-0E43-6AC5-5D42-E0E1CF6E5DB6}</Project>
-      <Name>Microbe.Plugins</Name>
+    <ProjectReference Include="microbe.Plugins.csproj">
+      <Project>{21D1B80B-9E5F-3792-DCED-9F2D085D97D3}</Project>
+      <Name>microbe.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -237,10 +237,11 @@
     <Compile Include="Assets\Resources\UIHandler\UIHandler.cs" />
     <Compile Include="Assets\Resources\UIHandler\UIManager.cs" />
     <Compile Include="Assets\Resources\UIHandler\Utility.cs" />
-    <Compile Include="Assets\Script\CollectDATA\collectManager.cs" />
+    <Compile Include="Assets\Script\CollectDATA\collectConn.cs" />
     <Compile Include="Assets\Script\CollectDATA\collectView.cs" />
-    <Compile Include="Assets\Script\Compete\CompeteManager.cs" />
-    <Compile Include="Assets\Script\Compete\CompeteViewer.cs" />
+    <Compile Include="Assets\Script\Compete\CompeteConn.cs" />
+    <Compile Include="Assets\Script\Compete\CompeteData.cs" />
+    <Compile Include="Assets\Script\Compete\CompeteMain.cs" />
     <Compile Include="Assets\Script\Home.cs" />
     <Compile Include="Assets\Script\Login\AccountManager.cs" />
     <Compile Include="Assets\Script\Login\AccountViewer.cs" />
@@ -259,8 +260,7 @@
     <None Include="Assets\Photon Unity Networking\readme.txt" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
-    <None Include="Assets\Resources\0.xml" />
-    <None Include="Assets\Resources\1.xml" />
+    <None Include="Assets\Resources\527.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -60,11 +60,10 @@ public class AccountViewer : MonoBehaviour {
     IEnumerator login()
     {
 		StartCoroutine(am.CheckLogin("login.php", logininfo));
-        yield return new WaitForSeconds(0.1f);
         StartCoroutine(waitload());
+        yield return new WaitForSeconds(0.8f);
         if (am.state == 1)
         {
-            
             //showerror("登入成功");
             SceneManager.LoadScene("home");
         }
@@ -130,8 +129,9 @@ public class AccountViewer : MonoBehaviour {
     IEnumerator register()
     {
         StartCoroutine(am.CheckRegister("register.php", registerinfo));//此處用php新增帳戶
-        yield return new WaitForSeconds(0.1f);
         StartCoroutine(waitload());
+        yield return new WaitForSeconds(0.8f);
+
         if (am.state == 0) {
             SceneManager.LoadScene("home");
         }
@@ -146,7 +146,7 @@ public class AccountViewer : MonoBehaviour {
     IEnumerator waitload()
     {
         UIManager.Instance.TogglePanel("UI_ShowMes", true);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.8f);
         UIManager.Instance.TogglePanel("UI_ShowMes", false);
     }
 

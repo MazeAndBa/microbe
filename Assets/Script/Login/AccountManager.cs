@@ -30,7 +30,7 @@ public class AccountManager {
                 AccountInfo = reg.text.Split(',');
                 state = 1;
                 xmlprocess = new Xmlprocess(AccountInfo[0]);
-                xmlprocess.setUserInfo(AccountInfo);
+                //xmlprocess.setUserInfo(AccountInfo);
                 xmlprocess.New_timeHistoryRecord("Login", DateTime.Now.ToString("yyyy-MM-dd"));
             }
         }

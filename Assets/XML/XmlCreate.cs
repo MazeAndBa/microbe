@@ -22,17 +22,13 @@ public class XmlCreate{
 			User.SetAttribute("ID", "");
 			User.SetAttribute("name","");
 			User.SetAttribute("level", "");
-			Loadfile.AppendChild(User);
+            User.SetAttribute("money", "100");
+            Loadfile.AppendChild(User);
 
 
 			XmlElement current_icon = xmlDoc.CreateElement("current_icon");//目前頭像//the same level with user
 			current_icon.SetAttribute("icon","");
 			User.AppendChild(current_icon);
-
-			XmlElement getmoney = xmlDoc.CreateElement("getmoney");//每天獲得的錢總和
-			User.AppendChild(getmoney);
-			getmoney.SetAttribute("count", Strcount);
-
 
             XmlElement compete = xmlDoc.CreateElement("compete");
             User.AppendChild(compete);

@@ -12,8 +12,10 @@ public class Xmlprocess{
 	public string Strtime = (System.DateTime.Now).ToString();
 	public static string path, _FileName;
 
-
-	public Xmlprocess(string filename) { //database initial
+    //<summary>
+    //initial file,search the same xml file with the same userID
+    //</summary>
+    public Xmlprocess(string filename) { //database initial
 		if (Application.platform == RuntimePlatform.Android) {
 			path = Constants.DATABASE_PATH ;
 		} else {
@@ -50,10 +52,12 @@ public class Xmlprocess{
 	{
 		xmlDoc.Save(path + _FileName);
 	}
-	//---------------------------------個人狀態--------------------------------------
+    //---------------------------------個人狀態--------------------------------------
 
-
-	public void setUserInfo(string []userInfo){
+    //<summary>
+    //When registering,initial set userInfo.
+    //</summary>
+    public void setUserInfo(string []userInfo){
         if (isExits())
         {
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
@@ -67,40 +71,31 @@ public class Xmlprocess{
         }
 	}
 
-
-	public string getID() {
-		if(isExits() ) {
-			XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
-			XmlElement element = (XmlElement)node;
-			XmlAttribute attribute = element.GetAttributeNode("ID");
-			return attribute.Value.ToString();
-		}
-		return "0" ;
-	}
-
-
-	public string getName() {
-		if(isExits() ) {
-			XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
-			XmlElement element = (XmlElement)node;
-			XmlAttribute attribute = element.GetAttributeNode("name");
-			return attribute.Value.ToString();
-		}
-		return "0" ;
-	}
-
-    public string getLevel()
+    //<summary>
+    //return an array, 0=ID,1=name,2=level,3=money
+    //</summary>
+    public string[] getUserInfo()
     {
         if (isExits())
         {
+            string[] info = new string[4];
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
             XmlElement element = (XmlElement)node;
-            XmlAttribute attribute = element.GetAttributeNode("level");
-            return attribute.Value.ToString();
+            XmlAttribute []attribute = { element.GetAttributeNode("ID") , element.GetAttributeNode("name"), element.GetAttributeNode("level"), element.GetAttributeNode("money") };
+            for (int i = 0; i < info.Length; i++)
+            {
+                info[i] = attribute[i].Value.ToString();
+
+            }
+
+            return info;
         }
-        return "0";
+        return null;
     }
 
+    //<summary>
+    //record competeInfo
+    //</summary>
     public void setEnemy(string enemy_id,string searchtime,string starttime) {
         if (isExits()) {
                 XmlNode competenode = xmlDoc.SelectSingleNode("Loadfile/User/compete");
