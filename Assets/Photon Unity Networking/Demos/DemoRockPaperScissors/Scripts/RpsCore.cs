@@ -83,7 +83,7 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
 	
     public enum Hand
     {
-        None = 0,
+        None = 0,//預設值為0
         Rock,
         Paper,
         Scissors
@@ -103,7 +103,7 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
         this.turnManager.TurnManagerListener = this;
         this.turnManager.TurnDuration = 5f;
         
-
+        
         this.localSelectionImage.gameObject.SetActive(false);
         this.remoteSelectionImage.gameObject.SetActive(false);
         this.StartCoroutine("CycleRemoteHandCoroutine");
@@ -136,7 +136,7 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
 			return;
 		}
 
-		// disable the "reconnect panel" if PUN is connected or connecting
+		// 重新連線的UI
 		if (PhotonNetwork.connected && this.DisconnectedPanel.gameObject.GetActive())
 		{
 			this.DisconnectedPanel.gameObject.SetActive(false);
@@ -146,7 +146,7 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
 			this.DisconnectedPanel.gameObject.SetActive(true);
 		}
 
-
+        //如果房間人數大於1，回傳當前回合以及時間
 		if (PhotonNetwork.room.PlayerCount>1)
 		{
 			if (this.turnManager.IsOver)
@@ -154,19 +154,9 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
 				return;
 			}
 
-			/*
-			// check if we ran out of time, in which case we loose
-			if (turnEnd<0f && !IsShowingResults)
-			{
-					Debug.Log("Calling OnTurnCompleted with turnEnd ="+turnEnd);
-					OnTurnCompleted(-1);
-					return;
-			}
-		*/
-
             if (this.TurnText != null)
             {
-                this.TurnText.text = this.turnManager.Turn.ToString();
+                this.TurnText.text = this.turnManager.Turn.ToString();//回傳當前第幾回合
             }
 
 			if (this.turnManager.Turn > 0 && this.TimeText != null && ! IsShowingResults)
@@ -180,9 +170,9 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
             
 		}
 
-		this.UpdatePlayerTexts();
+		this.UpdatePlayerTexts();//更新自己與對手的名字與分數
 
-        // show local player's selected hand
+        // show local player's selected hand，預設為None
         Sprite selected = SelectionToSprite(this.localSelection);
         if (selected != null)
         {
@@ -203,8 +193,8 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
         else
         {
 			ButtonCanvasGroup.interactable = PhotonNetwork.room.PlayerCount > 1;
-
-            if (PhotonNetwork.room.PlayerCount < 2)
+            
+            if (PhotonNetwork.room.PlayerCount < 2)//如果房間人數少於2，對手的圖案隱藏；如果對手尚未作答，用透明度來表示對手狀態。
             {
                 this.remoteSelectionImage.color = new Color(1, 1, 1, 0);
             }
@@ -219,7 +209,7 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
                 {
                     alpha = 1;
                 }
-                if (remote != null && remote.IsInactive)
+                if (remote != null && remote.IsInactive)//對手斷線
                 {
                     alpha = 0.1f;
                 }
@@ -404,7 +394,7 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
         return null;
     }
 
-    private void UpdatePlayerTexts()
+    private void UpdatePlayerTexts()//更新自己與對手狀態(名字+分數)
     {
         PhotonPlayer remote = PhotonNetwork.player.GetNext();
         PhotonPlayer local = PhotonNetwork.player;
@@ -425,7 +415,7 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
         if (local != null)
         {
             // should be this format: "YOU   00"
-            this.LocalPlayerText.text = "YOU   " + local.GetScore().ToString("D2");
+            this.LocalPlayerText.text = local.NickName+ "(me)        " + local.GetScore().ToString("D2");
         }
     }
 
@@ -477,10 +467,10 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
 	{
 		TimerFillImage.anchorMax = new Vector2(0f,1f);
 
-		ConnectUiView.gameObject.SetActive(!PhotonNetwork.inRoom);
+		ConnectUiView.gameObject.SetActive(!PhotonNetwork.inRoom);//如果還沒進房間則顯示連線畫面
 		GameUiView.gameObject.SetActive(PhotonNetwork.inRoom);
 
-		ButtonCanvasGroup.interactable = PhotonNetwork.room!=null?PhotonNetwork.room.PlayerCount > 1:false;
+		ButtonCanvasGroup.interactable = PhotonNetwork.room!=null?PhotonNetwork.room.PlayerCount > 1:false;//如果能get房號且房間人數大於1，則button才可互動
 	}
 
 
@@ -528,7 +518,8 @@ public class RpsCore : PunBehaviour, IPunTurnManagerCallbacks
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-		Debug.Log("Other player disconnected! "+otherPlayer.ToStringFull());
+        OnJoinedRoom();
+        Debug.Log("Other player disconnected! "+otherPlayer.ToStringFull());
     }
 
 

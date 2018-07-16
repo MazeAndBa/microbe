@@ -17,8 +17,10 @@ public class collectConn : PunBehaviour
     int [] i_optionRand;//該回合隨機的選項編號
 
     private string serverlink = "140.115.126.137/microbe/";
-    string previousRoomPlayerPrefKey, UserID;
+    string UserID;
+    string previousRoomPlayerPrefKey = "Microbe:PreviousRoom";
     public string previousRoom;
+    const string NickNamePlayerPrefsKey = "";
 
     void Start () {
         btn_start = obj_gamestart.GetComponentInChildren<Button>();
@@ -38,6 +40,7 @@ public class collectConn : PunBehaviour
         PhotonNetwork.AuthValues.UserId = id.text;
         Debug.Log("playerName: " + username.text + "AuthValues userID: " + PhotonNetwork.AuthValues.UserId);
         PhotonNetwork.playerName = username.text;
+        PlayerPrefs.SetString(NickNamePlayerPrefsKey, username.text);
         PhotonNetwork.ConnectUsingSettings("0.5");
         PhotonHandler.StopFallbackSendAckThread();
         StartCoroutine(getQuestion());
@@ -91,8 +94,8 @@ public class collectConn : PunBehaviour
     void randomNum()
     {
         int _random, j;
-        i_optionRand = new int[24];
-        for (int i = 0; i < 24; i++)
+        i_optionRand = new int[23];
+        for (int i = 0; i < 23; i++)
         {
             j = 0;
             _random = Random.Range(0, option.Length - 2);

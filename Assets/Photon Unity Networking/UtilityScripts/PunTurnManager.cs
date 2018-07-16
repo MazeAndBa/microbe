@@ -23,133 +23,187 @@ using ExitGames = ExitGames.Client.Photon.Hashtable;
 /// </summary>
 public class PunTurnManager : PunBehaviour
 {
-	/// <summary>
-	/// Wraps accessing the "turn" custom properties of a room.
-	/// </summary>
-	/// <value>The turn index</value>
+    /// <summary>
+    /// Wraps accessing the "turn" custom properties of a room.
+    /// </summary>
+    /// <value>The turn index</value>
     public int Turn
     {
         get { return PhotonNetwork.room.GetTurn(); }
         private set {
 
-			_isOverCallProcessed = false;
+            _isOverCallProcessed = false;
 
-			PhotonNetwork.room.SetTurn(value, true);
-		}
+            PhotonNetwork.room.SetTurn(value, true);
+        }
+    }
+
+    public string []TurnQues
+    {
+        get { return PhotonNetwork.room.GetTurnQues(); }
+        private set
+        {
+
+            _isOverCallProcessed = false;
+
+            PhotonNetwork.room.SetTurnQues(value);
+        }
+    }
+
+    public int[] TurnOption {
+        get { return PhotonNetwork.room.GetTurnOption(); }
+        private set
+        {
+            _isOverCallProcessed = false;
+            PhotonNetwork.room.SetTurnOption(value);
+        }
+
+    }
+
+    /// <summary>
+    /// The duration of the turn in seconds.
+    /// </summary>
+    public float TurnDuration = 10f;
+
+    /// <summary>
+    /// Gets the elapsed time in the current turn in seconds
+    /// </summary>
+    /// <value>The elapsed time in the turn.</value>
+    public float ElapsedTimeInTurn
+    {
+        get { return ((float)(PhotonNetwork.ServerTimestamp - PhotonNetwork.room.GetTurnStart())) / 1000.0f; }
     }
 
 
-	/// <summary>
-	/// The duration of the turn in seconds.
-	/// </summary>
-    public float TurnDuration = 20f;
-
-	/// <summary>
-	/// Gets the elapsed time in the current turn in seconds
-	/// </summary>
-	/// <value>The elapsed time in the turn.</value>
-	public float ElapsedTimeInTurn
-	{
-		get { return ((float)(PhotonNetwork.ServerTimestamp - PhotonNetwork.room.GetTurnStart()))/1000.0f; }
-	}
+    /// <summary>
+    /// Gets the remaining seconds for the current turn. Ranges from 0 to TurnDuration
+    /// </summary>
+    /// <value>The remaining seconds fo the current turn</value>
+    public float RemainingSecondsInTurn
+    {
+        get { return Mathf.Max(0f, this.TurnDuration - this.ElapsedTimeInTurn); }
+    }
 
 
-	/// <summary>
-	/// Gets the remaining seconds for the current turn. Ranges from 0 to TurnDuration
-	/// </summary>
-	/// <value>The remaining seconds fo the current turn</value>
-	public float RemainingSecondsInTurn
-	{
-		get { return Mathf.Max(0f,this.TurnDuration - this.ElapsedTimeInTurn); }
-	}
-
-
-	/// <summary>
-	/// Gets a value indicating whether the turn is completed by all.
-	/// </summary>
-	/// <value><c>true</c> if this turn is completed by all; otherwise, <c>false</c>.</value>
+    /// <summary>
+    /// Gets a value indicating whether the turn is completed by all.
+    /// </summary>
+    /// <value><c>true</c> if this turn is completed by all; otherwise, <c>false</c>.</value>
     public bool IsCompletedByAll
     {
         get { return PhotonNetwork.room != null && Turn > 0 && this.finishedPlayers.Count == PhotonNetwork.room.PlayerCount; }
     }
 
-	/// <summary>
-	/// Gets a value indicating whether the current turn is finished by me.
-	/// </summary>
-	/// <value><c>true</c> if the current turn is finished by me; otherwise, <c>false</c>.</value>
+    /// <summary>
+    /// Gets a value indicating whether the current turn is finished by me.
+    /// </summary>
+    /// <value><c>true</c> if the current turn is finished by me; otherwise, <c>false</c>.</value>
     public bool IsFinishedByMe
     {
         get { return this.finishedPlayers.Contains(PhotonNetwork.player); }
     }
 
-	/// <summary>
-	/// Gets a value indicating whether the current turn is over. That is the ElapsedTimeinTurn is greater or equal to the TurnDuration
-	/// </summary>
-	/// <value><c>true</c> if the current turn is over; otherwise, <c>false</c>.</value>
+    /// <summary>
+    /// Gets a value indicating whether the current turn is over. That is the ElapsedTimeinTurn is greater or equal to the TurnDuration
+    /// </summary>
+    /// <value><c>true</c> if the current turn is over; otherwise, <c>false</c>.</value>
     public bool IsOver
     {
-		get { return this.RemainingSecondsInTurn <= 0f; }
+        get { return this.RemainingSecondsInTurn <= 0f; }
     }
 
-	/// <summary>
-	/// The turn manager listener. Set this to your own script instance to catch Callbacks
-	/// </summary>
+    /// <summary>
+    /// The turn manager listener. Set this to your own script instance to catch Callbacks
+    /// </summary>
     public IPunTurnManagerCallbacks TurnManagerListener;
 
 
-	/// <summary>
-	/// The finished players.
-	/// </summary>
+    /// <summary>
+    /// The finished players.
+    /// </summary>
     private readonly HashSet<PhotonPlayer> finishedPlayers = new HashSet<PhotonPlayer>();
 
-	/// <summary>
-	/// The turn manager event offset event message byte. Used internaly for defining data in Room Custom Properties
-	/// </summary>
+    /// <summary>
+    /// The turn manager event offset event message byte. Used internaly for defining data in Room Custom Properties
+    /// </summary>
     public const byte TurnManagerEventOffset = 0;
-	/// <summary>
-	/// The Move event message byte. Used internaly for saving data in Room Custom Properties
-	/// </summary>
+    /// <summary>
+    /// The Move event message byte. Used internaly for saving data in Room Custom Properties
+    /// </summary>
     public const byte EvMove = 1 + TurnManagerEventOffset;
-	/// <summary>
-	/// The Final Move event message byte. Used internaly for saving data in Room Custom Properties
-	/// </summary>
+    /// <summary>
+    /// The Final Move event message byte. Used internaly for saving data in Room Custom Properties
+    /// </summary>
     public const byte EvFinalMove = 2 + TurnManagerEventOffset;
 
-	// keep track of message calls
-	private bool _isOverCallProcessed = false;
+    // keep track of message calls
+    private bool _isOverCallProcessed = false;
 
-	#region MonoBehaviour CallBack
-	/// <summary>
-	/// Register for Event Call from PhotonNetwork.
-	/// </summary>
+
+
+    #region MonoBehaviour CallBack
+    /// <summary>
+    /// Register for Event Call from PhotonNetwork.
+    /// </summary>
     void Start()
     {
         PhotonNetwork.OnEventCall = OnEvent;
     }
 
-	void Update()
-	{
-		if (Turn > 0 && this.IsOver && !_isOverCallProcessed)
-		{
-			_isOverCallProcessed = true;
-			this.TurnManagerListener.OnTurnTimeEnds(this.Turn);
-		}
+    void Update()
+    {
+        if (Turn > 0 && this.IsOver && !_isOverCallProcessed)
+        {
+            _isOverCallProcessed = true;
+            this.TurnManagerListener.OnTurnTimeEnds(this.Turn);
+        }
 
-	}
-
-
-	#endregion
+    }
 
 
-	/// <summary>
-	/// Tells the TurnManager to begins a new turn.
-	/// </summary>
+    #endregion
+
+
+    /// <summary>
+    /// Tells the TurnManager to begins a new turn.
+    /// </summary>
     public void BeginTurn()
     {
         Turn = this.Turn + 1; // note: this will set a property in the room, which is available to the other players.
     }
 
+    /// <summary>
+    /// Tells the TurnManager to select a question.
+    /// </summary>
+    public void selectQues(string[] ques)//Select Question
+    {
+        TurnQues = ques[this.Turn-1].Split(',');
+    }
 
+    /// <summary>
+    /// Tells the TurnManager to arrange options for a new turn.
+    /// </summary>
+    public void randomOptions(string [] option)//Arrange options
+    {
+        int[] i_optionRand;//該回合隨機的選項編號
+        int _random, j;
+        i_optionRand = new int[24];
+        for (int i = 0; i < 24; i++)
+        {
+            j = 0;
+            _random = UnityEngine.Random.Range(0, option.Length - 2);
+            while (i > j)
+            {
+                while (_random == i_optionRand[j])
+                {
+                    _random = UnityEngine.Random.Range(0, option.Length - 2);
+                }
+                j++;
+            }
+            i_optionRand[i] = _random;
+        }
+        TurnOption = i_optionRand;
+    }
     /// <summary>
 	/// Call to send an action. Optionally finish the turn, too.
 	/// The move object can be anything. Try to optimize though and only send the strict minimum set of information to define the turn move.
@@ -318,12 +372,80 @@ public static class TurnExtensions
 	/// </summary>
     public static readonly string FinishedTurnPropKey = "FToA";
 
-	/// <summary>
-	/// Sets the turn.
-	/// </summary>
-	/// <param name="room">Room reference</param>
-	/// <param name="turn">Turn index</param>
-	/// <param name="setStartTime">If set to <c>true</c> set start time.</param>
+    /// <summary>
+    /// currently ongoing turn question
+    /// </summary>
+    public static readonly string TurnQues = "TurnQues";
+
+    /// <summary>
+    /// currently ongoing turn options
+    /// </summary>
+    public static readonly string TurnOption = "TurnOption";
+
+    /// <summary>
+    /// Sets the ques.
+    /// </summary>
+    public static void SetTurnQues(this Room room, string []ques)
+    {
+        if (room == null || room.CustomProperties == null)
+        {
+            return;
+        }
+
+        Hashtable turnProps = new Hashtable();
+        turnProps[TurnQues] = ques;
+
+        room.SetCustomProperties(turnProps);
+    }
+    /// <summary>
+    /// Gets the current turn question from a RoomInfo
+    /// </summary>
+    /// <returns>The turn index </returns>
+    /// <param name="room">RoomInfo reference</param>
+    public static string []GetTurnQues(this RoomInfo room)
+    {
+        if (room == null || room.CustomProperties == null || !room.CustomProperties.ContainsKey(TurnQues))
+        {
+            return null;
+        }
+        return (string[])room.CustomProperties[TurnQues];
+    }
+
+    /// <summary>
+    /// Sets the options.
+    /// </summary>
+    public static void SetTurnOption(this Room room, int[] options)
+    {
+        if (room == null || room.CustomProperties == null)
+        {
+            return;
+        }
+
+        Hashtable turnProps = new Hashtable();
+        turnProps[TurnOption] = options;
+        room.SetCustomProperties(turnProps);
+    }
+
+    /// <summary>
+    /// Gets the current turn options from a RoomInfo
+    /// </summary>
+    /// <returns>The turn index </returns>
+    /// <param name="room">RoomInfo reference</param>
+    public static int[] GetTurnOption(this RoomInfo room)
+    {
+        if (room == null || room.CustomProperties == null || !room.CustomProperties.ContainsKey(TurnOption))
+        {
+            return null;
+        }
+        return (int [])room.CustomProperties[TurnOption];
+    }
+
+    /// <summary>
+    /// Sets the turn.
+    /// </summary>
+    /// <param name="room">Room reference</param>
+    /// <param name="turn">Turn index</param>
+    /// <param name="setStartTime">If set to <c>true</c> set start time.</param>
     public static void SetTurn(this Room room, int turn, bool setStartTime = false)
     {
         if (room == null || room.CustomProperties == null)

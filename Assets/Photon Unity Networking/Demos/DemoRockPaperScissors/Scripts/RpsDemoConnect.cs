@@ -48,8 +48,7 @@ public class RpsDemoConnect : PunBehaviour
 
 		PhotonNetwork.AuthValues.UserId = nickName;
 
-		Debug.Log("Nickname: " + nickName + " userID: " + this.UserId,this);
-		
+		Debug.Log("Nickname: " + nickName + " userID: " + this.UserId+ "AuthValues userID: "+PhotonNetwork.AuthValues.UserId);
 
 
         PhotonNetwork.playerName = nickName;
@@ -64,17 +63,16 @@ public class RpsDemoConnect : PunBehaviour
     {
         // after connect 
         this.UserId = PhotonNetwork.player.UserId;
-        ////Debug.Log("UserID " + this.UserId);
-
-		if (PlayerPrefs.HasKey(previousRoomPlayerPrefKey))
+        Debug.Log("UserID " + this.UserId);
+		if (PlayerPrefs.HasKey(previousRoomPlayerPrefKey))//預設有先前的房間
 		{
-			Debug.Log("getting previous room from prefs: ");
+			Debug.Log("getting previous room from prefs");
 			this.previousRoom = PlayerPrefs.GetString(previousRoomPlayerPrefKey);
-			PlayerPrefs.DeleteKey(previousRoomPlayerPrefKey); // we don't keep this, it was only for initial recovery
+			PlayerPrefs.DeleteKey(previousRoomPlayerPrefKey); // 刪除預設值
 		}
 
 
-        // after timeout: re-join "old" room (if one is known)
+        // after timeout: re-join "old" room (if one is known)重新連回原本的房間
         if (!string.IsNullOrEmpty(this.previousRoom))
         {
             Debug.Log("ReJoining previous room: " + this.previousRoom);
@@ -84,7 +82,7 @@ public class RpsDemoConnect : PunBehaviour
         else
         {
             // else: join a random room
-            PhotonNetwork.JoinRandomRoom();
+            PhotonNetwork.JoinRandomRoom();//隨機加入房間
         }
     }
 
@@ -93,25 +91,24 @@ public class RpsDemoConnect : PunBehaviour
         OnConnectedToMaster(); // this way, it does not matter if we join a lobby or not
     }
 
-    public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
-    {
-		Debug.Log("OnPhotonRandomJoinFailed");
-        PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 2, PlayerTtl = 20000 }, null);
-    }
-
     public override void OnJoinedRoom()
     {
-		Debug.Log("Joined room: " + PhotonNetwork.room.Name);
+        Debug.Log("Joined room: " + PhotonNetwork.room.Name);
         this.previousRoom = PhotonNetwork.room.Name;
-		PlayerPrefs.SetString(previousRoomPlayerPrefKey,this.previousRoom);
-
+        PlayerPrefs.SetString(previousRoomPlayerPrefKey, this.previousRoom);
     }
 
-    public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
+    public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)//如果先前房間不存在，則刪除key
     {
-		Debug.Log("OnPhotonJoinRoomFailed");
+        Debug.Log("OnPhotonJoinRoomFailed");
         this.previousRoom = null;
-		PlayerPrefs.DeleteKey(previousRoomPlayerPrefKey);
+        PlayerPrefs.DeleteKey(previousRoomPlayerPrefKey);
+    }
+
+    public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)//如果沒有其他房間可以加入，則創建房間
+    {
+		Debug.Log("CreateRoom");
+        PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 2, PlayerTtl = 20000 }, null);
     }
 
     public override void OnConnectionFail(DisconnectCause cause)
