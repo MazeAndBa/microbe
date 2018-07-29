@@ -14,7 +14,7 @@ public class collectConn : PunBehaviour
     InputField id, username;
 
     public static string[] ques, option;
-    int [] i_optionRand;//該回合隨機的選項編號
+    string [] s_optionRand;//該回合隨機的選項編號
 
     private string serverlink = "140.115.126.137/microbe/";
     string UserID;
@@ -86,30 +86,8 @@ public class collectConn : PunBehaviour
         {
             Debug.Log("error msg" + reg.error);
         }
-        randomNum();
-
     }
-
-
-    void randomNum()
-    {
-        int _random, j;
-        i_optionRand = new int[23];
-        for (int i = 0; i < 23; i++)
-        {
-            j = 0;
-            _random = Random.Range(0, option.Length - 2);
-            while (i > j)
-            {
-                while (_random == i_optionRand[j])
-                {
-                    _random = Random.Range(0, option.Length - 2);
-                }
-                j++;
-            }
-            i_optionRand[i] = _random;
-        }
-    }
+   
 
 
 

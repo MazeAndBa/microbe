@@ -7,17 +7,19 @@ using System;
 
 public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 {
-   public GameObject ConnectUiView, GameUiView,ResultUIView, cardgroup, card,WaitingUI;
-   public Text question, RemotePlayerText, LocalPlayerText,Turn, TimeText;
+   public GameObject ConnectUiView,WaitingUI,GameUiView,ResultUIView, cardgroup, card;
+   public Text question, RemotePlayerText, LocalPlayerText,TurnText, TimeText;
     public Image WinorLossImg;
+
     float currentTime;
-    int[] i_option;//該回合的選項
+    string[] s_option;//該回合的選項
     string[] quesInfo,optionInfo;
+
     private PunTurnManager turnManager;
-    private ResultType result;
-    private bool IsShowingResults;
     private string localSelection, remoteSelection;
     private DateTime localTime, remoteTime;
+    private ResultType result;
+    private bool IsShowingResults;
 
     public enum ResultType
     {
@@ -31,8 +33,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     void Start () {
         this.turnManager = this.gameObject.AddComponent<PunTurnManager>();
         this.turnManager.TurnManagerListener = this;
-        this.turnManager.TurnDuration = 10f;
-
+        this.turnManager.TurnDuration = 15f;
         RefreshUIViews();
     }
 
@@ -51,9 +52,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         {
             this.ConnectUiView.SetActive(true);
         }
-
         this.UpdatePlayerTexts();
-
     }
 
 
@@ -62,11 +61,10 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     /// 
     public void OnTurnBegins(int turn)
     {
-        Debug.Log("OnTurnBegins() turn: " + turn);
+        
+        //回合初始化
         this.StartCoroutine("initialTurn");
-        this.TimeText.text = this.turnManager.TurnDuration.ToString();
-        currentTime = 0f;
-        InvokeRepeating("timer", 1f, 1f);
+
 
         this.localSelection = "";
         this.remoteSelection = "";
@@ -115,40 +113,20 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (!IsShowingResults)
         {
             Debug.Log("Time's up!");
+            CancelInvoke("timer");
             if (cardgroup.GetComponent<Button>().IsInteractable()) {
                 cardgroup.GetComponent<Button>().interactable = false;
             }
             OnTurnCompleted(-1);
         }
     }
-    #endregion
-
-    //set plaer's selection
-    public void MakeTurn(string cardName)
-    {
-        this.turnManager.SendMove(cardName, true);
-    }
-
-    public void StartTurn()
-    {
-        Debug.Log("start");
-        if (PhotonNetwork.isMasterClient)
-        {
-            this.turnManager.BeginTurn();
-            this.turnManager.selectQues(collectConn.ques);
-            this.turnManager.randomOptions(collectConn.option);
-        }
-        this.UpdatePlayerTexts();
-
-    }
-
 
     public void OnEndTurn()
     {
         if (this.turnManager.Turn < 5)
         {
             this.StartCoroutine("ShowResultsBeginNextTurnCoroutine");
-
+            this.StartTurn();
         }
         else //競賽結束，顯示本次雙方分數
         {
@@ -159,15 +137,26 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             ResultUIView.GetComponentsInChildren<Text>()[1].text = local.GetScore().ToString();
             ResultUIView.GetComponentsInChildren<Text>()[3].text = remote.GetScore().ToString();
             Debug.Log("Your Score:" + local.GetScore() + " remote's Score: " + remote.GetScore());
-
         }
     }
 
-    void RefreshUIViews()
+    #endregion
+
+
+    public void StartTurn()
     {
-        ConnectUiView.SetActive(!PhotonNetwork.inRoom);//如果還沒進房間則顯示連線畫面
-        GameUiView.SetActive(PhotonNetwork.inRoom);
-        //cardgroup.SetActive(PhotonNetwork.room != null ? PhotonNetwork.room.PlayerCount > 1 : false);//如果能get房號且房間人數大於1，則button才可互動
+        Debug.Log("start");
+        //房主抓取題目、選項、當前回合數
+        if (PhotonNetwork.isMasterClient)
+        {   
+            this.turnManager.BeginTurn();
+            this.turnManager.selectQues(collectConn.ques);
+            this.turnManager.randomOptions(collectConn.option);
+        }
+        this.UpdatePlayerTexts();
+        this.TimeText.text = this.turnManager.TurnDuration.ToString();
+        currentTime = 0f;
+        InvokeRepeating("timer", 1f, 1f);
 
     }
 
@@ -185,26 +174,38 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         }
     }
 
-    //時間郵戳
-    private int DateDiff(DateTime DateTime1, DateTime DateTime2)
+    public IEnumerator initialTurn()
     {
-        int dateDiff = 0;
-        TimeSpan ts1 = new TimeSpan(DateTime1.Ticks);
-        TimeSpan ts2 = new TimeSpan(DateTime2.Ticks);
-        TimeSpan ts = ts1.Subtract(ts2).Duration();
-        dateDiff = ts.Seconds;
-        return dateDiff;
+        yield return new WaitForSeconds(1.0f);
+        //存取新題目、選項、當前回合數
+        quesInfo = this.turnManager.TurnQues;
+        s_option = this.turnManager.TurnOption;
+        TurnText.text = this.turnManager.Turn.ToString();
+
+        //銷毀上一回合的卡片
+        GameObject[] tmp_cards = GameObject.FindGameObjectsWithTag("card");
+        if (tmp_cards.Length > 0)
+        {
+            for (int i = 0; i < tmp_cards.Length; i++)
+            {
+                Destroy(tmp_cards[i]);
+            }
+        }
+        //產生卡牌
+        createCard();
+        cardgroup.SetActive(true);
+
     }
 
     //建立卡牌
     void createCard()
     {
-        int ans_pos = UnityEngine.Random.Range(0, 23);
+        int ans_pos = UnityEngine.Random.Range(0, 15);
         if ( quesInfo!= null && quesInfo.Length > 0)
         {
             this.question.text = quesInfo[1];// ques_content
 
-            for (int i = 0, j = 0; i < 24; i++)
+            for (int i = 0, j = 0; i < 16; i++)
             {
                 GameObject cardObj = Instantiate(card);
                 cardObj.gameObject.SetActive(true);
@@ -215,7 +216,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 }
                 else
                 {
-                    optionInfo = collectConn.option[i_option[j]].Split(',');
+                    optionInfo =s_option[j].Split(',');
                     cardObj.GetComponentInChildren<Text>().text = optionInfo[1];//other ans_content
                     cardObj.name = optionInfo[1];
                     j++;
@@ -223,53 +224,31 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 }
                 cardObj.GetComponent<Button>().onClick.AddListener(delegate () { MakeTurn(cardObj.name); });
                 cardObj.transform.SetParent(cardgroup.transform);
-                cardObj.transform.localPosition = new Vector3(-400 + (i % 6) * 160, -250 + (i / 6) * 150, 0);
+                cardObj.transform.localPosition = new Vector3(-350 + (i % 4) * 160, -250 + (i / 4) * 150, 0);
                 cardObj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             }
         }
     }
 
-
-    public IEnumerator initialTurn()
+    //set plaer's selection
+    public void MakeTurn(string cardName)
     {
-        yield return new WaitForSeconds(1.0f);
-        quesInfo = this.turnManager.TurnQues;
-        i_option = this.turnManager.TurnOption;
-        Turn.text = this.turnManager.Turn.ToString();
-        //if (this.turnManager.Turn == 1)
-        //{
-            createCard();
-            cardgroup.SetActive(true);
-        //}
+        this.turnManager.SendMove(cardName, true);
+    }
+
+    //作答耗費的時間
+    private int DateDiff(DateTime DateTime1, DateTime DateTime2)
+    {
+        int dateDiff = 0;
+        TimeSpan ts1 = new TimeSpan(DateTime1.Ticks);
+        TimeSpan ts2 = new TimeSpan(DateTime2.Ticks);
+        TimeSpan ts = ts1.Subtract(ts2).Duration();
+        dateDiff = ts.Seconds;
+        return dateDiff;
     }
 
 
-    //顯示當回合的競賽結果
-    public IEnumerator ShowResultsBeginNextTurnCoroutine()
-    {
-        //ButtonCanvasGroup.interactable = false;
-        IsShowingResults = true;
-        switch (this.result)
-        {
-            case ResultType.LocalRAnsSTime:
-                //WinorLossImg.sprite = ;
-                break;
-            case ResultType.LocalRAnsLTime:
-                //WinorLossImg.sprite = ;
-                break;
-            case ResultType.Draw:
-                //WinorLossImg.sprite = ;
-                break;
-            case ResultType.LocalWrongAns:
-                //WinorLossImg.sprite = ;
-                break;
-        }
-        yield return new WaitForSeconds(2.0f);
-        this.StartTurn();
-    }
-
-
-    //判斷結果
+    //判斷輸贏結果
     private void CalculateWinAndLoss()
     {
         if (this.localSelection == "")
@@ -305,6 +284,30 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 this.result = ResultType.LocalWrongAns;
                 Debug.Log("You wong");
         }
+    }
+
+    //顯示當回合的競賽結果
+    public IEnumerator ShowResultsBeginNextTurnCoroutine()
+    {
+        //ButtonCanvasGroup.interactable = false;
+        IsShowingResults = true;
+        switch (this.result)
+        {
+            case ResultType.LocalRAnsSTime:
+                //WinorLossImg.sprite = ;
+                break;
+            case ResultType.LocalRAnsLTime:
+                //WinorLossImg.sprite = ;
+                break;
+            case ResultType.Draw:
+                //WinorLossImg.sprite = ;
+                break;
+            case ResultType.LocalWrongAns:
+                //WinorLossImg.sprite = ;
+                break;
+        }
+        yield return new WaitForSeconds(1.0f);
+
     }
 
     //計算得分
@@ -353,6 +356,13 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     }
 
 
+ #region Recheck connect and refresh ConnectUI
+
+    void RefreshUIViews()
+    {
+        ConnectUiView.SetActive(!PhotonNetwork.inRoom);//如果還沒進房間則顯示連線畫面
+        GameUiView.SetActive(PhotonNetwork.inRoom);
+    }
 
     public override void OnJoinedRoom()
     {
@@ -401,5 +411,6 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         this.ConnectUiView.SetActive(true);
     }
 
+#endregion
 
 }

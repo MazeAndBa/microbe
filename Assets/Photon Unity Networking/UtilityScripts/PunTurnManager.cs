@@ -50,7 +50,7 @@ public class PunTurnManager : PunBehaviour
         }
     }
 
-    public int[] TurnOption {
+    public string[] TurnOption {
         get { return PhotonNetwork.room.GetTurnOption(); }
         private set
         {
@@ -63,7 +63,7 @@ public class PunTurnManager : PunBehaviour
     /// <summary>
     /// The duration of the turn in seconds.
     /// </summary>
-    public float TurnDuration = 10f;
+    public float TurnDuration = 15f;
 
     /// <summary>
     /// Gets the elapsed time in the current turn in seconds
@@ -185,10 +185,11 @@ public class PunTurnManager : PunBehaviour
     /// </summary>
     public void randomOptions(string [] option)//Arrange options
     {
+        /*
         int[] i_optionRand;//該回合隨機的選項編號
         int _random, j;
-        i_optionRand = new int[24];
-        for (int i = 0; i < 24; i++)
+        i_optionRand = new int[16];
+        for (int i = 0; i < 16; i++)
         {
             j = 0;
             _random = UnityEngine.Random.Range(0, option.Length - 2);
@@ -201,8 +202,35 @@ public class PunTurnManager : PunBehaviour
                 j++;
             }
             i_optionRand[i] = _random;
+        }*/
+        //將選項陣列位置進行重洗
+        int randomindex = 0;
+        string []s_optionRand = new string[15];
+        string tmp = "";
+
+        for (int i = 0; i < option.Length - 1; i++)
+        {
+            randomindex = UnityEngine.Random.Range(i, option.Length - 2);
+            string []tmp_option = option[i].Split(',');
+
+            if (TurnQues[2] == tmp_option[1])
+            {
+                print(i);
+                tmp = option[option.Length-2];
+                option[option.Length-2] = option[i];
+                option[i] = tmp;
+            }
+            else {
+                tmp = option[randomindex];
+                option[randomindex] = option[i];
+                option[i] = tmp;
+            }
         }
-        TurnOption = i_optionRand;
+        for (int i = 0; i < s_optionRand.Length; i++)
+        {
+            s_optionRand[i] = option[i];
+        }
+        TurnOption = s_optionRand;
     }
     /// <summary>
 	/// Call to send an action. Optionally finish the turn, too.
@@ -414,7 +442,7 @@ public static class TurnExtensions
     /// <summary>
     /// Sets the options.
     /// </summary>
-    public static void SetTurnOption(this Room room, int[] options)
+    public static void SetTurnOption(this Room room, string[] options)
     {
         if (room == null || room.CustomProperties == null)
         {
@@ -431,13 +459,13 @@ public static class TurnExtensions
     /// </summary>
     /// <returns>The turn index </returns>
     /// <param name="room">RoomInfo reference</param>
-    public static int[] GetTurnOption(this RoomInfo room)
+    public static string[] GetTurnOption(this RoomInfo room)
     {
         if (room == null || room.CustomProperties == null || !room.CustomProperties.ContainsKey(TurnOption))
         {
             return null;
         }
-        return (int [])room.CustomProperties[TurnOption];
+        return (string [])room.CustomProperties[TurnOption];
     }
 
     /// <summary>

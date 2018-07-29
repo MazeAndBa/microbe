@@ -12,11 +12,11 @@ EditorBuildSettings:
     path: Assets/Scenes/home.unity
     guid: a1935d139bc668c4583993111d7bf108
   - enabled: 0
-    path: Assets/Scenes/compete.unity
+    path: 
     guid: 2acffe694b40957499fac892bde032de
   - enabled: 0
     path: Assets/Photon Unity Networking/Demos/DemoRockPaperScissors/DemoRPS-Scene.unity
     guid: 8a3480dd507edcd40b9a02e219e22da6
   - enabled: 1
-    path: Assets/Scenes/collectDATA.unity
+    path: Assets/Scenes/compete.unity
     guid: f589739d50d1e694ab1a5feaad33bc2b
