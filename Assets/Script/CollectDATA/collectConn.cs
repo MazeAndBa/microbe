@@ -19,6 +19,7 @@ public class collectConn : PunBehaviour
     private string serverlink = "140.115.126.137/microbe/";
     string UserID;
     string previousRoomPlayerPrefKey = "Microbe:PreviousRoom";
+    ///
     public string previousRoom;
     const string NickNamePlayerPrefsKey = "";
 
