@@ -65,6 +65,8 @@ public class PunTurnManager : PunBehaviour
     /// </summary>
     public float TurnDuration = 15f;
 
+
+
     /// <summary>
     /// Gets the elapsed time in the current turn in seconds
     /// </summary>
@@ -278,14 +280,14 @@ public class PunTurnManager : PunBehaviour
         return false;
     }
 
-	#region Callbacks
+    #region Callbacks
 
-	/// <summary>
-	/// Called by PhotonNetwork.OnEventCall registration
-	/// </summary>
-	/// <param name="eventCode">Event code.</param>
-	/// <param name="content">Content.</param>
-	/// <param name="senderId">Sender identifier.</param>
+    /// <summary>
+    /// Called by PhotonNetwork.OnEventCall registration
+    /// </summary>
+    /// <param name="eventCode">Event code.</param>
+    /// <param name="content">Content.</param>
+    /// <param name="senderId">Sender identifier.</param>
     public void OnEvent(byte eventCode, object content, int senderId)
     {
         PhotonPlayer sender = PhotonPlayer.Find(senderId);

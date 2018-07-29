@@ -14,7 +14,6 @@ public class collectConn : PunBehaviour
     InputField id, username;
 
     public static string[] ques, option;
-    string [] s_optionRand;//該回合隨機的選項編號
 
     private string serverlink = "140.115.126.137/microbe/";
     string UserID;
@@ -132,7 +131,7 @@ public class collectConn : PunBehaviour
     public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)//如果沒有其他房間可以加入，則創建房間
     {
         Debug.Log("CreateRoom");
-        PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 2, PlayerTtl = 20000 }, null);
+        PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 5, PlayerTtl = 15000 }, null);
     }
 
 
