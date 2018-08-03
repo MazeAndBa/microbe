@@ -4,17 +4,20 @@ using UnityEngine;
 using Photon;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(PhotonView))]
 public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 {
-   public GameObject ConnectUiView,WaitingUI,GameUiView,ResultUIView, cardgroup, card;
-   public Text question, RemotePlayerText, LocalPlayerText,TurnText, TimeText;
+    public GameObject ConnectUiView, WaitingUI, GameStartUI, ResultUIView, cardgroup, card;
+    public Text question, RemotePlayerText, LocalPlayerText, TurnText, TimeText;
     public Image WinorLossImg;
-    static bool btmGameStartClick;
+    Button btn_gamestart, btn_exit;
+
 
     float currentTime;
     string[] s_option;//該回合的選項
-    string[] quesInfo,optionInfo;
+    string[] quesInfo, optionInfo;
 
     private PunTurnManager turnManager;
     private string localSelection, remoteSelection;
@@ -31,42 +34,26 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         LocalWrongAns
     }
 
-    void Start () {
+    void Start() {
         this.turnManager = this.gameObject.AddComponent<PunTurnManager>();
         this.turnManager.TurnManagerListener = this;
         this.turnManager.TurnDuration = 15f;
-        btmGameStartClick = false;
-        RefreshUIViews();
+        RefreshConnectUI();
     }
 
-    
 
-    void Update () {
+
+    void Update() {
         if (PhotonNetwork.connected)
         {
             this.ConnectUiView.SetActive(false);
-            if (PhotonNetwork.BtnGameStartClick)
-            {
-                if (PhotonNetwork.room.PlayerCount > 1)
-                {
-                    if (this.turnManager.Turn == 0)
-                    {
-                        // when the room has two players, start the first turn (later on, joining players won't trigger a turn)
-                        this.WaitingUI.SetActive(false);
-                        this.GameUiView.SetActive(true);
-                        this.StartTurn();
-
-                    }
-                }
-            }Debug.Log(PhotonNetwork.BtnGameStartClick);
-
         }
 
-       if (!PhotonNetwork.connected && !PhotonNetwork.connecting && !this.ConnectUiView.GetActive())
+        if (!PhotonNetwork.connected && !PhotonNetwork.connecting && !this.ConnectUiView.GetActive())
         {
             this.ConnectUiView.SetActive(true);
         }
-        this.UpdatePlayerTexts();
+
     }
 
 
@@ -75,7 +62,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     /// 
     public void OnTurnBegins(int turn)
     {
-        
+
         //回合初始化
         this.StartCoroutine("initialTurn");
 
@@ -140,12 +127,12 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (this.turnManager.Turn < 5)
         {
             this.StartCoroutine("ShowResultsBeginNextTurnCoroutine");
+            this.UpdatePlayerTexts();
             this.StartTurn();
         }
         else //競賽結束，顯示本次雙方分數
         {
-            PhotonNetwork.BtnGameStartClick = false;
-            GameUiView.SetActive(false);
+            GameStartUI.SetActive(false);
             ResultUIView.SetActive(true);
             PhotonPlayer remote = PhotonNetwork.player.GetNext();
             PhotonPlayer local = PhotonNetwork.player;
@@ -161,14 +148,17 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public void StartTurn()
     {
         Debug.Log("start");
+        if (this.turnManager.Turn == 0) {
+            InitialGameUI();
+        }
         //房主抓取題目、選項、當前回合數
         if (PhotonNetwork.isMasterClient)
-        {   
+        {
             this.turnManager.BeginTurn();
             this.turnManager.selectQues(collectConn.ques);
             this.turnManager.randomOptions(collectConn.option);
         }
-        this.UpdatePlayerTexts();
+
         this.TimeText.text = this.turnManager.TurnDuration.ToString();
         currentTime = 0f;
         InvokeRepeating("timer", 1f, 1f);
@@ -216,7 +206,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     void createCard()
     {
         int ans_pos = UnityEngine.Random.Range(0, 15);
-        if ( quesInfo!= null && quesInfo.Length > 0)
+        if (quesInfo != null && quesInfo.Length > 0)
         {
             this.question.text = quesInfo[1];// ques_content
 
@@ -231,7 +221,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 }
                 else
                 {
-                    optionInfo =s_option[j].Split(',');
+                    optionInfo = s_option[j].Split(',');
                     cardObj.GetComponentInChildren<Text>().text = optionInfo[1];//other ans_content
                     cardObj.name = optionInfo[1];
                     j++;
@@ -296,8 +286,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             }
         }
         else {
-                this.result = ResultType.LocalWrongAns;
-                Debug.Log("You wong");
+            this.result = ResultType.LocalWrongAns;
+            Debug.Log("You wong");
         }
     }
 
@@ -351,8 +341,34 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     void UpdatePlayerTexts()//更新自己與對手狀態(名字+分數)
     {
         PhotonPlayer local = PhotonNetwork.player;
-        PhotonPlayer remote = PhotonNetwork.player.GetNextFor(local);
+        PhotonPlayer[] player = PhotonNetwork.playerList;
+        //依分數排序
+        for (int i = 0; i < PhotonNetwork.room.PlayerCount-1; i++)
+        {
+            for (int j = i + 1; j < PhotonNetwork.room.PlayerCount; j++)
+            {
+                if (player[i].GetScore() < player[j].GetScore())
+                {
+                    PhotonPlayer tmp = player[j];
+                    player[j] = player[i];
+                    player[i] = tmp;
+                }
+            }
+        }
+        //更新排行榜
+        for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
+        {
+            GameObject GameRank = GameObject.FindGameObjectWithTag("GameRank");
+            GameRank.GetComponentsInChildren<Text>()[i].text = player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2");
+        }
+        if (local != null)
+        {
+            // should be this format: "YOU   00"
+            this.LocalPlayerText.text = "You: " + local.NickName + "　Score:" + local.GetScore().ToString("D2");
+        }
 
+        /*
+        PhotonPlayer remote = PhotonNetwork.player.GetNextFor(local);
         if (remote != null)
         {
             this.RemotePlayerText.text = "Remote Name:" + remote.NickName + "　Score:" + remote.GetScore().ToString("D2");
@@ -362,38 +378,103 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             this.RemotePlayerText.text = "Remote Name:";
             this.TimeText.text = "";
         }
+        */
 
-        if (local != null)
-        {
-            // should be this format: "YOU   00"
-            this.LocalPlayerText.text ="Your Name:"+local.NickName + "　Score:" + local.GetScore().ToString("D2");
-        }
     }
 
-
- #region Recheck connect and refresh ConnectUI
-
-    void RefreshUIViews()
+    #region Recheck connect and Initialize UI
+    void RefreshConnectUI()
     {
         this.ConnectUiView.SetActive(!PhotonNetwork.inRoom);//如果還沒進房間則顯示連線畫面
         this.WaitingUI.SetActive(PhotonNetwork.inRoom);
+        if (GameStartUI.GetActive())
+        {
+            this.GameStartUI.SetActive(false);
+        }
+    }
+    void RefreshWaitUI() {
+        btn_gamestart = this.WaitingUI.GetComponentsInChildren<Button>()[0];
+        btn_gamestart.onClick.AddListener(ClickGameStart);
+        btn_exit = this.WaitingUI.GetComponentsInChildren<Button>()[1];
+        btn_exit.onClick.AddListener(ExitGame);
+
+        PhotonPlayer hostPlayer = PhotonNetwork.masterClient;
+        GameObject HostInfo = GameObject.FindGameObjectWithTag("Host");
+        HostInfo.GetComponentsInChildren<Text>()[0].text = hostPlayer.NickName;
+        //Initialize players'name
+        for (int i = 1; i < 5; i++)
+        {
+            PhotonPlayer[] player = PhotonNetwork.playerList;
+            GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + i);
+            PlayerInfo.GetComponentsInChildren<Text>()[0].text = "";
+        }
+        if (PhotonNetwork.room.PlayerCount > 1)
+        {
+            for (int i = 1; i < PhotonNetwork.room.PlayerCount; i++)
+            {
+                PhotonPlayer[] player = PhotonNetwork.playerList;
+                GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + i);
+                PlayerInfo.GetComponentsInChildren<Text>()[0].text = player[i].NickName;
+            }
+        }
 
     }
-   static void HostGameStart() {
-        PhotonNetwork.BtnGameStartClick = true;
+
+    void InitialGameUI() {
+        for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
+        {
+            PhotonPlayer[] player = PhotonNetwork.playerList;
+            Text remote = Instantiate(RemotePlayerText);
+            GameObject GameRank = GameObject.FindGameObjectWithTag("GameRank");
+            remote.transform.SetParent(GameRank.transform);
+            remote.transform.localPosition = new Vector3(0, - i * 100, 0);
+            remote.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            remote.name = (i+1)+"";
+            remote.text = player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2");
+        }
     }
+
+    #endregion
+
+    #region Button Event
+    public void ClickGameStart()
+    {
+        if (PhotonNetwork.room.PlayerCount > 1)
+        {
+            this.photonView.RPC("GameStart", PhotonTargets.All);
+        }
+        else
+        {
+            Debug.Log("Player isn't enough.");
+        }
+    }
+
+    void ExitGame()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    [PunRPC]
+    void GameStart()
+    {
+        if (this.turnManager.Turn == 0)
+        {
+            // when the room has two players, start the first turn (later on, joining players won't trigger a turn)
+            this.WaitingUI.SetActive(false);
+            this.GameStartUI.SetActive(true);
+            this.StartTurn();
+        }
+    }
+
+    #endregion
 
     public override void OnJoinedRoom()
     {
-        RefreshUIViews();
+        RefreshConnectUI();
+        RefreshWaitUI();
         if (PhotonNetwork.room.PlayerCount <= 5)
         {
-            PhotonPlayer hostPlayer = PhotonNetwork.masterClient;
-            GameObject HostInfo = GameObject.FindGameObjectWithTag("Host");
-            HostInfo.GetComponentsInChildren<Text>()[0].text = hostPlayer.NickName;
 
-            Button btn_gamestart = this.WaitingUI.GetComponentsInChildren<Button>()[0];
-            btn_gamestart.onClick.AddListener(HostGameStart);
             if (PhotonNetwork.isMasterClient)
             {
                 //房主才有遊戲開始的按鈕
@@ -402,56 +483,66 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             else
             {
                 btn_gamestart.gameObject.SetActive(false);
-                for (int i = 1; i < PhotonNetwork.room.PlayerCount; i++)
-                {
-                    PhotonPlayer []player = PhotonNetwork.playerList;
-                   // PhotonPlayer remote = PhotonNetwork.player.GetNextFor(local);
+            }
+            Debug.Log("Waiting for another player");
+        }
 
-                    GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player"+i);
-                    PlayerInfo.GetComponentsInChildren<Text>()[0].text = player[i].NickName;
+    }
 
-                }
-                Debug.Log("Waiting for another player");
-                //this.WaitingUI.SetActive(true);
+    public override void OnLeftRoom()
+    {
+        Debug.Log("OnLeftRoom (local)");
+        // -----------------回主畫面----------------------
+        SceneManager.LoadScene("home");
+    }
+
+    public override void OnMasterClientSwitched(PhotonPlayer player)
+    {
+        Debug.Log("OnMasterClientSwitched: " + player);
+        RefreshWaitUI();
+        string message;
+        InRoomChat chatComponent = GetComponent<InRoomChat>();  // if we find a InRoomChat component, we print out a short message
+
+        if (chatComponent != null)
+        {
+            // to check if this client is the new master...
+            if (player.IsLocal)
+            {
+                message = "You are Master Client now.";
+            }
+            else
+            {
+                message = player.NickName + " is Master Client now.";
             }
 
+
+            chatComponent.AddLine(message); // the Chat method is a RPC. as we don't want to send an RPC and neither create a PhotonMessageInfo, lets call AddLine()
         }
-       
     }
+
+
 
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         Debug.Log("Other player arrived");
+
         GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player"+(PhotonNetwork.room.PlayerCount-1));
         PlayerInfo.GetComponentsInChildren<Text>()[0].text = newPlayer.NickName;
-
-        /*
-        if (PhotonNetwork.room.PlayerCount == 2)
-        {
-            if (this.turnManager.Turn == 0)
-            {
-                // when the room has two players, start the first turn (later on, joining players won't trigger a turn)
-                this.WaitingUI.SetActive(false);
-                this.StartTurn();
-            }
-        }
-        */
     }
 
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
-        OnJoinedRoom();
+        RefreshConnectUI();
+        RefreshWaitUI();
         Debug.Log("Other player disconnected! " + otherPlayer.ToStringFull());
     }
 
-    public override void OnConnectionFail(DisconnectCause cause)
+    public override void OnDisconnectedFromPhoton()
     {
-        this.GameUiView.SetActive(false);
-        this.WaitingUI.SetActive(false);
-        this.ConnectUiView.SetActive(true);
+        RefreshConnectUI();
+        Debug.Log("OnFailedToConnectToPhoton");
     }
 
-#endregion
 
 }

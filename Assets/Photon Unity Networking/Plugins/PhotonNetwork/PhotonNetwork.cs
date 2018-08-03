@@ -64,11 +64,6 @@ public static class PhotonNetwork
     public static CloudRegionCode CloudRegion { get { return (networkingPeer != null && connected && Server!=ServerConnection.NameServer) ? networkingPeer.CloudRegion : CloudRegionCode.none; } }
 
     /// <summary>
-    /// If Master click the button of gamestart.
-    /// </summary>
-    public static bool BtnGameStartClick = false;
-
-    /// <summary>
     /// False until you connected to Photon initially. True in offline mode, while connected to any server and even while switching servers.
     /// </summary>
     public static bool connected
