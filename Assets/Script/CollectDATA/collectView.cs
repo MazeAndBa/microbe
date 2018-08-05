@@ -12,7 +12,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public GameObject ConnectUiView, WaitingUI, GameStartUI, ResultUIView, cardgroup, card;
     public Text question, RemotePlayerText, LocalPlayerText, TurnText, TimeText;
     public Image WinorLossImg;
-    Button btn_gamestart, btn_exit;
+    Button btn_gamestart, btn_exit,btn_back;
 
 
     float currentTime;
@@ -21,7 +21,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
     private PunTurnManager turnManager;
     private string localSelection, remoteSelection;
-    private DateTime localTime, remoteTime;
+    private DateTime localTime;
+    private DateTime remoteTime;
     private ResultType result;
     private bool IsShowingResults;
 
@@ -259,7 +260,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (this.localSelection == "")
         {
             this.result = ResultType.LocalWrongAns;
-            Debug.Log("You don't select");
+            Debug.Log("You hadn't select");
             return;
         }
 
@@ -320,7 +321,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     {
         PhotonPlayer remote = PhotonNetwork.player.GetNext();
         PhotonPlayer local = PhotonNetwork.player;
-
+        
         switch (this.result)
         {
             case ResultType.LocalRAnsSTime:
@@ -386,12 +387,17 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     void RefreshConnectUI()
     {
         this.ConnectUiView.SetActive(!PhotonNetwork.inRoom);//如果還沒進房間則顯示連線畫面
+        if (ConnectUiView.GetActive()) {
+            btn_back = this.ConnectUiView.GetComponentsInChildren<Button>()[1];
+            btn_back.onClick.AddListener(BackMainmenu);
+        }
         this.WaitingUI.SetActive(PhotonNetwork.inRoom);
         if (GameStartUI.GetActive())
         {
             this.GameStartUI.SetActive(false);
         }
     }
+
     void RefreshWaitUI() {
         btn_gamestart = this.WaitingUI.GetComponentsInChildren<Button>()[0];
         btn_gamestart.onClick.AddListener(ClickGameStart);
@@ -437,6 +443,10 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     #endregion
 
     #region Button Event
+    void BackMainmenu() {
+        SceneManager.LoadScene("home");
+    }
+
     public void ClickGameStart()
     {
         if (PhotonNetwork.room.PlayerCount > 1)
@@ -451,7 +461,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
     void ExitGame()
     {
-        PhotonNetwork.LeaveRoom();
+        //PhotonNetwork.LeaveRoom(false);
+        PhotonNetwork.Disconnect();
     }
 
     [PunRPC]
@@ -492,13 +503,13 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("OnLeftRoom (local)");
-        // -----------------回主畫面----------------------
-        SceneManager.LoadScene("home");
+        RefreshConnectUI();
+
     }
 
     public override void OnMasterClientSwitched(PhotonPlayer player)
     {
-        Debug.Log("OnMasterClientSwitched: " + player);
+        Debug.Log("OnMasterClientSwitchedto: " + PhotonNetwork.masterClient.NickName);
         RefreshWaitUI();
         string message;
         InRoomChat chatComponent = GetComponent<InRoomChat>();  // if we find a InRoomChat component, we print out a short message

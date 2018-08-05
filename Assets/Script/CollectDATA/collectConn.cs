@@ -21,17 +21,25 @@ public class collectConn : PunBehaviour
     ///
     public string previousRoom;
     const string NickNamePlayerPrefsKey = "";
-
+    CompeteManager cm;
     void Start () {
+
+
         btn_start = obj_gamestart.GetComponentInChildren<Button>();
         btn_start.onClick.AddListener(gamestart);
         id = obj_gamestart.GetComponentsInChildren<InputField>()[0];
         username = obj_gamestart.GetComponentsInChildren<InputField>()[1];
+        //------------暫時註解以下三行以方便測試------------------
+        //cm = new CompeteManager();
+        //id.text = cm.playerInfo[0];
+        //username.text = cm.playerInfo[1];
     }
 
 
     void gamestart() {
+        //-----------暫時不使用xmlprocess以方便測試------------------
         createUser();
+        //-----------------------------------------------------------
         obj_gamestart.gameObject.SetActive(false);
         if (PhotonNetwork.AuthValues == null)
         {

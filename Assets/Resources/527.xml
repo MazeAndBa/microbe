@@ -1,5 +1,5 @@
 <Loadfile>
-  <User ID="527" name="527" level="1" money="100">
+  <User ID="527" name="527" level="1" sex="1" money="100">
     <current_icon icon="" />
     <compete>
       <enemy />
@@ -33,17 +33,15 @@
   <show_list />
   <log_record>
     <time_history>
-      <time_history_day day="2018-05-27">
-        <time_history_record scence="login" startTime="16:31:20" duration="0:0" />
-        <time_history_record scence="Register" startTime="16:31:21" duration="" />
-        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:31:30" />
-        <time_history_record scence="compete" startTime="16:31:33" endTime="16:31:33" />
-        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:32:35" />
-        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:34:55" />
-        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:35:04" />
-        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:36:24" />
-        <time_history_record scence="Login" startTime="2018-05-27" endTime="16:37:35" />
-        <time_history_record scence="compete" startTime="16:37:37" endTime="16:37:37" />
+      <time_history_day day="2018-08-04">
+        <time_history_record scence="login" startTime="14:38:42" duration="0:0" />
+        <time_history_record scence="Register" startTime="14:38:42" duration="" />
+        <time_history_record scence="Login" startTime="2018-08-04" endTime="14:40:03" />
+        <time_history_record scence="Login" startTime="2018-08-04" endTime="14:52:49" />
+        <time_history_record scence="Login" startTime="2018-08-04" endTime="14:56:20" />
+        <time_history_record scence="LV_easy" startTime="14:56:31" endTime="14:56:31" />
+        <time_history_record scence="LV_easy" startTime="14:56:44" endTime="14:56:44" />
+        <time_history_record scence="LV_easy" startTime="14:57:05" endTime="14:57:05" />
       </time_history_day>
     </time_history>
     <touch>

@@ -53,7 +53,7 @@ public class AccountManager {
         {
             if (reg.text == "0")
             {
-                AccountInfo = new string[]{str[0],str[2],"1"};
+                AccountInfo = new string[]{str[0],str[2],"1", str[3] };
                 state = 0;//帳號不重複
                 Debug.Log(state+" "+ AccountInfo);
                 xmlprocess = new Xmlprocess(AccountInfo[0]);

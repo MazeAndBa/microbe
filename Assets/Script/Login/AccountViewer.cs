@@ -65,7 +65,7 @@ public class AccountViewer : MonoBehaviour {
         if (am.state == 1)
         {
             //showerror("登入成功");
-            SceneManager.LoadScene("home");
+            SceneManager.LoadScene("Home");
         }
         else if (am.state == 0)
         {
@@ -133,7 +133,7 @@ public class AccountViewer : MonoBehaviour {
         yield return new WaitForSeconds(0.8f);
 
         if (am.state == 0) {
-            SceneManager.LoadScene("home");
+            SceneManager.LoadScene("Home");
         }
         else if (am.state == 1)
         {

@@ -169,9 +169,9 @@
     <Compile Include="Assets\Script\CollectDATA\collectConn.cs" />
     <Compile Include="Assets\Script\CollectDATA\collectView.cs" />
     <Compile Include="Assets\Script\Compete\CompeteConn.cs" />
-    <Compile Include="Assets\Script\Compete\CompeteData.cs" />
-    <Compile Include="Assets\Script\Compete\CompeteMain.cs" />
+    <Compile Include="Assets\Script\Compete\CompeteManager.cs" />
     <Compile Include="Assets\Script\Home.cs" />
+    <Compile Include="Assets\Script\Level\Medium.cs" />
     <Compile Include="Assets\Script\Login\AccountManager.cs" />
     <Compile Include="Assets\Script\Login\AccountViewer.cs" />
     <Compile Include="Assets\Script\PersonalInfo.cs" />

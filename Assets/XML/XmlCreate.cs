@@ -22,6 +22,7 @@ public class XmlCreate{
 			User.SetAttribute("ID", "");
 			User.SetAttribute("name","");
 			User.SetAttribute("level", "");
+            User.SetAttribute("sex", "");
             User.SetAttribute("money", "100");
             Loadfile.AppendChild(User);
 

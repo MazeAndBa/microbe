@@ -62,7 +62,7 @@ public class Xmlprocess{
         {
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
             XmlElement element = (XmlElement)node;
-            XmlAttribute[] attributeList = { element.GetAttributeNode("ID"), element.GetAttributeNode("name"), element.GetAttributeNode("level") };
+            XmlAttribute[] attributeList = { element.GetAttributeNode("ID"), element.GetAttributeNode("name"), element.GetAttributeNode("level"), element.GetAttributeNode("sex") };
             for (int i = 0; i < userInfo.Length; i++)
             {
                 attributeList[i].Value = userInfo[i];
@@ -72,7 +72,7 @@ public class Xmlprocess{
 	}
 
     //<summary>
-    //return an array, 0=ID,1=name,2=level,3=money
+    //return an array, 0=ID,1=name,2=level,3=sex, 4=money
     //</summary>
     public string[] getUserInfo()
     {
@@ -81,7 +81,7 @@ public class Xmlprocess{
             string[] info = new string[4];
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
             XmlElement element = (XmlElement)node;
-            XmlAttribute []attribute = { element.GetAttributeNode("ID") , element.GetAttributeNode("name"), element.GetAttributeNode("level"), element.GetAttributeNode("money") };
+            XmlAttribute []attribute = { element.GetAttributeNode("ID") , element.GetAttributeNode("name"), element.GetAttributeNode("level"), element.GetAttributeNode("sex"), element.GetAttributeNode("money") };
             for (int i = 0; i < info.Length; i++)
             {
                 info[i] = attribute[i].Value.ToString();
