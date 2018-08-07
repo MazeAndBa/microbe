@@ -42,6 +42,36 @@
         <time_history_record scence="LV_easy" startTime="14:56:31" endTime="14:56:31" />
         <time_history_record scence="LV_easy" startTime="14:56:44" endTime="14:56:44" />
         <time_history_record scence="LV_easy" startTime="14:57:05" endTime="14:57:05" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="17:51:02" />
+      </time_history_day>
+      <time_history_day day="2018-08-06">
+        <time_history_record scence="Easy_C" startTime="17:51:33" endTime="17:51:33" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="17:51:42" />
+        <time_history_record scence="Medium" startTime="17:51:43" endTime="17:51:43" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="17:52:30" />
+        <time_history_record scence="Medium" startTime="17:52:32" endTime="17:52:32" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="17:52:56" />
+        <time_history_record scence="Medium" startTime="17:52:57" endTime="17:52:57" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="17:55:22" />
+        <time_history_record scence="Medium" startTime="17:55:24" endTime="17:55:24" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="17:56:20" />
+        <time_history_record scence="Medium" startTime="17:56:34" endTime="17:56:34" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="17:57:11" />
+        <time_history_record scence="Medium" startTime="17:57:13" endTime="17:57:13" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="18:25:01" />
+        <time_history_record scence="Medium" startTime="18:25:02" endTime="18:25:02" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="18:27:01" />
+        <time_history_record scence="Medium" startTime="18:27:08" endTime="18:27:08" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="18:28:54" />
+        <time_history_record scence="Medium" startTime="18:28:56" endTime="18:28:56" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="18:29:27" />
+        <time_history_record scence="Medium" startTime="18:29:29" endTime="18:29:29" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="18:30:00" />
+        <time_history_record scence="Medium" startTime="18:30:02" endTime="18:30:02" />
+        <time_history_record scence="Medium" startTime="18:30:04" endTime="18:30:04" />
+        <time_history_record scence="Login" startTime="2018-08-06" endTime="18:30:21" />
+        <time_history_record scence="Easy_C" startTime="18:30:23" endTime="18:30:23" />
+        <time_history_record scence="Easy_C" startTime="18:30:33" endTime="18:30:33" />
       </time_history_day>
     </time_history>
     <touch>
