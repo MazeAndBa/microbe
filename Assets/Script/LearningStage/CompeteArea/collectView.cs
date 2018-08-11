@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon;
 using UnityEngine.UI;
 using System;
-using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PhotonView))]
 public class collectView : PunBehaviour, IPunTurnManagerCallbacks
@@ -12,7 +11,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public GameObject ConnectUiView, WaitingUI, GameStartUI, ResultUIView, cardgroup, card;
     public Text question, RemotePlayerText, LocalPlayerText, TurnText, TimeText;
     public Image WinorLossImg;
-    Button btn_gamestart, btn_exit,btn_back;
+    Button btn_gamestart, btn_exit;
 
 
     float currentTime;
@@ -387,10 +386,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     void RefreshConnectUI()
     {
         this.ConnectUiView.SetActive(!PhotonNetwork.inRoom);//如果還沒進房間則顯示連線畫面
-        if (ConnectUiView.GetActive()) {
-            btn_back = this.ConnectUiView.GetComponentsInChildren<Button>()[1];
-            btn_back.onClick.AddListener(BackMainmenu);
-        }
+
         this.WaitingUI.SetActive(PhotonNetwork.inRoom);
         if (GameStartUI.GetActive())
         {
@@ -443,9 +439,6 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     #endregion
 
     #region Button Event
-    void BackMainmenu() {
-        SceneManager.LoadScene("home");
-    }
 
     public void ClickGameStart()
     {

@@ -7,24 +7,24 @@ using UnityEngine.UI;
 public class Home : MonoBehaviour {
     public Button btn_easy, btn_medium, btn_hard;
     Xmlprocess xmlprocess;
-    static string chooseLevel;
+    static int chooseLevel;
 
 	void Start () {
         xmlprocess = new Xmlprocess();
-        btn_easy.onClick.AddListener(delegate { goScene("Easy_C"); });
-        btn_medium.onClick.AddListener(delegate { goScene("Medium"); });
-        //btn_hard.onClick.AddListener(delegate { goScene("Hard_C"); });
+        btn_easy.onClick.AddListener(delegate { goScene("Easy",0); });
+        btn_medium.onClick.AddListener(delegate { goScene("Medium",1); });
+        btn_hard.onClick.AddListener(delegate { goScene("Hard", 2); });
 
     }
-    void goScene(string sceneName) {
-        Debug.Log(sceneName);
+    void goScene(string sceneName, int Level) {
+        //Debug.Log(sceneName);
+        chooseLevel = Level;
         string startTime = (System.DateTime.Now).ToString("HH:mm:ss");
         xmlprocess.New_timeHistoryRecord(sceneName, startTime);
-        chooseLevel = sceneName;
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene("LearningStage");
     }
 
-    public static string getLevel() {
+    public static int getLevel() {
         return chooseLevel;
     }
 }

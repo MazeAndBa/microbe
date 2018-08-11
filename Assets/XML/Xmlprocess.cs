@@ -567,12 +567,44 @@ public class Xmlprocess{
 			elementLast.AppendChild(time_history_record);
 			time_history_record.SetAttribute("scence", scence);
 			time_history_record.SetAttribute("startTime", starttime);
-			time_history_record.SetAttribute("endTime", DateTime.Now.ToString("HH:mm:ss"));
-
 			saveData();
 		}
 	}
 
-	
+    public void ExitTimeHistoryRecord(string endTime)
+    {
+        if (isExits())
+        {
+            //XmlNode nodeLast = null;
+            XmlNode nodeLast_Previous = null;
+
+            // Find the previous scence start time ********************************************************************************************
+            XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//time_history_day");
+            foreach (XmlNode item_File_Previous in nodelist_Previous)
+            {
+                XmlAttributeCollection xAT2 = item_File_Previous.Attributes;
+                for (int j = 0; j < xAT2.Count; j++)
+                {
+                    nodeLast_Previous = item_File_Previous;
+                }
+            }
+            XmlElement elementLast_Previous = (XmlElement)nodeLast_Previous;
+            XmlAttribute attributeLast_StartTime = elementLast_Previous.GetAttributeNode("startTime");
+            XmlAttribute attributeLast_EndTime = elementLast_Previous.GetAttributeNode("endTime");
+            XmlAttribute attributeLast_Duration = elementLast_Previous.GetAttributeNode("duration");
+
+            DateTime nowTime = Convert.ToDateTime(DateTime.Now.ToString("HH:mm:ss"));
+            DateTime getTime = Convert.ToDateTime(attributeLast_StartTime.Value.ToString());
+
+            System.TimeSpan diff = nowTime.Subtract(getTime);
+            int timerNum = (int)diff.TotalSeconds;
+
+            attributeLast_EndTime.Value = getTime.ToString();
+            attributeLast_Duration.Value = (timerNum / 60).ToString() + ":" + (timerNum % 60).ToString();
+            // *********************************************************************************************************************************************
+            saveData();
+        }
+    }
+
 
 }

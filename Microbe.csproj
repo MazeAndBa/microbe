@@ -166,12 +166,13 @@
     <Compile Include="Assets\Resources\UIHandler\UIHandler.cs" />
     <Compile Include="Assets\Resources\UIHandler\UIManager.cs" />
     <Compile Include="Assets\Resources\UIHandler\Utility.cs" />
-    <Compile Include="Assets\Script\CollectDATA\collectConn.cs" />
-    <Compile Include="Assets\Script\CollectDATA\collectView.cs" />
+    <Compile Include="Assets\Script\Btn_BackEvent.cs" />
     <Compile Include="Assets\Script\Compete\CompeteConn.cs" />
     <Compile Include="Assets\Script\Compete\CompeteManager.cs" />
     <Compile Include="Assets\Script\Home.cs" />
-    <Compile Include="Assets\Script\Level\Medium.cs" />
+    <Compile Include="Assets\Script\LearningStage\CompeteArea\collectConn.cs" />
+    <Compile Include="Assets\Script\LearningStage\CompeteArea\collectView.cs" />
+    <Compile Include="Assets\Script\LearningStage\EnterLevel.cs" />
     <Compile Include="Assets\Script\Login\AccountManager.cs" />
     <Compile Include="Assets\Script\Login\AccountViewer.cs" />
     <Compile Include="Assets\Script\PersonalInfo.cs" />
