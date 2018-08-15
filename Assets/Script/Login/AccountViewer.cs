@@ -75,12 +75,12 @@ public class AccountViewer : MonoBehaviour {
 
 
     public void showLogin() {
-        UIManager.Instance.ClosePanel("UI_Register");
+        UIManager.Instance.ClosePanel("L_RegisterUI");
     }
 
     public void showregister()
     {
-        UIManager.Instance.ShowPanel("UI_Register");
+        UIManager.Instance.ShowPanel("L_RegisterUI");
         reg_id = GetComponentsInChildren<InputField>()[2];
         reg_pw = GetComponentsInChildren<InputField>()[3];
         reg_name = GetComponentsInChildren<InputField>()[4];

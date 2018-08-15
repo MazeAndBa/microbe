@@ -72,6 +72,14 @@
         <time_history_record scence="Login" startTime="2018-08-06" endTime="18:30:21" />
         <time_history_record scence="Easy_C" startTime="18:30:23" endTime="18:30:23" />
         <time_history_record scence="Easy_C" startTime="18:30:33" endTime="18:30:33" />
+        <time_history_record scence="Login" startTime="2018-08-15" />
+      </time_history_day>
+      <time_history_day day="2018-08-15">
+        <time_history_record scence="Medium" startTime="17:09:17" />
+        <time_history_record scence="Login" startTime="2018-08-15" />
+        <time_history_record scence="Medium" startTime="17:11:50" />
+        <time_history_record scence="Login" startTime="2018-08-15" />
+        <time_history_record scence="Easy" startTime="17:16:21" />
       </time_history_day>
     </time_history>
     <touch>
