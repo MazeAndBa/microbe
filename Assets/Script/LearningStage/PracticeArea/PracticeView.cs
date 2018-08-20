@@ -12,12 +12,11 @@ public class PracticeView : MonoBehaviour {
     #endregion
 
     void Start () {
+        StartCoroutine(pm.LoadVocabulary("loadVocabulary.php"));
         ShowReviewVocabulary();
     }
     void ShowReviewVocabulary(){
         int vocabularyID = 0;
-        StartCoroutine(pm.LoadVocabulary("loadVocabulary.php"));
-
         UIManager.Instance.ShowPanel("P_ReviewUI");
         text_English = GetComponentsInChildren<Text>()[0];
         text_Translation = GetComponentsInChildren<Text>()[1];

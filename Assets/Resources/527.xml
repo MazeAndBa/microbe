@@ -80,6 +80,19 @@
         <time_history_record scence="Medium" startTime="17:11:50" />
         <time_history_record scence="Login" startTime="2018-08-15" />
         <time_history_record scence="Easy" startTime="17:16:21" />
+        <time_history_record scence="Login" startTime="2018-08-20" />
+      </time_history_day>
+      <time_history_day day="2018-08-20">
+        <time_history_record scence="Easy" startTime="15:13:41" />
+        <time_history_record scence="Login" startTime="2018-08-20" />
+        <time_history_record scence="Easy" startTime="15:20:57" />
+        <time_history_record scence="Login" startTime="2018-08-20" />
+        <time_history_record scence="Medium" startTime="15:23:14" />
+        <time_history_record scence="Login" startTime="2018-08-20" />
+        <time_history_record scence="Medium" startTime="15:24:21" />
+        <time_history_record scence="Medium" startTime="15:24:23" />
+        <time_history_record scence="Login" startTime="2018-08-20" />
+        <time_history_record scence="Medium" startTime="15:28:30" />
       </time_history_day>
     </time_history>
     <touch>

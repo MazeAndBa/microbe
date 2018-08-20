@@ -32,6 +32,7 @@ public class PracticeManager : MonoBehaviour {
                 E_vocabularyDic.Add(i, tmp2[1]);
                 T_vocabularyDic.Add(i, tmp2[2]);
                 //vocabularyList.Add(new string(){volID =tmp[0],volEng = tmp[1],volTran = tmp[2] });
+                Debug.Log(tmp2[1]);
             }
         }
         else

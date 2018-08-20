@@ -28,20 +28,20 @@ public class EnterLevel : MonoBehaviour {
 
         btn_practice = GetComponentsInChildren<Button>()[1];
         btn_compete = GetComponentsInChildren<Button>()[2];
-        btn_practice.onClick.AddListener( goPractice);
-        btn_compete.onClick.AddListener( goCompete);
+        btn_practice.onClick.AddListener(goPractice);
+        btn_compete.onClick.AddListener(goCompete);
 
     }
 
     void goPractice() {
 
-        xmlprocess.New_timeHistoryRecord(levelName + "_Practice", System.DateTime.Now.ToString("HH-mm-ss"));
+        //xmlprocess.New_timeHistoryRecord(levelName + "_Practice", System.DateTime.Now.ToString("HH-mm-ss"));
         SceneManager.LoadScene("PracticeArea");
     }
 
     void goCompete()
     {
-        xmlprocess.New_timeHistoryRecord(levelName + "_Compete", System.DateTime.Now.ToString("HH-mm-ss"));
+        //xmlprocess.New_timeHistoryRecord(levelName + "_Compete", System.DateTime.Now.ToString("HH-mm-ss"));
         SceneManager.LoadScene("CompeteArea");
     }
 
