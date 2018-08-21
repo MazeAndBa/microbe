@@ -8,7 +8,8 @@ public class Btn_BackEvent : MonoBehaviour {
 
     public void BackToScene(string SceneName) {
         //xmlprocess = new Xmlprocess();
-       // xmlprocess.ExitTimeHistoryRecord(System.DateTime.Now.ToString("HH-mm-ss"));
+        // xmlprocess.ExitTimeHistoryRecord(System.DateTime.Now.ToString("HH-mm-ss"));
+        UIManager.Instance.CloseAllPanel();
         SceneManager.LoadScene(SceneName);
     }
 }

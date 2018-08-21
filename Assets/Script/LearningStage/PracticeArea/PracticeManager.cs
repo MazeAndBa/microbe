@@ -5,10 +5,9 @@ using UnityEngine;
 public class PracticeManager {
     private string serverlink = "140.115.126.137/microbe/";
 
-    public Dictionary<object, string> E_vocabularyDic = new Dictionary<object, string>();//key=單字ID,val=英文單字
-    public Dictionary<object, string> T_vocabularyDic = new Dictionary<object, string>();//key=單字ID,val=英文中譯
-    public int volID;
-    string volEng, volTran;
+    public Dictionary<int, string> E_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文單字
+    public Dictionary<int, string> T_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文中譯
+    public string []volEng;
 
     public IEnumerator LoadVocabulary(string fileName,int currentLevel)
     {
@@ -20,6 +19,8 @@ public class PracticeManager {
         string[] tmp,tmp2;
         if (reg.error == null)
         {
+            volEng = reg.text.Split(';');//最後一個是空的
+
             tmp = reg.text.Split(';');//最後一個是空的
             for (int i = 0; i < tmp.Length - 1; i++)
             {
@@ -27,8 +28,6 @@ public class PracticeManager {
 
                 E_vocabularyDic.Add(i, tmp2[0]);
                 T_vocabularyDic.Add(i, tmp2[1]);
-                //vocabularyList.Add(new string(){volID =tmp[0],volEng = tmp[1],volTran = tmp[2] });
-                 Debug.Log(E_vocabularyDic[0]);
             }
         }
         else
