@@ -93,6 +93,44 @@
         <time_history_record scence="Medium" startTime="15:24:23" />
         <time_history_record scence="Login" startTime="2018-08-20" />
         <time_history_record scence="Medium" startTime="15:28:30" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+      </time_history_day>
+      <time_history_day day="2018-08-21">
+        <time_history_record scence="Easy" startTime="11:08:45" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="11:09:53" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="11:11:26" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="11:14:02" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="11:15:21" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:10:51" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:15:41" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:18:59" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:20:10" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:21:41" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:23:45" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:24:50" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:28:39" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:30:40" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:31:17" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:38:44" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:40:49" />
+        <time_history_record scence="Login" startTime="2018-08-21" />
+        <time_history_record scence="Easy" startTime="12:42:15" />
       </time_history_day>
     </time_history>
     <touch>

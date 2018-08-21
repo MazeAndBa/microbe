@@ -6,13 +6,16 @@ using UnityEngine.UI;
 public class PracticeView : MonoBehaviour {
 
     PracticeManager pm;
+    int currentLevel;
     #region ReviewVocabulary UI
     Text text_English,text_Translation;
     Button btn_pronun,btn_pre, btn_next;
     #endregion
 
     void Start () {
-        StartCoroutine(pm.LoadVocabulary("loadVocabulary.php"));
+        pm = new PracticeManager();
+        currentLevel = Home.getLevel();
+        StartCoroutine(pm.LoadVocabulary("loadVocabulary.php", currentLevel));
         ShowReviewVocabulary();
     }
     void ShowReviewVocabulary(){
@@ -23,11 +26,15 @@ public class PracticeView : MonoBehaviour {
         btn_pronun = GetComponentsInChildren<Button>()[0];
         btn_pre = GetComponentsInChildren<Button>()[1];
         btn_next = GetComponentsInChildren<Button>()[2];
-
-        text_English.text = pm.E_vocabularyDic[vocabularyID];
-        text_Translation.text = pm.T_vocabularyDic[vocabularyID];
-
-        //btn_pronun.onClick.AddListener(confirmregister);
+        try
+        {
+            text_English.text = pm.E_vocabularyDic[vocabularyID];
+            text_Translation.text = pm.T_vocabularyDic[vocabularyID];
+        }
+        catch (KeyNotFoundException ex)
+        {
+            Debug.Log("查無此ID" + pm.E_vocabularyDic[0]);
+        }
         btn_pre.onClick.AddListener(delegate() { changeVocabularyID(vocabularyID - 1); });
         btn_next.onClick.AddListener(delegate () { changeVocabularyID(vocabularyID + 1); });
     }
