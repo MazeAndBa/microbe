@@ -196,6 +196,39 @@
         <time_history_record scence="Login" startTime="2018-08-21" />
         <time_history_record scence="Easy" startTime="17:41:24" />
         <time_history_record scence="Hard" startTime="17:41:32" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+      </time_history_day>
+      <time_history_day day="2018-08-25">
+        <time_history_record scence="Easy" startTime="15:18:39" />
+        <time_history_record scence="Easy" startTime="15:19:01" />
+        <time_history_record scence="Medium" startTime="15:19:09" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Easy" startTime="22:25:21" />
+        <time_history_record scence="Medium" startTime="22:25:28" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Medium" startTime="22:27:14" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Medium" startTime="22:28:27" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Hard" startTime="22:30:30" />
+        <time_history_record scence="Medium" startTime="22:30:38" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Medium" startTime="22:31:43" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Easy" startTime="22:34:50" />
+        <time_history_record scence="Medium" startTime="22:34:52" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Medium" startTime="22:36:10" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Medium" startTime="22:36:38" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Hard" startTime="22:39:33" />
+        <time_history_record scence="Medium" startTime="22:39:45" />
+        <time_history_record scence="Hard" startTime="22:40:55" />
+        <time_history_record scence="Hard" startTime="22:40:57" />
+        <time_history_record scence="Medium" startTime="22:41:09" />
+        <time_history_record scence="Login" startTime="2018-08-25" />
+        <time_history_record scence="Hard" startTime="22:41:49" />
       </time_history_day>
     </time_history>
     <touch>

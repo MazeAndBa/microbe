@@ -11,17 +11,17 @@ public class PracticeView : MonoBehaviour {
 
     #region ReviewVocabulary UI
     Text text_English,text_Translation;
-    Button btn_pronun,btn_pre, btn_next;
+    Button btn_pronun,btn_pre, btn_next, btn_gotonext;
     #endregion
 
     void Start () {
         pm = new PracticeManager();
         vocabularyID = 0;
-        StartCoroutine(ShowReviewVocabulary());
-        showUI();
+        StartCoroutine(showReviewVocabulary());
+        showReviewUI();
     }
 
-    void showUI() {
+    void showReviewUI() {
 
         UIManager.Instance.ShowPanel("P_ReviewUI");
         text_English = GetComponentsInChildren<Text>()[5];
@@ -29,11 +29,15 @@ public class PracticeView : MonoBehaviour {
         btn_pronun = GetComponentsInChildren<Button>()[2];
         btn_pre = GetComponentsInChildren<Button>()[3];
         btn_next = GetComponentsInChildren<Button>()[4];
+        btn_gotonext = GetComponentsInChildren<Button>()[5];
+        btn_gotonext.gameObject.SetActive(false);
+
         btn_pre.onClick.AddListener(delegate () { changeVocabularyID(-1); });
         btn_next.onClick.AddListener(delegate () { changeVocabularyID(1); });
+
     }
 
-    IEnumerator ShowReviewVocabulary(){
+    IEnumerator showReviewVocabulary(){
         currentLevel = Home.getLevel();
         StartCoroutine(pm.LoadVocabulary("loadVocabulary.php", currentLevel));
         yield return new WaitForSeconds(0.1f);
@@ -41,14 +45,29 @@ public class PracticeView : MonoBehaviour {
     }
 
     void changeVocabularyID(int count) {
-        if (vocabularyID >= 0 && pm.E_vocabularyDic.ContainsKey(vocabularyID+count))
+
+        if (vocabularyID >= 0)
         {
+            if (pm.E_vocabularyDic.ContainsKey(vocabularyID + count))
+            {
+                btn_gotonext.gameObject.SetActive(false);
 
-            vocabularyID += count;
-            text_English.text = pm.E_vocabularyDic[vocabularyID];
-            text_Translation.text = pm.T_vocabularyDic[vocabularyID];
-            Debug.Log(vocabularyID);
+                vocabularyID += count;
+                text_English.text = pm.E_vocabularyDic[vocabularyID];
+                text_Translation.text = pm.T_vocabularyDic[vocabularyID];
+                Debug.Log(vocabularyID);
+            }
+            else
+            {
+                btn_gotonext.gameObject.SetActive(true);
+                btn_gotonext.onClick.AddListener(showPracticeUI);
+            }
         }
+    }
 
+    void showPracticeUI()
+    {
+        UIManager.Instance.ClosePanel("P_ReviewUI");
+        UIManager.Instance.ShowPanel("P_PracticeUI");
     }
 }
