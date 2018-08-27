@@ -7,7 +7,6 @@ public class PracticeManager {
 
     public Dictionary<int, string> E_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文單字
     public Dictionary<int, string> T_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文中譯
-    public string []volEng;
 
     public IEnumerator LoadVocabulary(string fileName,int currentLevel)
     {
@@ -19,8 +18,6 @@ public class PracticeManager {
         string[] tmp,tmp2;
         if (reg.error == null)
         {
-            volEng = reg.text.Split(';');//最後一個是空的
-
             tmp = reg.text.Split(';');//最後一個是空的
             for (int i = 0; i < tmp.Length - 1; i++)
             {
@@ -36,6 +33,59 @@ public class PracticeManager {
         }
     }
 
-    
+    ///<summary>
+    ///將題目亂數重新排序
+    ///</summary>
+    public int[] randomQuestion() {
 
+        int randomindex = 0, dicLength = E_vocabularyDic.Count;
+        int[] i_indexRand = new int[dicLength];
+        //亂數排列key(0~dicLength)
+        for (int i = 0; i < dicLength; i++)
+        {
+            i_indexRand[i] = i;
+        }
+        int tmp =0;
+        for (int i = 0; i < i_indexRand.Length; i++)
+        {
+            randomindex = UnityEngine.Random.Range(i, i_indexRand.Length- 1);
+            tmp = i_indexRand[randomindex];
+            i_indexRand[randomindex] = i_indexRand[i];
+            i_indexRand[i] = tmp;
+        }
+        return i_indexRand;
+    }
+
+    ///<summary>
+    ///根據選項數量進行n次亂數排列，randomOption[0]為正解(correctID)
+    ///</summary>
+
+    public int[] randomOption(int optionCount,int correctID)
+    {
+        int randomindex = 0, dicLength = T_vocabularyDic.Count;
+        int[] i_indexRand = new int[dicLength];
+        for (int i = 0; i < dicLength; i++)
+        {
+            //將正確答案ID移到陣列第一個
+            if (i == correctID)
+            {
+                i_indexRand[0] = correctID;
+                i_indexRand[i] = 0;
+            }
+            else
+            {
+                i_indexRand[i] = i;
+            }
+        }
+        //將正確答案ID剔除後,進行optionCount-1次亂數排序
+        int tmp = 0;
+        for (int i = 1; i < optionCount; i++)
+        {
+            randomindex = UnityEngine.Random.Range(i, i_indexRand.Length - 1);
+            tmp = i_indexRand[randomindex];
+            i_indexRand[randomindex] = i_indexRand[i];
+            i_indexRand[i] = tmp;
+        }
+        return i_indexRand;
+    }
 }
