@@ -14,7 +14,7 @@ public class collectConn : PunBehaviour
     InputField id, username;
 
     public static string[] ques, option;
-
+    int currentLevel;
     private string serverlink = "140.115.126.137/microbe/";
     string UserID;
     string previousRoomPlayerPrefKey = "Microbe:PreviousRoom";
@@ -24,7 +24,7 @@ public class collectConn : PunBehaviour
     CompeteManager cm;
     void Start () {
 
-
+        currentLevel  = Home.getLevel();
         btn_start = obj_gamestart.GetComponentInChildren<Button>();
         btn_start.onClick.AddListener(gamestart);
         id = obj_gamestart.GetComponentsInChildren<InputField>()[0];
@@ -67,6 +67,7 @@ public class collectConn : PunBehaviour
     {
         WWWForm phpform = new WWWForm();
         phpform.AddField("action", "getQuestion");
+        phpform.AddField("chooseLevel", currentLevel);
         WWW reg = new WWW(serverlink + "getQuestion", phpform);
         yield return reg;
         if (reg.error == null)
@@ -84,6 +85,8 @@ public class collectConn : PunBehaviour
     {
         WWWForm phpform = new WWWForm();
         phpform.AddField("action", "getOption");
+        phpform.AddField("chooseLevel", currentLevel);
+
         WWW reg = new WWW(serverlink + "getOption", phpform);
         yield return reg;
         if (reg.error == null)
