@@ -11,7 +11,7 @@ public class collectConn : PunBehaviour
 
     public GameObject obj_gamestart;
     Button btn_start;
-    InputField id, username;
+    Text id, username;
 
     public static string[] ques, option;
     int currentLevel;
@@ -21,26 +21,31 @@ public class collectConn : PunBehaviour
     ///
     public string previousRoom;
     const string NickNamePlayerPrefsKey = "";
-    CompeteManager cm;
-    void Start () {
+    Xmlprocess xmlprocess;
 
+    void Start () {
         currentLevel  = Home.getLevel();
+
         btn_start = obj_gamestart.GetComponentInChildren<Button>();
         btn_start.onClick.AddListener(gamestart);
-        id = obj_gamestart.GetComponentsInChildren<InputField>()[0];
-        username = obj_gamestart.GetComponentsInChildren<InputField>()[1];
-        //------------暫時註解以下三行以方便測試------------------
-        //cm = new CompeteManager();
-        //id.text = cm.playerInfo[0];
-        //username.text = cm.playerInfo[1];
+        id = obj_gamestart.GetComponentsInChildren<Text>()[0];
+        username = obj_gamestart.GetComponentsInChildren<Text>()[2];
+
+        xmlprocess = new Xmlprocess();
+        id.text = xmlprocess.getUserInfo()[0];
+        username.text = xmlprocess.getUserInfo()[1];
+        UIManager.Instance.CloseAllPanel();
     }
 
 
     void gamestart() {
-        //-----------暫時不使用xmlprocess以方便測試------------------
-        createUser();
+
+        //-----------暫時不使用創建方式------------------
+        // createUser();
+        //obj_gamestart.gameObject.SetActive(false);
         //-----------------------------------------------------------
-        obj_gamestart.gameObject.SetActive(false);
+
+        UIManager.Instance.ShowPanel("UI_ShowMes");
         if (PhotonNetwork.AuthValues == null)
         {
             PhotonNetwork.AuthValues = new AuthenticationValues();
@@ -55,13 +60,14 @@ public class collectConn : PunBehaviour
         StartCoroutine(getOption());
     }
 
+    /*
     void createUser() {
         WWWForm phpform = new WWWForm();
         phpform.AddField("user_id", id.GetComponentsInChildren<Text>()[1].text);
         phpform.AddField("user_name", username.GetComponentsInChildren<Text>()[1].text);
         new WWW(serverlink + "collectData", phpform);
-        //Debug.Log("create");
     }
+    */
 
     IEnumerator getQuestion()
     {
@@ -135,6 +141,8 @@ public class collectConn : PunBehaviour
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined other room: " + PhotonNetwork.room.Name);
+
+        UIManager.Instance.ClosePanel("UI_ShowMes");
         this.previousRoom = PhotonNetwork.room.Name;
         PlayerPrefs.SetString(previousRoomPlayerPrefKey, this.previousRoom);
     }

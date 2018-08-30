@@ -20,7 +20,8 @@ public class Home : MonoBehaviour {
         //Debug.Log(sceneName);
         chooseLevel = Level;
         string startTime = (System.DateTime.Now).ToString("HH:mm:ss");
-        xmlprocess.New_timeHistoryRecord(sceneName, startTime);
+        //xmlprocess.New_timeHistoryRecord(sceneName, startTime);
+        xmlprocess.ScceneHistoryRecord(sceneName, startTime);
         SceneManager.LoadScene("LearningStage");
     }
 

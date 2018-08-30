@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PracticeManager {
     private string serverlink = "140.115.126.137/microbe/";
-
+    Xmlprocess xmlprocess;
     public Dictionary<int, string> E_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文單字
     public Dictionary<int, string> T_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文中譯
 
@@ -88,4 +88,6 @@ public class PracticeManager {
         }
         return i_indexRand;
     }
+
+
 }

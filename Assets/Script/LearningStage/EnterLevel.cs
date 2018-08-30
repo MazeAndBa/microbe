@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,7 @@ public class EnterLevel : MonoBehaviour {
 
     void Start () {
         currentLevel = Home.getLevel();
+        xmlprocess = new Xmlprocess();
         switch (currentLevel)
         {
             case 0:
@@ -36,12 +38,14 @@ public class EnterLevel : MonoBehaviour {
     void goPractice() {
 
         //xmlprocess.New_timeHistoryRecord(levelName + "_Practice", System.DateTime.Now.ToString("HH-mm-ss"));
+        xmlprocess.ScceneHistoryRecord(levelName + "_Practice", DateTime.Now.ToString("HH-mm-ss"));
         SceneManager.LoadScene("PracticeArea");
     }
 
     void goCompete()
     {
         //xmlprocess.New_timeHistoryRecord(levelName + "_Compete", System.DateTime.Now.ToString("HH-mm-ss"));
+        xmlprocess.ScceneHistoryRecord(levelName + "_Compete", DateTime.Now.ToString("HH-mm-ss"));
         SceneManager.LoadScene("CompeteArea");
     }
 

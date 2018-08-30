@@ -207,19 +207,18 @@ public class PunTurnManager : PunBehaviour
         }*/
         //將選項陣列位置進行重洗
         int randomindex = 0;
-        string []s_optionRand = new string[15];
+        string []s_optionRand = new string[option.Length-1];//選項剔除正確答案
         string tmp = "";
 
-        for (int i = 0; i < option.Length - 1; i++)
+        for (int i = 0; i < option.Length-1; i++)
         {
-            randomindex = UnityEngine.Random.Range(i, option.Length - 2);
+            randomindex = UnityEngine.Random.Range(i, option.Length -2);//最後一個不納入亂數的範圍
             string []tmp_option = option[i].Split(',');
 
-            if (TurnQues[2] == tmp_option[1])
+            if (TurnQues[2] == tmp_option[1])//若抓取到正確答案存到最後一個位置
             {
-                print(i);
-                tmp = option[option.Length-2];
-                option[option.Length-2] = option[i];
+                tmp = option[option.Length-1];
+                option[option.Length-1] = option[i];
                 option[i] = tmp;
             }
             else {

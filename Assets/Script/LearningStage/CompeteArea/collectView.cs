@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PhotonView))]
 public class collectView : PunBehaviour, IPunTurnManagerCallbacks
@@ -134,12 +135,27 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         {
             GameStartUI.SetActive(false);
             ResultUIView.SetActive(true);
-            PhotonPlayer remote = PhotonNetwork.player.GetNext();
-            PhotonPlayer local = PhotonNetwork.player;
-            ResultUIView.GetComponentsInChildren<Text>()[1].text = local.GetScore().ToString();
-            ResultUIView.GetComponentsInChildren<Text>()[3].text = remote.GetScore().ToString();
-            Debug.Log("Your Score:" + local.GetScore() + " remote's Score: " + remote.GetScore());
+            PhotonPlayer[] player = PhotonNetwork.playerList;
+            //依分數排序
+            for (int i = 0; i < PhotonNetwork.room.PlayerCount - 1; i++)
+            {
+                for (int j = i + 1; j < PhotonNetwork.room.PlayerCount; j++)
+                {
+                    if (player[i].GetScore() < player[j].GetScore())
+                    {
+                        PhotonPlayer tmp = player[j];
+                        player[j] = player[i];
+                        player[i] = tmp;
+                    }
+                }
+            }
+            for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
+            {
+                ResultUIView.GetComponentsInChildren<Text>()[1].text +=(i+1)+" "+player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2")+"<br/>";
+            }
+            StartCoroutine(gameover());
         }
+
     }
 
     #endregion
@@ -210,7 +226,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         {
             this.question.text = quesInfo[1];// ques_content
 
-            for (int i = 0, j = 0; i < 16; i++)
+            for (int i = 0, j = 0; i < s_option.Length+1; i++)
             {
                 GameObject cardObj = Instantiate(card);
                 cardObj.gameObject.SetActive(true);
@@ -225,11 +241,11 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                     cardObj.GetComponentInChildren<Text>().text = optionInfo[1];//other ans_content
                     cardObj.name = optionInfo[1];
                     j++;
-                    //Debug.Log("options"+ optionInfo[1]);
+                    Debug.Log("options "+ optionInfo[1]);
                 }
                 cardObj.GetComponent<Button>().onClick.AddListener(delegate () { MakeTurn(cardObj.name); });
                 cardObj.transform.SetParent(cardgroup.transform);
-                cardObj.transform.localPosition = new Vector3(-350 + (i % 4) * 160, -250 + (i / 4) * 150, 0);
+                cardObj.transform.localPosition = new Vector3(-350 + (i % 4) * 160, (i / 4) * -150, 0);
                 cardObj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             }
         }
@@ -434,6 +450,12 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             remote.name = (i+1)+"";
             remote.text = player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2");
         }
+    }
+
+    IEnumerator gameover() {
+        yield return new WaitForSeconds(3.0f);
+        ResultUIView.SetActive(false);
+        ExitGame();
     }
 
     #endregion

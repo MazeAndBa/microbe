@@ -30,8 +30,9 @@ public class AccountManager {
                 AccountInfo = reg.text.Split(',');
                 state = 1;
                 xmlprocess = new Xmlprocess(AccountInfo[0]);
-                //xmlprocess.setUserInfo(AccountInfo);
-                xmlprocess.New_timeHistoryRecord("Login", DateTime.Now.ToString("yyyy-MM-dd"));
+                xmlprocess.setUserInfo(AccountInfo);
+                //xmlprocess.New_timeHistoryRecord("Login", DateTime.Now.ToString("yyyy-MM-dd"));
+                xmlprocess.ScceneHistoryRecord("Login", DateTime.Now.ToString("HH:mm:ss"));
             }
         }
         else
@@ -58,7 +59,8 @@ public class AccountManager {
                 Debug.Log(state+" "+ AccountInfo);
                 xmlprocess = new Xmlprocess(AccountInfo[0]);
                 xmlprocess.setUserInfo(AccountInfo);//將註冊資訊傳至XmlNode
-                xmlprocess.timeHistoryRecord("Register");
+                //xmlprocess.timeHistoryRecord("Register");
+                xmlprocess.ScceneHistoryRecord("Register", DateTime.Now.ToString("HH:mm:ss"));
 
             }
             else

@@ -71,9 +71,9 @@ public class Xmlprocess{
         }
 	}
 
-    //<summary>
-    //return an array, 0=ID,1=name,2=level,3=sex, 4=money
-    //</summary>
+    ///<summary>
+    ///return an array, 0=ID,1=name,2=level,3=sex, 4=money
+    ///</summary>
     public string[] getUserInfo()
     {
         if (isExits())
@@ -606,5 +606,58 @@ public class Xmlprocess{
         }
     }
 
+
+    //0830場景進入紀錄
+    public void ScceneHistoryRecord(string scence, string starttime)
+    {
+        if (isExits())
+        {
+            XmlNode n_root = xmlDoc.SelectSingleNode("Loadfile");
+            XmlNode n_logrecord = xmlDoc.SelectSingleNode("Loadfile/log_record");
+            XmlNode n_scenehistory = xmlDoc.SelectSingleNode("Loadfile/log_record/scene_history");
+            XmlElement e_root = (XmlElement)n_root;
+            XmlElement e_logrecord = (XmlElement)n_logrecord;
+            XmlElement e_scenehistory = (XmlElement)n_scenehistory;
+
+            XmlAttribute attribute = e_logrecord.GetAttributeNode("day");
+
+            if (attribute.Value.ToString() != DateTime.Now.ToString("yyyy-MM-dd"))
+            {
+                XmlElement log_record = xmlDoc.CreateElement("log_record");
+                e_root.AppendChild(log_record);
+                log_record.SetAttribute("day", DateTime.Now.ToString("yyyy-MM-dd"));
+            }
+
+            XmlElement scene_record = xmlDoc.CreateElement("scene_record"); ;
+            e_scenehistory.AppendChild(scene_record);
+            scene_record.SetAttribute("scence", scence);
+            scene_record.SetAttribute("startTime", starttime);
+            saveData();
+        }
+    }
+
+
+    //0830場景離開紀錄
+    public void ExitSceneRecord()
+    {
+        if (isExits())
+        {
+            XmlNode nodeLast_Previous = null;
+
+            // 抓取最近一次進入的場景紀錄
+            XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//scene_record");
+            foreach (XmlNode item_File_Previous in nodelist_Previous)
+            {
+                XmlAttributeCollection xAT2 = item_File_Previous.Attributes;
+                for (int j = 0; j < xAT2.Count; j++)
+                {
+                    nodeLast_Previous = item_File_Previous;
+                }
+            }
+            XmlElement elementLast_Previous = (XmlElement)nodeLast_Previous;
+            elementLast_Previous.SetAttribute("endTime", DateTime.Now.ToString("HH:mm:ss"));
+            saveData();
+        }
+    }
 
 }

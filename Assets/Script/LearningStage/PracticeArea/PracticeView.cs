@@ -8,13 +8,16 @@ public class PracticeView : MonoBehaviour {
 
     PracticeManager pm;
     int currentLevel,vocabularyID;
+    static int p_score;
+    Text text_score;
+    public GameObject UI_showAnsfeedback;
 
     #region ReviewVocabulary UI
     Text text_English,text_Translation;
     Button btn_pronun,btn_pre, btn_next, btn_gotonext;
     #endregion
     #region PracticeMuitiselect UI
-    Text text_Question;
+    Text text_totalQues,text_Question;
     Button[] btn_option;
     int quesID,correctOption;//quesID:題數;correctOption:正確的選項編號
     int[] randomQuestion, randomOption;//隨機排列後的題目與選項
@@ -29,19 +32,21 @@ public class PracticeView : MonoBehaviour {
 
     void Start () {
         pm = new PracticeManager();
-        btn_option = new Button[4];
+        text_score = GetComponentsInChildren<Text>()[5];
+        p_score = 0;
         vocabularyID = 0;
         StartCoroutine(showReviewVocabulary());
-        showReviewUI();
+        UIManager.Instance.CloseAllPanel();
 
+        showReviewUI();
     }
     #region Review function
     
     void showReviewUI()
     {
         UIManager.Instance.ShowPanel("P_ReviewUI");
-        text_English = GetComponentsInChildren<Text>()[5];
-        text_Translation = GetComponentsInChildren<Text>()[6];
+        text_English = GetComponentsInChildren<Text>()[6];
+        text_Translation = GetComponentsInChildren<Text>()[7];
         btn_pronun = GetComponentsInChildren<Button>()[2];
         btn_pre = GetComponentsInChildren<Button>()[3];
         btn_next = GetComponentsInChildren<Button>()[4];
@@ -85,9 +90,11 @@ public class PracticeView : MonoBehaviour {
 
     void showPracticeUI()
     {
+        btn_option = new Button[4];
         UIManager.Instance.TogglePanel("P_ReviewUI",false);
         UIManager.Instance.ShowPanel("P_PracticeUI");
-        text_Question = GetComponentsInChildren<Text>()[5];
+        text_totalQues =  GetComponentsInChildren<Text>()[6];
+        text_Question = GetComponentsInChildren<Text>()[7];
         for(int i = 0; i < btn_option.Length; i++)
         {
             btn_option[i] = GetComponentsInChildren<Button>()[i+2];
@@ -108,7 +115,7 @@ public class PracticeView : MonoBehaviour {
 
     void showPracticeQues(int quesID) {//更新每回合的題目與選項
         //Debug.Log("題號"+ quesID);
-
+        text_totalQues.text = (quesID+1).ToString()+"/"+ pm.E_vocabularyDic.Count;
         text_Question.text = pm.E_vocabularyDic[randomQuestion[quesID]];
         showPracticeOption(randomQuestion[quesID]);
     }
@@ -134,33 +141,43 @@ public class PracticeView : MonoBehaviour {
 
     void compareAns(int optionID) {
         //Debug.Log(optionID);
-
-        if (quesID < pm.E_vocabularyDic.Count-1)
+        if (correctOption.Equals(optionID))
         {
-            if (correctOption.Equals(optionID))
-            {
-                Debug.Log("Correct");
-            }
-            else {
-                Debug.Log("Wrong");
-            }
+            StartCoroutine(showfeedback(0));
+            p_score += (int)(p_score * 0.5) + 30;
+            text_score.text = p_score.ToString();
+        }
+        else {
+            StartCoroutine(showfeedback(1));
+        }
+
+        if (quesID >= pm.E_vocabularyDic.Count - 1)
+        {
+            StartCoroutine(PracticeEnd());
+        }
+        else
+        {
             quesID++;
             showPracticeQues(quesID);
         }
-        else {
-            UIManager.Instance.TogglePanel("P_PracticeUI",false);
-            UIManager.Instance.ShowPanel("P_ComposeUI");
-            showComposeUI();
-        }
     }
+    IEnumerator PracticeEnd()
+    {
+        yield return new WaitForSeconds(0.1f);
+        UIManager.Instance.TogglePanel("P_PracticeUI", false);
+        UIManager.Instance.ShowPanel("P_ComposeUI");
+        showComposeUI();
+    }
+
     #endregion
 
     #region PracticeCompose function
     void showComposeUI() {
 
         btn_alphabet = Resources.Load("UI/Btn_Alphabet", typeof(Button)) as Button;
-        text_Question = GetComponentsInChildren<Text>()[5];
-        text_quescontent = GetComponentsInChildren<Text>()[6];
+        text_totalQues = GetComponentsInChildren<Text>()[6];
+        text_Question = GetComponentsInChildren<Text>()[7];
+        text_quescontent = GetComponentsInChildren<Text>()[8];
         btn_submit = GetComponentsInChildren<Button>()[3];
         btn_submit.onClick.AddListener(compareComposeAns);
 
@@ -172,6 +189,7 @@ public class PracticeView : MonoBehaviour {
     //初始化題目
     void initialComposeQuestion(int quesID)
     {
+        text_totalQues.text = "1/" + pm.E_vocabularyDic.Count;
         text_quescontent.text = "";//初始化挖空題目
         for (int i = 0; i < CollectBtnObj.Length; ++i)//刪除所有字母按鈕
         {
@@ -186,6 +204,7 @@ public class PracticeView : MonoBehaviour {
     //更新每回合的題目
     void showComposeQues(int quesID)
     {
+        text_totalQues.text = (quesID + 1).ToString() + "/" + pm.T_vocabularyDic.Count;
         text_Question.text = pm.T_vocabularyDic[randomQuestion[quesID]];
         for (int i = 0; i < pm.E_vocabularyDic[randomQuestion[quesID]].Length; i++) {
             text_quescontent.text += "_ ";
@@ -235,7 +254,7 @@ public class PracticeView : MonoBehaviour {
     void setQuesContent(string alphabet)
     {
         int underline_index = text_quescontent.text.IndexOf('_');
-        Debug.Log(underline_index);
+        //Debug.Log(underline_index);
         if (underline_index != -1)
         {
             text_quescontent.text = text_quescontent.text.Remove(underline_index, 1);
@@ -243,24 +262,62 @@ public class PracticeView : MonoBehaviour {
         text_quescontent.text = text_quescontent.text.Insert(underline_index, alphabet);
     }
     void compareComposeAns() {
-        if (quesID < pm.E_vocabularyDic.Count - 1) {
 
-            if (userAns == pm.E_vocabularyDic[randomQuestion[quesID]])
-            {
-                Debug.Log("Correct");
-            }
-            else {
-                Debug.Log("你的答案:" + userAns);
-                Debug.Log("正確答案:" + pm.E_vocabularyDic[randomQuestion[quesID]]);
-                Debug.Log("Wrong");
-            }
+        if (userAns == pm.E_vocabularyDic[randomQuestion[quesID]])
+        {
+            StartCoroutine(showfeedback(0));
+            p_score += (int)(p_score *(currentLevel+0.5)) + 30;
+            text_score.text = p_score.ToString();
+
+        }
+        else {
+            Debug.Log("你的答案:" + userAns);
+            Debug.Log("正確答案:" + pm.E_vocabularyDic[randomQuestion[quesID]]);
+            StartCoroutine(showfeedback(1));
+        }
+
+        if (quesID >= pm.E_vocabularyDic.Count - 1)
+        {
+            StartCoroutine(ComposeEnd());
+        }
+        else
+        {
             quesID++;
             initialComposeQuestion(quesID);
         }
-        else {
-            UIManager.Instance.CloseAllPanel();
-            SceneManager.LoadScene("LearningStage");
-        }
     }
-        #endregion
+
+    IEnumerator ComposeEnd() {
+        yield return new WaitForSeconds(0.1f);
+        UIManager.Instance.CloseAllPanel();
+        SceneManager.LoadScene("LearningStage");
+    }
+    #endregion
+
+    IEnumerator showfeedback(int _state)
+    {
+        GameObject fb  = Instantiate(UI_showAnsfeedback);//Options
+        fb.transform.SetParent(this.gameObject.transform);
+        fb.transform.localPosition = Vector3.zero;
+        fb.transform.localScale = Vector3.one;
+        Image img_correct = fb.GetComponentsInChildren<Image>()[0];
+        Image img_wrong = fb.GetComponentsInChildren<Image>()[1];
+        img_correct.gameObject.SetActive(false);
+        img_wrong.gameObject.SetActive(false);
+
+        if (_state == 0)
+        {
+            img_correct.gameObject.SetActive(true);
+            Debug.Log("Correct");
+        }
+        else
+        {
+            img_wrong.gameObject.SetActive(true);
+            Debug.Log("Wrong");
+
+        }
+        yield return new WaitForSeconds(0.1f);
+        Destroy(fb);
+    }
+
 }
