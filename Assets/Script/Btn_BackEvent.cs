@@ -9,7 +9,7 @@ public class Btn_BackEvent : MonoBehaviour {
 
     public void BackToScene(string SceneName) {
         xmlprocess = new Xmlprocess();
-        xmlprocess.ExitSceneRecord();
+        //xmlprocess.ExitSceneRecord();
         UIManager.Instance.CloseAllPanel();
         SceneManager.LoadScene(SceneName);
     }

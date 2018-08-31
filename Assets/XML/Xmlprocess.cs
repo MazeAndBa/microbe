@@ -538,7 +538,7 @@ public class Xmlprocess{
 		}
 	}
 
-
+    
 	//Log紀錄
 	public void New_timeHistoryRecord(string scence, string starttime){
 		XmlNode nodeLast = null;
@@ -606,6 +606,91 @@ public class Xmlprocess{
         }
     }
 
+    /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    public bool getPracticeState(int level) {
+        if (isExits())
+        {
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level" + level);
+            XmlElement element = (XmlElement)node;
+            XmlAttribute attribute = element.GetAttributeNode("learning_count");
+            int learningcount = XmlConvert.ToInt32(attribute.Value);
+            if (learningcount > 0) { return true; }
+            return false;
+        }
+        return false;
+    }
+
+
+    /// <summary>
+    /// 更新單字瀏覽與學習次數紀錄
+    /// </summary>
+    /// <param name="attributeName"></param>
+    public void setLearningCount(string attributeName, int level)
+    {
+        if (isExits())
+        {
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level"+level);
+            XmlElement element = (XmlElement)node;
+            XmlAttribute attribute = element.GetAttributeNode(attributeName);
+            int count = XmlConvert.ToInt32(attribute.Value);
+            count = count + 1;
+            attribute.Value = count.ToString();
+            saveData();
+        }
+    }
+
+    //新增每回單字學習紀錄
+    public void createLearningRecord(int level)
+    {
+        if (isExits())
+        {
+            XmlNode n_learninghistory = xmlDoc.SelectSingleNode("Loadfile/log_record/learning_history");
+            XmlElement learninghistory = (XmlElement)n_learninghistory;
+
+            XmlElement learning_record = xmlDoc.CreateElement("learning_record"); ;
+            learninghistory.AppendChild(learning_record);
+            learning_record.SetAttribute("level", level.ToString());
+            learning_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
+            saveData();
+        }
+    }
+
+
+    //更新每回單字學習紀錄
+    public void setLearningScoreRecord(int level,int score)
+    {
+        if (isExits())
+        {
+            XmlNode nodeLastLearning = null;
+            XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//learning_record");
+            foreach (XmlNode itemsNode in nodelist_Previous)
+            {
+                XmlAttributeCollection xAT2 = itemsNode.Attributes;
+                for (int j = 0; j < xAT2.Count; j++)
+                {
+                    nodeLastLearning = itemsNode;
+                }
+            }
+            XmlElement element = (XmlElement)nodeLastLearning;
+            element.SetAttribute("score", score.ToString());
+            element.SetAttribute("endTime", DateTime.Now.ToString("HH: mm:ss"));
+            updateHighScore(level, score);
+            saveData();
+        }
+    }
+
+    void updateHighScore(int level,int score)
+    {
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level" + level);
+        XmlElement element = (XmlElement)node;
+        XmlAttribute attribute = element.GetAttributeNode("score");    
+        int highscore = XmlConvert.ToInt32(attribute.Value);
+        if (score > highscore) {
+            attribute.Value = score.ToString();
+        }
+        saveData();
+    }
+
 
     //0830場景進入紀錄
     public void ScceneHistoryRecord(string scence, string starttime)
@@ -638,25 +723,30 @@ public class Xmlprocess{
 
 
     //0830場景離開紀錄
-    public void ExitSceneRecord()
+    public void ExitSceneRecord(string sceneName)
     {
         if (isExits())
         {
             XmlNode nodeLast_Previous = null;
-
+            string tmp_sceneName= "";
             // 抓取最近一次進入的場景紀錄
             XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//scene_record");
+
             foreach (XmlNode item_File_Previous in nodelist_Previous)
             {
                 XmlAttributeCollection xAT2 = item_File_Previous.Attributes;
                 for (int j = 0; j < xAT2.Count; j++)
                 {
+                    if (xAT2.Item(j).Name == "scene") tmp_sceneName = xAT2.Item(j).Value;
                     nodeLast_Previous = item_File_Previous;
                 }
             }
-            XmlElement elementLast_Previous = (XmlElement)nodeLast_Previous;
-            elementLast_Previous.SetAttribute("endTime", DateTime.Now.ToString("HH:mm:ss"));
-            saveData();
+            if (tmp_sceneName == sceneName)
+            {
+                XmlElement elementLast_Previous = (XmlElement)nodeLast_Previous;
+                elementLast_Previous.SetAttribute("endTime", DateTime.Now.ToString("HH:mm:ss"));
+                saveData();
+            }
         }
     }
 

@@ -5,8 +5,14 @@ using UnityEngine;
 public class PracticeManager {
     private string serverlink = "140.115.126.137/microbe/";
     Xmlprocess xmlprocess;
+    int level;
     public Dictionary<int, string> E_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文單字
     public Dictionary<int, string> T_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文中譯
+
+    public PracticeManager(int level) {
+        xmlprocess = new Xmlprocess();
+        this.level = level;
+    }
 
     public IEnumerator LoadVocabulary(string fileName,int currentLevel)
     {
@@ -88,6 +94,26 @@ public class PracticeManager {
         }
         return i_indexRand;
     }
+    /// <summary>
+    /// 新增回合單字練習紀錄
+    /// </summary>
+    public void startLeaning() {
+        xmlprocess.createLearningRecord(level);
+    }
 
+    /// <summary>
+    /// 更新單字總練習次數
+    /// </summary>
+    /// <param name="eventname">要更新的attribute</param>
+    public void setLearningTimes(string eventname) {
+        xmlprocess.setLearningCount(eventname, level);
+    }
 
+    /// <summary>
+    /// 回合單字練習的成績紀錄
+    /// </summary>
+    public void setLearningScore(int score)
+    {
+        xmlprocess.setLearningScoreRecord(level,score);
+    }
 }

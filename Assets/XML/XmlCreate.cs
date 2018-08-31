@@ -35,7 +35,7 @@ public class XmlCreate{
         /*===============================---每一關卡的練習狀況---===============================*/
             XmlElement learning  = xmlDoc.CreateElement("learning");
 		    User.AppendChild(learning);
-            for (int i = 1; i <= 3; i++)
+            for (int i = 0; i <= 2; i++)
             {
                 XmlElement level = xmlDoc.CreateElement("level"+i);
                 learning.AppendChild(level);
@@ -46,7 +46,7 @@ public class XmlCreate{
         /*===============================---每一關卡的對戰狀況---===============================*/
             XmlElement compete = xmlDoc.CreateElement("compete");
 		    User.AppendChild(compete);
-            for (int i = 1; i <= 3; i++)
+            for (int i = 0; i <= 2; i++)
             {
                 XmlElement level = xmlDoc.CreateElement("level" + i);
                 learning.AppendChild(level);
@@ -85,18 +85,20 @@ public class XmlCreate{
             /*-------學習紀錄---------*/
             XmlElement learning_history = xmlDoc.CreateElement("learning_history");
             log_record.AppendChild(learning_history);
+              /*
             XmlElement learning_record = xmlDoc.CreateElement("learning_record");
             learning_history.AppendChild(learning_record);
             learning_record.SetAttribute("level","");//本次練習程度
             learning_record.SetAttribute("startTime", "");
             learning_record.SetAttribute("endTime", "");
-            learning_record.SetAttribute("duration", "");
             learning_record.SetAttribute("score", "");//本次練習分數
-
+               */
 
             /*-------對戰紀錄---------*/
             XmlElement compete_history = xmlDoc.CreateElement("compete_history");
             log_record.AppendChild(compete_history);
+
+            /*
             XmlElement compete_record = xmlDoc.CreateElement("compete_record");
             compete_history.AppendChild(compete_record);
             compete_record.SetAttribute("level", "");
@@ -105,14 +107,16 @@ public class XmlCreate{
             compete_record.SetAttribute("duration", "");
             compete_record.SetAttribute("score", "");//本次對戰分數
             compete_record.SetAttribute("rank", "");//本次對戰排名
-
+            */
             /*-------當前對戰的回合紀錄---------*/
+            /*
             XmlElement round_record = xmlDoc.CreateElement("round_record");
             compete_record.AppendChild(round_record);
             round_record.SetAttribute("ques_id", "");//題號
             round_record.SetAttribute("ans_state", "");//作答正確或錯誤
             round_record.SetAttribute("duration", "");//作答時間
             round_record.SetAttribute("rank", "");//當回合的排名
+            */
 
             /*-------排行榜更新紀錄---------*/
             XmlElement rank_history = xmlDoc.CreateElement("rank_history");
@@ -134,12 +138,12 @@ public class XmlCreate{
             /*-------場景載入與離開紀錄---------*/
             XmlElement scene_history = xmlDoc.CreateElement("scene_history");
             log_record.AppendChild(scene_history);
+            /*
             XmlElement scene_record = xmlDoc.CreateElement("scene_record");
             scene_history.AppendChild(scene_record);
             scene_record.SetAttribute("scence", "");
             scene_record.SetAttribute("startTime", "");
-            scene_record.SetAttribute("endTime", "");
-
+            */
 
             xmlDoc.Save(path+ filename);//存檔
 		}

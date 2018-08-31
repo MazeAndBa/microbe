@@ -30,9 +30,17 @@ public class EnterLevel : MonoBehaviour {
 
         btn_practice = GetComponentsInChildren<Button>()[1];
         btn_compete = GetComponentsInChildren<Button>()[2];
-        btn_practice.onClick.AddListener(goPractice);
-        btn_compete.onClick.AddListener(goCompete);
 
+        btn_practice.onClick.AddListener(goPractice);
+        if (!xmlprocess.getPracticeState(currentLevel))
+        {
+            btn_compete.interactable = false;
+            btn_compete.image.color = Color.gray;
+        }
+        else {
+            btn_compete.interactable = true;
+            btn_compete.onClick.AddListener(goCompete);
+        }
     }
 
     void goPractice() {

@@ -31,7 +31,8 @@ public class PracticeView : MonoBehaviour {
     #endregion
 
     void Start () {
-        pm = new PracticeManager();
+        currentLevel = Home.getLevel();
+        pm = new PracticeManager(currentLevel);
         text_score = GetComponentsInChildren<Text>()[5];
         p_score = 0;
         vocabularyID = 0;
@@ -58,7 +59,7 @@ public class PracticeView : MonoBehaviour {
     }
     
     IEnumerator showReviewVocabulary(){
-        currentLevel = Home.getLevel();
+        pm.setLearningTimes("review_count");//更新單字瀏覽次數
         StartCoroutine(pm.LoadVocabulary("loadVocabulary.php", currentLevel));
         yield return new WaitForSeconds(0.1f);
         changeVocabularyID(0);
@@ -103,7 +104,7 @@ public class PracticeView : MonoBehaviour {
         btn_option[1].onClick.AddListener(delegate () { compareAns(1); });
         btn_option[2].onClick.AddListener(delegate () { compareAns(2); });
         btn_option[3].onClick.AddListener(delegate () { compareAns(3); });
-
+        pm.startLeaning();//創建單字練習紀錄
         initialQuestion();
     }
 
@@ -165,7 +166,10 @@ public class PracticeView : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.1f);
         UIManager.Instance.TogglePanel("P_PracticeUI", false);
-        UIManager.Instance.ShowPanel("P_ComposeUI");
+        if (!UIManager.Instance.IsUILive("P_ComposeUI"))
+        {
+            UIManager.Instance.ShowPanel("P_ComposeUI");
+        }
         showComposeUI();
     }
 
@@ -191,6 +195,7 @@ public class PracticeView : MonoBehaviour {
     {
         text_totalQues.text = "1/" + pm.E_vocabularyDic.Count;
         text_quescontent.text = "";//初始化挖空題目
+        userAns = "";
         for (int i = 0; i < CollectBtnObj.Length; ++i)//刪除所有字母按鈕
         {
             if (CollectBtnObj[i] != null)
@@ -288,6 +293,8 @@ public class PracticeView : MonoBehaviour {
     }
 
     IEnumerator ComposeEnd() {
+        pm.setLearningTimes("learning_count");//更新單字練習次數
+        pm.setLearningScore(p_score);//紀錄此次單字練習成績
         yield return new WaitForSeconds(0.1f);
         UIManager.Instance.CloseAllPanel();
         SceneManager.LoadScene("LearningStage");
