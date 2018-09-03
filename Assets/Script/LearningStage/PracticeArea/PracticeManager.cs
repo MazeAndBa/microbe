@@ -8,7 +8,6 @@ public class PracticeManager {
     int level;
     public Dictionary<int, string> E_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文單字
     public Dictionary<int, string> T_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文中譯
-
     public PracticeManager(int level) {
         xmlprocess = new Xmlprocess();
         this.level = level;

@@ -651,6 +651,9 @@ public class Xmlprocess{
             learninghistory.AppendChild(learning_record);
             learning_record.SetAttribute("level", level.ToString());
             learning_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
+            learning_record.SetAttribute("score", "0");
+            learning_record.SetAttribute("endTime", "");
+
             saveData();
         }
     }
@@ -672,8 +675,10 @@ public class Xmlprocess{
                 }
             }
             XmlElement element = (XmlElement)nodeLastLearning;
-            element.SetAttribute("score", score.ToString());
-            element.SetAttribute("endTime", DateTime.Now.ToString("HH: mm:ss"));
+            XmlAttribute attr_score = element.GetAttributeNode("score");
+            XmlAttribute attr_endTime = element.GetAttributeNode("endTime");
+            attr_score.Value = score.ToString();
+            attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
             updateHighScore(level, score);
             saveData();
         }

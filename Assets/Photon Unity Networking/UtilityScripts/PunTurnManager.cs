@@ -187,25 +187,8 @@ public class PunTurnManager : PunBehaviour
     /// </summary>
     public void randomOptions(string [] option)//Arrange options
     {
-        /*
-        int[] i_optionRand;//該回合隨機的選項編號
-        int _random, j;
-        i_optionRand = new int[16];
-        for (int i = 0; i < 16; i++)
-        {
-            j = 0;
-            _random = UnityEngine.Random.Range(0, option.Length - 2);
-            while (i > j)
-            {
-                while (_random == i_optionRand[j])
-                {
-                    _random = UnityEngine.Random.Range(0, option.Length - 2);
-                }
-                j++;
-            }
-            i_optionRand[i] = _random;
-        }*/
         //將選項陣列位置進行重洗
+        /*
         int randomindex = 0;
         string []s_optionRand = new string[option.Length-1];//選項剔除正確答案
         string tmp = "";
@@ -232,6 +215,26 @@ public class PunTurnManager : PunBehaviour
             s_optionRand[i] = option[i];
         }
         TurnOption = s_optionRand;
+        */
+        int randomindex = 0;
+        string[] s_optionRand = new string[option.Length];
+        string tmp = "";
+
+        for (int i = 0; i < option.Length-1; i++)
+        {
+            randomindex = UnityEngine.Random.Range(i, option.Length - 1);
+            tmp = option[randomindex];
+            option[randomindex] = option[i];
+            option[i] = tmp;
+        }
+
+        for (int i = 0; i < s_optionRand.Length; i++)
+        {
+            s_optionRand[i] = option[i];
+        }
+        TurnOption = s_optionRand;
+
+
     }
     /// <summary>
 	/// Call to send an action. Optionally finish the turn, too.

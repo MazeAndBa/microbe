@@ -93,17 +93,20 @@ public class PracticeView : MonoBehaviour {
     {
         btn_option = new Button[4];
         UIManager.Instance.TogglePanel("P_ReviewUI",false);
-        UIManager.Instance.ShowPanel("P_PracticeUI");
+        if (!UIManager.Instance.IsUILive("P_PracticeUI"))
+        {
+            UIManager.Instance.ShowPanel("P_PracticeUI");
+        }
         text_totalQues =  GetComponentsInChildren<Text>()[6];
         text_Question = GetComponentsInChildren<Text>()[7];
         for(int i = 0; i < btn_option.Length; i++)
         {
             btn_option[i] = GetComponentsInChildren<Button>()[i+2];
         }
-        btn_option[0].onClick.AddListener(delegate () { compareAns(0); });
-        btn_option[1].onClick.AddListener(delegate () { compareAns(1); });
-        btn_option[2].onClick.AddListener(delegate () { compareAns(2); });
-        btn_option[3].onClick.AddListener(delegate () { compareAns(3); });
+        btn_option[0].onClick.AddListener(delegate () {StartCoroutine(compareAns(0)); });
+        btn_option[1].onClick.AddListener(delegate () { StartCoroutine(compareAns(1)); });
+        btn_option[2].onClick.AddListener(delegate () { StartCoroutine(compareAns(2)); });
+        btn_option[3].onClick.AddListener(delegate () { StartCoroutine(compareAns(3)); });
         pm.startLeaning();//創建單字練習紀錄
         initialQuestion();
     }
@@ -140,18 +143,25 @@ public class PracticeView : MonoBehaviour {
         }
     }
 
-    void compareAns(int optionID) {
+    IEnumerator compareAns(int optionID) {
         //Debug.Log(optionID);
         if (correctOption.Equals(optionID))
         {
             StartCoroutine(showfeedback(0));
             p_score += (int)(p_score * 0.5) + 30;
             text_score.text = p_score.ToString();
+            yield return new WaitForSeconds(0.1f);
+            checkNextQues();
         }
-        else {
+        else
+        {
             StartCoroutine(showfeedback(1));
+            yield return new WaitForSeconds(0.1f);
+            checkNextQues();
         }
+    }
 
+    void checkNextQues() {
         if (quesID >= pm.E_vocabularyDic.Count - 1)
         {
             StartCoroutine(PracticeEnd());
@@ -162,6 +172,7 @@ public class PracticeView : MonoBehaviour {
             showPracticeQues(quesID);
         }
     }
+
     IEnumerator PracticeEnd()
     {
         yield return new WaitForSeconds(0.1f);
