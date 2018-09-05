@@ -16,6 +16,7 @@ public class PracticeView : MonoBehaviour {
     Text text_English,text_Translation;
     Button btn_pronun,btn_pre, btn_next, btn_gotonext;
     #endregion
+
     #region PracticeMuitiselect UI
     Text text_totalQues,text_Question;
     Button[] btn_option;
@@ -27,6 +28,7 @@ public class PracticeView : MonoBehaviour {
     Button btn_alphabet,btn_clear,btn_submit;
     Text text_quescontent;
     GameObject[] CollectBtnObj;
+    Color c_original;
     string userAns;
     #endregion
 
@@ -99,14 +101,16 @@ public class PracticeView : MonoBehaviour {
         }
         text_totalQues =  GetComponentsInChildren<Text>()[6];
         text_Question = GetComponentsInChildren<Text>()[7];
-        for(int i = 0; i < btn_option.Length; i++)
+
+        for (int i = 0; i < btn_option.Length; i++)
         {
             btn_option[i] = GetComponentsInChildren<Button>()[i+2];
         }
-        btn_option[0].onClick.AddListener(delegate () {StartCoroutine(compareAns(0)); });
-        btn_option[1].onClick.AddListener(delegate () { StartCoroutine(compareAns(1)); });
-        btn_option[2].onClick.AddListener(delegate () { StartCoroutine(compareAns(2)); });
-        btn_option[3].onClick.AddListener(delegate () { StartCoroutine(compareAns(3)); });
+        c_original = btn_option[0].GetComponent<Image>().color;
+        btn_option[0].onClick.AddListener(delegate () {StartCoroutine(compareAns(0,quesID)); });
+        btn_option[1].onClick.AddListener(delegate () { StartCoroutine(compareAns(1, quesID)); });
+        btn_option[2].onClick.AddListener(delegate () { StartCoroutine(compareAns(2, quesID)); });
+        btn_option[3].onClick.AddListener(delegate () { StartCoroutine(compareAns(3, quesID)); });
         pm.startLeaning();//創建單字練習紀錄
         initialQuestion();
     }
@@ -143,34 +147,34 @@ public class PracticeView : MonoBehaviour {
         }
     }
 
-    IEnumerator compareAns(int optionID) {
-        //Debug.Log(optionID);
-        if (correctOption.Equals(optionID))
+    IEnumerator compareAns(int optionID,int _quesID) {
+        //Color c_original =new Color(0.5f,0.68f,0.47f,1f) ;
+        if (_quesID == quesID)
         {
-            StartCoroutine(showfeedback(0));
-            p_score += (int)(p_score * 0.5) + 30;
-            text_score.text = p_score.ToString();
-            yield return new WaitForSeconds(0.1f);
-            checkNextQues();
-        }
-        else
-        {
-            StartCoroutine(showfeedback(1));
-            yield return new WaitForSeconds(0.1f);
-            checkNextQues();
+            if (correctOption.Equals(optionID))
+            {
+                btn_option[optionID].GetComponent<Button>().interactable = false;//避免重複點擊,增加分數
+                StartCoroutine(showfeedback(0));
+                p_score += (int)(p_score * 0.5) + 30;
+                text_score.text = p_score.ToString();
+            }
+            else
+            {
+                btn_option[correctOption].GetComponent<Button>().interactable = false;//避免重複點擊,增加分數
+                btn_option[correctOption].GetComponent<Image>().color = Color.red;
+                StartCoroutine(showfeedback(1));
+            }
+
+            yield return new WaitForSeconds(0.5f);
+            resetButton(optionID);
+            checkNextQues(_quesID, "practice");
         }
     }
-
-    void checkNextQues() {
-        if (quesID >= pm.E_vocabularyDic.Count - 1)
-        {
-            StartCoroutine(PracticeEnd());
-        }
-        else
-        {
-            quesID++;
-            showPracticeQues(quesID);
-        }
+    //重設按鈕
+    void resetButton(int optionID) {
+        btn_option[optionID].GetComponent<Button>().interactable = true;
+        btn_option[correctOption].GetComponent<Button>().interactable = true;
+        btn_option[correctOption].GetComponent<Image>().color = c_original;
     }
 
     IEnumerator PracticeEnd()
@@ -193,8 +197,11 @@ public class PracticeView : MonoBehaviour {
         text_totalQues = GetComponentsInChildren<Text>()[6];
         text_Question = GetComponentsInChildren<Text>()[7];
         text_quescontent = GetComponentsInChildren<Text>()[8];
+
+        btn_clear = GetComponentsInChildren<Button>()[2];
         btn_submit = GetComponentsInChildren<Button>()[3];
-        btn_submit.onClick.AddListener(compareComposeAns);
+        btn_clear.onClick.AddListener(resetAns);
+        btn_submit.onClick.AddListener(delegate () { StartCoroutine(compareComposeAns(quesID)); });
 
         quesID = 0;
         randomQuestion = pm.randomQuestion();
@@ -204,8 +211,7 @@ public class PracticeView : MonoBehaviour {
     //初始化題目
     void initialComposeQuestion(int quesID)
     {
-        text_totalQues.text = "1/" + pm.E_vocabularyDic.Count;
-        text_quescontent.text = "";//初始化挖空題目
+        text_quescontent.text = "";//初始化題目空格
         userAns = "";
         for (int i = 0; i < CollectBtnObj.Length; ++i)//刪除所有字母按鈕
         {
@@ -217,7 +223,7 @@ public class PracticeView : MonoBehaviour {
         showComposeQues(quesID);
     }
 
-    //更新每回合的題目
+    //設定每回合的題目
     void showComposeQues(int quesID)
     {
         text_totalQues.text = (quesID + 1).ToString() + "/" + pm.T_vocabularyDic.Count;
@@ -277,8 +283,13 @@ public class PracticeView : MonoBehaviour {
         }
         text_quescontent.text = text_quescontent.text.Insert(underline_index, alphabet);
     }
-    void compareComposeAns() {
 
+    void resetAns() {
+        initialComposeQuestion(quesID);
+    }
+
+    IEnumerator compareComposeAns(int _quesID) {
+        btn_submit.GetComponent<Button>().interactable = false;//避免重複點擊,增加分數
         if (userAns == pm.E_vocabularyDic[randomQuestion[quesID]])
         {
             StartCoroutine(showfeedback(0));
@@ -289,19 +300,14 @@ public class PracticeView : MonoBehaviour {
         else {
             Debug.Log("你的答案:" + userAns);
             Debug.Log("正確答案:" + pm.E_vocabularyDic[randomQuestion[quesID]]);
+            text_quescontent.text = pm.E_vocabularyDic[randomQuestion[quesID]];
             StartCoroutine(showfeedback(1));
         }
-
-        if (quesID >= pm.E_vocabularyDic.Count - 1)
-        {
-            StartCoroutine(ComposeEnd());
-        }
-        else
-        {
-            quesID++;
-            initialComposeQuestion(quesID);
-        }
+        yield return new WaitForSeconds(0.5f);
+        btn_submit.GetComponent<Button>().interactable = true;
+        checkNextQues(_quesID, "compose");
     }
+
 
     IEnumerator ComposeEnd() {
         pm.setLearningTimes("learning_count");//更新單字練習次數
@@ -311,6 +317,41 @@ public class PracticeView : MonoBehaviour {
         SceneManager.LoadScene("LearningStage");
     }
     #endregion
+
+
+    void checkNextQues(int _quesID, string functionName)
+    {
+        if (_quesID == quesID)
+        {
+            if (quesID >= pm.E_vocabularyDic.Count - 1)
+            {
+                switch (functionName)
+                {
+                    case "practice":
+                        StartCoroutine(PracticeEnd());
+                        break;
+                    case "compose":
+                        StartCoroutine(ComposeEnd());
+                        break;
+                }
+            }
+            else
+            {
+                quesID++;
+                switch (functionName)
+                {
+                    case "practice":
+                        showPracticeQues(quesID);
+                        break;
+                    case "compose":
+                        initialComposeQuestion(quesID);
+                        break;
+                }
+            }
+        }
+    }
+
+
 
     IEnumerator showfeedback(int _state)
     {
@@ -334,7 +375,7 @@ public class PracticeView : MonoBehaviour {
             Debug.Log("Wrong");
 
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         Destroy(fb);
     }
 

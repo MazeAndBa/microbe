@@ -642,13 +642,46 @@ public class Xmlprocess{
     //新增每回單字學習紀錄
     public void createLearningRecord(int level)
     {
+        XmlNode nodeLast = null;
+        XmlElement learning_history = null;
+
         if (isExits())
         {
-            XmlNode n_learninghistory = xmlDoc.SelectSingleNode("Loadfile/log_record/learning_history");
-            XmlElement learninghistory = (XmlElement)n_learninghistory;
 
-            XmlElement learning_record = xmlDoc.CreateElement("learning_record"); ;
-            learninghistory.AppendChild(learning_record);
+            XmlNodeList nodelist = xmlDoc.SelectNodes("//log_record");
+            foreach (XmlNode item_File in nodelist)
+            {
+                XmlAttributeCollection xAT = item_File.Attributes;
+                for (int i = 0; i < xAT.Count; i++)
+                {
+                    nodeLast = item_File;
+                }
+            }
+
+            XmlElement element = (XmlElement)nodeLast;
+            XmlAttribute attributeLast = element.GetAttributeNode("day");
+            if (attributeLast.Value.ToString() != DateTime.Now.ToString("yyyy-MM-dd"))//如果最近一筆紀錄不是今天的日期
+            {
+
+                XmlNode n_Loadfile = xmlDoc.SelectSingleNode("Loadfile/");
+                XmlElement loadfile = (XmlElement)n_Loadfile;
+                XmlElement log_record = xmlDoc.CreateElement("log_record");
+                log_record.SetAttribute("day", DateTime.Now.ToString("yyyy-MM-dd"));
+                loadfile.AppendChild(log_record);//創新log與learning節點
+
+                XmlElement learninghistory = xmlDoc.CreateElement("learning_history"); ;
+                log_record.AppendChild(learninghistory);
+                learning_history = learninghistory;
+            }
+            else
+            {
+                XmlNode n_learning_history = nodeLast.SelectSingleNode("learning_history");//在最近一筆的log下。找到learning節點
+                learning_history = (XmlElement)n_learning_history;
+            }
+
+            XmlElement learning_record = xmlDoc.CreateElement("learning_record");
+            learning_history.AppendChild(learning_record);
+
             learning_record.SetAttribute("level", level.ToString());
             learning_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
             learning_record.SetAttribute("score", "0");
@@ -688,7 +721,7 @@ public class Xmlprocess{
     {
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level" + level);
         XmlElement element = (XmlElement)node;
-        XmlAttribute attribute = element.GetAttributeNode("score");    
+        XmlAttribute attribute = element.GetAttributeNode("highscore");    
         int highscore = XmlConvert.ToInt32(attribute.Value);
         if (score > highscore) {
             attribute.Value = score.ToString();
@@ -697,29 +730,211 @@ public class Xmlprocess{
     }
 
 
-    //0830場景進入紀錄
-    public void ScceneHistoryRecord(string scence, string starttime)
+    /// <summary>
+    /// 更新對戰次數紀錄
+    /// </summary>
+    /// <param name="attributeName"></param>
+    public void setCompeteCount(string attributeName, int level)
     {
         if (isExits())
         {
-            XmlNode n_root = xmlDoc.SelectSingleNode("Loadfile");
-            XmlNode n_logrecord = xmlDoc.SelectSingleNode("Loadfile/log_record");
-            XmlNode n_scenehistory = xmlDoc.SelectSingleNode("Loadfile/log_record/scene_history");
-            XmlElement e_root = (XmlElement)n_root;
-            XmlElement e_logrecord = (XmlElement)n_logrecord;
-            XmlElement e_scenehistory = (XmlElement)n_scenehistory;
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete/level" + level);
+            XmlElement element = (XmlElement)node;
+            XmlAttribute attribute = element.GetAttributeNode(attributeName);
+            int count = XmlConvert.ToInt32(attribute.Value);
+            count = count + 1;
+            attribute.Value = count.ToString();
+            saveData();
+        }
+    }
 
-            XmlAttribute attribute = e_logrecord.GetAttributeNode("day");
+    //新增一筆對戰紀錄
+    public void createCompeteRecord(int level)
+    {
+        XmlNode nodeLast = null;
+        XmlElement compete_history = null;
 
-            if (attribute.Value.ToString() != DateTime.Now.ToString("yyyy-MM-dd"))
+        if (isExits())
+        {
+
+            XmlNodeList nodelist = xmlDoc.SelectNodes("//log_record");
+            foreach (XmlNode item_File in nodelist)
             {
+                XmlAttributeCollection xAT = item_File.Attributes;
+                for (int i = 0; i < xAT.Count; i++)
+                {
+                    nodeLast = item_File;
+                }
+            }
+
+            XmlElement element = (XmlElement)nodeLast;
+            XmlAttribute attributeLast = element.GetAttributeNode("day");
+            if (attributeLast.Value.ToString() != DateTime.Now.ToString("yyyy-MM-dd"))//如果最近一筆紀錄不是今天的日期
+            {
+
+                XmlNode n_Loadfile = xmlDoc.SelectSingleNode("Loadfile/");
+                XmlElement loadfile = (XmlElement)n_Loadfile;
                 XmlElement log_record = xmlDoc.CreateElement("log_record");
-                e_root.AppendChild(log_record);
                 log_record.SetAttribute("day", DateTime.Now.ToString("yyyy-MM-dd"));
+                loadfile.AppendChild(log_record);//創新log與learning節點
+
+                XmlElement competehistory = xmlDoc.CreateElement("compete_history"); ;
+                log_record.AppendChild(competehistory);
+                compete_history = competehistory;
+            }
+            else
+            {
+                XmlNode n_compete_history = nodeLast.SelectSingleNode("compete_history");//在最近一筆的log下。找到learning節點
+                compete_history = (XmlElement)n_compete_history;
+            }
+
+            XmlElement compete_record = xmlDoc.CreateElement("compete_record");
+            compete_history.AppendChild(compete_record);
+
+            compete_record.SetAttribute("level", level.ToString());
+            compete_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
+            compete_record.SetAttribute("endTime", "");
+            compete_record.SetAttribute("score", "0");
+            compete_record.SetAttribute("rank", "0");//本次對戰排名
+            saveData();
+        }
+    }
+
+    //新增每回合的對戰紀錄
+    public void createRoundRecord(string quesID,string ans_state,int duration)
+    {
+        XmlNode nodeLast = null;
+        if (isExits())
+        {
+
+            XmlNodeList nodelist = xmlDoc.SelectNodes("//compete_record");
+            foreach (XmlNode item_File in nodelist)
+            {
+                XmlAttributeCollection xAT = item_File.Attributes;
+                for (int i = 0; i < xAT.Count; i++)
+                {
+                    nodeLast = item_File;
+                }
+            }
+
+            XmlElement compete_record = (XmlElement)nodeLast;
+            XmlElement round_record = xmlDoc.CreateElement("round_record");
+            compete_record.AppendChild(round_record);
+            round_record.SetAttribute("ques_id", quesID.ToString());//題號
+            round_record.SetAttribute("ans_state", ans_state);//作答正確或錯誤
+            round_record.SetAttribute("duration", duration.ToString());//作答時間
+            round_record.SetAttribute("score", "0");//作答時間
+            round_record.SetAttribute("rank", "0");//當回合的排名
+            saveData();
+        }
+    }
+
+   public void setRoundScore(int score,int rank)
+    {
+        XmlNode nodeLast = null;
+        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+        foreach (XmlNode item_File in nodelist)
+        {
+            XmlAttributeCollection xAT = item_File.Attributes;
+            for (int i = 0; i < xAT.Count; i++)
+            {
+                nodeLast = item_File;
+            }
+        }
+        XmlElement round_record = (XmlElement)nodeLast;
+        XmlAttribute attr_score = round_record.GetAttributeNode("score");
+        XmlAttribute attr_rank = round_record.GetAttributeNode("rank");
+        attr_score.Value = score.ToString();
+        attr_rank.Value = rank.ToString();
+
+        saveData();
+    }
+
+    //更新每回對戰紀錄
+    public void setCompeteScoreRecord(int level, int score,int rank)
+    {
+        if (isExits())
+        {
+            XmlNode nodeLastLearning = null;
+            XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//compete_record");
+            foreach (XmlNode itemsNode in nodelist_Previous)
+            {
+                XmlAttributeCollection xAT2 = itemsNode.Attributes;
+                for (int j = 0; j < xAT2.Count; j++)
+                {
+                    nodeLastLearning = itemsNode;
+                }
+            }
+            XmlElement element = (XmlElement)nodeLastLearning;
+            XmlAttribute attr_score = element.GetAttributeNode("score");
+            XmlAttribute attr_endTime = element.GetAttributeNode("endTime");
+            XmlAttribute attr_rank = element.GetAttributeNode("rank");
+            attr_score.Value = score.ToString();
+            attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
+            attr_rank.Value = rank.ToString();
+            updateCompeteHighScore(level, score);
+            saveData();
+        }
+    }
+
+    void updateCompeteHighScore(int level, int score)
+    {
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete/level" + level);
+        XmlElement element = (XmlElement)node;
+        XmlAttribute attribute = element.GetAttributeNode("highscore");
+        int highscore = XmlConvert.ToInt32(attribute.Value);
+        if (score > highscore)
+        {
+            attribute.Value = score.ToString();
+        }
+        saveData();
+    }
+
+
+
+
+
+
+    //0830場景進入紀錄
+    public void ScceneHistoryRecord(string scence, string starttime)
+    {
+        XmlNode nodeLast = null;
+        XmlElement scene_history = null;
+        if (isExits())
+        {
+            XmlNodeList nodelist = xmlDoc.SelectNodes("//log_record");
+            foreach (XmlNode item_File in nodelist)
+            {
+                XmlAttributeCollection xAT = item_File.Attributes;
+                for (int i = 0; i < xAT.Count; i++)
+                {
+                    nodeLast = item_File;
+                }
+            }
+
+            XmlElement element= (XmlElement)nodeLast;
+            XmlAttribute attributeLast = element.GetAttributeNode("day");
+            if (attributeLast.Value.ToString() != DateTime.Now.ToString("yyyy-MM-dd"))//如果最近一筆紀錄不是今天的日期
+            {
+
+                XmlNode n_Loadfile = xmlDoc.SelectSingleNode("Loadfile/");
+                XmlElement loadfile = (XmlElement)n_Loadfile;
+                XmlElement log_record = xmlDoc.CreateElement("log_record");
+                log_record.SetAttribute("day", DateTime.Now.ToString("yyyy-MM-dd"));
+                loadfile.AppendChild(log_record);
+
+                XmlElement scenehistory = xmlDoc.CreateElement("scene_history"); ;
+                log_record.AppendChild(scenehistory);
+                scene_history = scenehistory;
+            }
+            else
+            {
+                XmlNode n_scene_history = nodeLast.SelectSingleNode("scene_history");
+                scene_history = (XmlElement)n_scene_history;
             }
 
             XmlElement scene_record = xmlDoc.CreateElement("scene_record"); ;
-            e_scenehistory.AppendChild(scene_record);
+            scene_history.AppendChild(scene_record);
             scene_record.SetAttribute("scence", scence);
             scene_record.SetAttribute("startTime", starttime);
             saveData();

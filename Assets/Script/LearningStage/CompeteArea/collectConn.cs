@@ -5,6 +5,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon;
+using System;
 
 public class collectConn : PunBehaviour
 {
@@ -44,7 +45,7 @@ public class collectConn : PunBehaviour
         // createUser();
         //obj_gamestart.gameObject.SetActive(false);
         //-----------------------------------------------------------
-
+        xmlprocess.ScceneHistoryRecord("WaitingCompete", DateTime.Now.ToString("HH:mm:ss"));
         UIManager.Instance.ShowPanel("UI_ShowMes");
         if (PhotonNetwork.AuthValues == null)
         {

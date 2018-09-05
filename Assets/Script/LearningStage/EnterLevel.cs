@@ -46,14 +46,14 @@ public class EnterLevel : MonoBehaviour {
     void goPractice() {
 
         //xmlprocess.New_timeHistoryRecord(levelName + "_Practice", System.DateTime.Now.ToString("HH-mm-ss"));
-        xmlprocess.ScceneHistoryRecord(levelName + "_Practice", DateTime.Now.ToString("HH-mm-ss"));
+        xmlprocess.ScceneHistoryRecord(levelName + "_Practice", DateTime.Now.ToString("HH:mm:ss"));
         SceneManager.LoadScene("PracticeArea");
     }
 
     void goCompete()
     {
         //xmlprocess.New_timeHistoryRecord(levelName + "_Compete", System.DateTime.Now.ToString("HH-mm-ss"));
-        xmlprocess.ScceneHistoryRecord(levelName + "_Compete", DateTime.Now.ToString("HH-mm-ss"));
+        xmlprocess.ScceneHistoryRecord(levelName + "_Compete", DateTime.Now.ToString("HH:mm:ss"));
         SceneManager.LoadScene("CompeteArea");
     }
 
