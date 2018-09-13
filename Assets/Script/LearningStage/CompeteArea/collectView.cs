@@ -11,6 +11,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 {
     public GameObject ConnectUiView, WaitingUI, GameStartUI,ShowResultMes, ResultUIView, cardgroup, card;
     public Text question, RemotePlayerText, LocalPlayerText, TurnText, TimeText;
+    public AudioSource vol_pronun;
     Button btn_gamestart, btn_exit;
     bool timerflag = false;
 
@@ -18,6 +19,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     string[] s_option;//該回合的選項
     string[] quesInfo, optionInfo;
     DateTime TurnStartTime;
+
 
     private PunTurnManager turnManager;
     private string localSelection, remoteSelection;
@@ -189,6 +191,10 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         //產生卡牌
         createCard();
         cardgroup.SetActive(true);
+        //播放聲音
+        vol_pronun.clip = Resources.Load("Sound/" + quesInfo[2], typeof(AudioClip)) as AudioClip;
+        vol_pronun.Play();
+
         timerflag = true;
         TurnStartTime = DateTime.Now;
     }
@@ -200,30 +206,6 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (quesInfo != null && quesInfo.Length > 0)
         {
             this.question.text = quesInfo[1];// ques_content
-            /*
-            for (int i = 0, j = 0; i < s_option.Length+1; i++)
-            {
-                GameObject cardObj = Instantiate(card);
-                cardObj.gameObject.SetActive(true);
-                if (i == ans_pos)
-                {
-                    cardObj.GetComponentInChildren<Text>().text = quesInfo[2];//correct answer
-                    cardObj.name = quesInfo[2];
-                }
-                else
-                {
-                    optionInfo = s_option[j].Split(',');
-                    cardObj.GetComponentInChildren<Text>().text = optionInfo[1];//other ans_content
-                    cardObj.name = optionInfo[1];
-                    j++;
-                    Debug.Log("options "+ optionInfo[1]);
-                }
-                cardObj.GetComponent<Button>().onClick.AddListener(delegate () { MakeTurn(cardObj.name); });
-                cardObj.transform.SetParent(cardgroup.transform);
-                cardObj.transform.localPosition = new Vector3(-350 + (i % 4) * 160, (i / 4) * -150, 0);
-                cardObj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            }
-            */
             for (int i = 0; i < s_option.Length; i++)
             {
                 if (s_option[i]!="") {

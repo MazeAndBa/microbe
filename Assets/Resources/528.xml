@@ -1,0 +1,39 @@
+<Loadfile>
+  <User ID="528" name="528" level="1" sex="0" money="100">
+    <current_icon icon="" />
+    <learning>
+      <level0 review_count="0" learning_count="0" highscore="0" />
+      <level1 review_count="3" learning_count="0" highscore="0" />
+      <level2 review_count="0" learning_count="0" highscore="0" />
+    </learning>
+    <compete>
+      <level0 compete_count="0" highscore="0" update_count="0" />
+      <level1 compete_count="0" highscore="0" update_count="0" />
+      <level2 compete_count="0" highscore="0" update_count="0" />
+    </compete>
+  </User>
+  <rank_history>
+    <rank_record level="" highscore="" rank="" updateTime="" />
+  </rank_history>
+  <touch_rank_history>
+    <touch_rank count="0" />
+  </touch_rank_history>
+  <log_record day="2018-09-13">
+    <learning_history>
+      <learning_record level="1" startTime="13: 19:27" score="0" endTime="" />
+      <learning_record level="1" startTime="13: 24:22" score="0" endTime="" />
+    </learning_history>
+    <compete_history />
+    <scene_history>
+      <scene_record scence="Login" startTime="13:14:56" />
+      <scene_record scence="Medium" startTime="13:15:04" />
+      <scene_record scence="Medium_Practice" startTime="13:15:05" />
+      <scene_record scence="Login" startTime="13:19:03" />
+      <scene_record scence="Medium" startTime="13:19:04" />
+      <scene_record scence="Medium_Practice" startTime="13:19:05" />
+      <scene_record scence="Login" startTime="13:24:14" />
+      <scene_record scence="Medium" startTime="13:24:16" />
+      <scene_record scence="Medium_Practice" startTime="13:24:17" />
+    </scene_history>
+  </log_record>
+</Loadfile>

@@ -15,6 +15,7 @@ public class PracticeView : MonoBehaviour {
     #region ReviewVocabulary UI
     Text text_English,text_Translation;
     Button btn_pronun,btn_pre, btn_next, btn_gotonext;
+    AudioSource VocabularyAS;
     #endregion
 
     #region PracticeMuitiselect UI
@@ -55,6 +56,8 @@ public class PracticeView : MonoBehaviour {
         btn_next = GetComponentsInChildren<Button>()[4];
         btn_gotonext = GetComponentsInChildren<Button>()[5];
         btn_gotonext.gameObject.SetActive(false);
+        VocabularyAS = btn_pronun.GetComponent<AudioSource>();
+        btn_pronun.onClick.AddListener(delegate () { playAudio(vocabularyID); });
 
         btn_pre.onClick.AddListener(delegate () { changeVocabularyID(-1); });
         btn_next.onClick.AddListener(delegate () { changeVocabularyID(1); });
@@ -87,6 +90,12 @@ public class PracticeView : MonoBehaviour {
             }
         }
     }
+
+    void playAudio(int _vocabularyID) {
+        VocabularyAS.clip = Resources.Load("Sound/" + pm.E_vocabularyDic[_vocabularyID], typeof(AudioClip)) as AudioClip;
+        VocabularyAS.Play();
+    }
+
     #endregion
 
     #region PracticeMuitiselect function
@@ -99,6 +108,7 @@ public class PracticeView : MonoBehaviour {
         {
             UIManager.Instance.ShowPanel("P_PracticeUI");
         }
+        VocabularyAS = GetComponentsInChildren<AudioSource>()[0];
         text_totalQues =  GetComponentsInChildren<Text>()[6];
         text_Question = GetComponentsInChildren<Text>()[7];
 
@@ -123,6 +133,7 @@ public class PracticeView : MonoBehaviour {
 
     void showPracticeQues(int quesID) {//更新每回合的題目與選項
         //Debug.Log("題號"+ quesID);
+        playAudio(randomQuestion[quesID]);
         text_totalQues.text = (quesID+1).ToString()+"/"+ pm.E_vocabularyDic.Count;
         text_Question.text = pm.E_vocabularyDic[randomQuestion[quesID]];
         showPracticeOption(randomQuestion[quesID]);
@@ -197,6 +208,7 @@ public class PracticeView : MonoBehaviour {
         text_totalQues = GetComponentsInChildren<Text>()[6];
         text_Question = GetComponentsInChildren<Text>()[7];
         text_quescontent = GetComponentsInChildren<Text>()[8];
+        VocabularyAS = GetComponentsInChildren<AudioSource>()[0];
 
         btn_clear = GetComponentsInChildren<Button>()[2];
         btn_submit = GetComponentsInChildren<Button>()[3];
@@ -226,6 +238,7 @@ public class PracticeView : MonoBehaviour {
     //設定每回合的題目
     void showComposeQues(int quesID)
     {
+        playAudio(randomQuestion[quesID]);
         text_totalQues.text = (quesID + 1).ToString() + "/" + pm.T_vocabularyDic.Count;
         text_Question.text = pm.T_vocabularyDic[randomQuestion[quesID]];
         for (int i = 0; i < pm.E_vocabularyDic[randomQuestion[quesID]].Length; i++) {
@@ -270,7 +283,8 @@ public class PracticeView : MonoBehaviour {
     {
         userAns += _trigger.name;//將點擊的選項存入usrAns
         setQuesContent(_trigger.name);
-        Destroy(_trigger.gameObject);//按鈕點擊後消失
+        _trigger.gameObject.SetActive(false);
+        //Destroy(_trigger.gameObject);//按鈕點擊後消失
     }
 
     void setQuesContent(string alphabet)
