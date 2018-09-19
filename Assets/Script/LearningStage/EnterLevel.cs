@@ -28,11 +28,11 @@ public class EnterLevel : MonoBehaviour {
                 break;
         }
 
-        btn_practice = GetComponentsInChildren<Button>()[1];
-        btn_compete = GetComponentsInChildren<Button>()[2];
+        btn_practice = GetComponentsInChildren<Button>()[0];
+        btn_compete = GetComponentsInChildren<Button>()[1];
 
         btn_practice.onClick.AddListener(goPractice);
-        if (!xmlprocess.getPracticeState(currentLevel))
+        if (!xmlprocess.getLearningState(currentLevel))
         {
             btn_compete.interactable = false;
             btn_compete.image.color = Color.gray;
@@ -46,8 +46,8 @@ public class EnterLevel : MonoBehaviour {
     void goPractice() {
 
         //xmlprocess.New_timeHistoryRecord(levelName + "_Practice", System.DateTime.Now.ToString("HH-mm-ss"));
-        xmlprocess.ScceneHistoryRecord(levelName + "_Practice", DateTime.Now.ToString("HH:mm:ss"));
-        SceneManager.LoadScene("PracticeArea");
+        xmlprocess.ScceneHistoryRecord(levelName + "_Learning", DateTime.Now.ToString("HH:mm:ss"));
+        SceneManager.LoadScene("LearningArea");
     }
 
     void goCompete()

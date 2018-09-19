@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Home : MonoBehaviour {
     public Button btn_easy, btn_medium, btn_hard;
+    //public Text e_Leaderboard, m_Leaderboard, h_Leaderboard;
     Xmlprocess xmlprocess;
     static int chooseLevel;
 
@@ -21,7 +22,7 @@ public class Home : MonoBehaviour {
         //Debug.Log("chooseLevel:"+Level);
         string startTime = (System.DateTime.Now).ToString("HH:mm:ss");
         xmlprocess.ScceneHistoryRecord(sceneName, startTime);
-        SceneManager.LoadScene("LearningStage");
+        SceneManager.LoadScene("ChooseStage");
     }
 
     public static int getLevel() {

@@ -163,7 +163,7 @@
     <None Include="Assets\Plugins\release_history.txt" />
     <None Include="Assets\Resources\527.xml" />
     <None Include="Assets\Resources\5270.xml" />
-    <None Include="Assets\Resources\528.xml" />
+    <None Include="Assets\Resources\5271.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

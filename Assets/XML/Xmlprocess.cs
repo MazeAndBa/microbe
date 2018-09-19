@@ -607,7 +607,7 @@ public class Xmlprocess{
     }
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    public bool getPracticeState(int level) {
+    public bool getLearningState(int level) {
         if (isExits())
         {
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level" + level);
@@ -890,10 +890,41 @@ public class Xmlprocess{
         saveData();
     }
 
+    /// <summary>
+    ///成就UI點擊次數
+    /// </summary>
+    /// <param name="attributeName"></param>
+    public void setTouchCount()
+    {
+        if (isExits())
+        {
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/touch_history/touch_achieve");
+            XmlElement element = (XmlElement)node;
+            XmlAttribute attribute = element.GetAttributeNode("count");
+            int count = XmlConvert.ToInt32(attribute.Value);
+            count = count + 1;
+            attribute.Value = count.ToString();
+            saveData();
+        }
+    }
 
-
-
-
+    /// <summary>
+    ///排行榜UI點擊次數
+    /// </summary>
+    /// <param name="attributeName"></param>
+    public void setTouchCount(int level)
+    {
+        if (isExits())
+        {
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/touch_history/touch_leaderboard/touch_level" + level);
+            XmlElement element = (XmlElement)node;
+            XmlAttribute attribute = element.GetAttributeNode("count");
+            int count = XmlConvert.ToInt32(attribute.Value);
+            count = count + 1;
+            attribute.Value = count.ToString();
+            saveData();
+        }
+    }
 
     //0830場景進入紀錄
     public void ScceneHistoryRecord(string scence, string starttime)
@@ -968,6 +999,33 @@ public class Xmlprocess{
                 saveData();
             }
         }
+    }
+
+    /// <summary>
+    ///Get 各難易度的學習狀況
+    /// </summary>
+    public string[] getAchieveState(int level)
+    {
+        if (isExits())
+        {
+            string[] _tmp = new string[4];
+            XmlNode learningNode = xmlDoc.SelectSingleNode("Loadfile/User/learning/level"+level);
+            XmlNode competeNode = xmlDoc.SelectSingleNode("Loadfile/User/compete/level" + level);
+            XmlElement learningElement = (XmlElement)learningNode;
+            XmlElement competeElement = (XmlElement)competeNode;
+            XmlAttribute learning_count = learningElement.GetAttributeNode("learning_count");
+            XmlAttribute learning_highscore = learningElement.GetAttributeNode("highscore");
+            XmlAttribute compete_count = competeElement.GetAttributeNode("compete_count");
+            XmlAttribute compete_highscore = competeElement.GetAttributeNode("highscore");
+            _tmp[0] = learning_count.Value;
+            _tmp[1] = learning_highscore.Value;
+            _tmp[2] = compete_count.Value;
+            _tmp[3] = compete_highscore.Value;
+
+            return _tmp;
+        }
+        return null;
+
     }
 
 }

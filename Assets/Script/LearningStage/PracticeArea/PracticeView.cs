@@ -36,7 +36,7 @@ public class PracticeView : MonoBehaviour {
     void Start () {
         currentLevel = Home.getLevel();
         pm = new PracticeManager(currentLevel);
-        text_score = GetComponentsInChildren<Text>()[5];
+        text_score = GetComponentsInChildren<Text>()[1];
         p_score = 0;
         vocabularyID = 0;
         StartCoroutine(showReviewVocabulary());
@@ -49,12 +49,12 @@ public class PracticeView : MonoBehaviour {
     void showReviewUI()
     {
         UIManager.Instance.ShowPanel("P_ReviewUI");
-        text_English = GetComponentsInChildren<Text>()[6];
-        text_Translation = GetComponentsInChildren<Text>()[7];
-        btn_pronun = GetComponentsInChildren<Button>()[2];
-        btn_pre = GetComponentsInChildren<Button>()[3];
-        btn_next = GetComponentsInChildren<Button>()[4];
-        btn_gotonext = GetComponentsInChildren<Button>()[5];
+        text_English = GetComponentsInChildren<Text>()[2];
+        text_Translation = GetComponentsInChildren<Text>()[3];
+        btn_pronun = GetComponentsInChildren<Button>()[1];
+        btn_pre = GetComponentsInChildren<Button>()[2];
+        btn_next = GetComponentsInChildren<Button>()[3];
+        btn_gotonext = GetComponentsInChildren<Button>()[4];
         btn_gotonext.gameObject.SetActive(false);
         VocabularyAS = btn_pronun.GetComponent<AudioSource>();
         btn_pronun.onClick.AddListener(delegate () { playAudio(vocabularyID); });
@@ -109,12 +109,12 @@ public class PracticeView : MonoBehaviour {
             UIManager.Instance.ShowPanel("P_PracticeUI");
         }
         VocabularyAS = GetComponentsInChildren<AudioSource>()[0];
-        text_totalQues =  GetComponentsInChildren<Text>()[6];
-        text_Question = GetComponentsInChildren<Text>()[7];
+        text_totalQues =  GetComponentsInChildren<Text>()[2];
+        text_Question = GetComponentsInChildren<Text>()[3];
 
         for (int i = 0; i < btn_option.Length; i++)
         {
-            btn_option[i] = GetComponentsInChildren<Button>()[i+2];
+            btn_option[i] = GetComponentsInChildren<Button>()[i+1];
         }
         c_original = btn_option[0].GetComponent<Image>().color;
         btn_option[0].onClick.AddListener(delegate () {StartCoroutine(compareAns(0,quesID)); });
@@ -205,13 +205,13 @@ public class PracticeView : MonoBehaviour {
     void showComposeUI() {
 
         btn_alphabet = Resources.Load("UI/Btn_Alphabet", typeof(Button)) as Button;
-        text_totalQues = GetComponentsInChildren<Text>()[6];
-        text_Question = GetComponentsInChildren<Text>()[7];
-        text_quescontent = GetComponentsInChildren<Text>()[8];
+        text_totalQues = GetComponentsInChildren<Text>()[2];
+        text_Question = GetComponentsInChildren<Text>()[3];
+        text_quescontent = GetComponentsInChildren<Text>()[4];
         VocabularyAS = GetComponentsInChildren<AudioSource>()[0];
 
-        btn_clear = GetComponentsInChildren<Button>()[2];
-        btn_submit = GetComponentsInChildren<Button>()[3];
+        btn_clear = GetComponentsInChildren<Button>()[1];
+        btn_submit = GetComponentsInChildren<Button>()[2];
         btn_clear.onClick.AddListener(resetAns);
         btn_submit.onClick.AddListener(delegate () { StartCoroutine(compareComposeAns(quesID)); });
 
@@ -220,12 +220,10 @@ public class PracticeView : MonoBehaviour {
         showComposeQues(quesID);
     }
 
-    //初始化題目
-    void initialComposeQuestion(int quesID)
+    ////刪除所有字母按鈕
+    void initialComposeButton(int quesID)
     {
-        text_quescontent.text = "";//初始化題目空格
-        userAns = "";
-        for (int i = 0; i < CollectBtnObj.Length; ++i)//刪除所有字母按鈕
+        for (int i = 0; i < CollectBtnObj.Length; ++i)
         {
             if (CollectBtnObj[i] != null)
             {
@@ -235,9 +233,12 @@ public class PracticeView : MonoBehaviour {
         showComposeQues(quesID);
     }
 
-    //設定每回合的題目
+    //初始化題目
     void showComposeQues(int quesID)
     {
+        text_quescontent.text = "";//初始化題目空格
+        userAns = "";
+
         playAudio(randomQuestion[quesID]);
         text_totalQues.text = (quesID + 1).ToString() + "/" + pm.T_vocabularyDic.Count;
         text_Question.text = pm.T_vocabularyDic[randomQuestion[quesID]];
@@ -267,15 +268,15 @@ public class PracticeView : MonoBehaviour {
         CollectBtnObj = new GameObject[randomAns.Length];
 
         while (pointer<randomAns.Length) {
-        Button g_btnObj = Instantiate(btn_alphabet);//Options
-        g_btnObj.transform.SetParent(GameObject.Find("Content").transform);
-        g_btnObj.GetComponentInChildren<Text>().text = randomAns[pointer].ToString();
-        g_btnObj.transform.localPosition = new Vector3(0 + pointer * 150, 0.0f, 0.0f);
-        g_btnObj.transform.localScale = Vector3.one;
-        g_btnObj.name = randomAns[pointer].ToString();
-        g_btnObj.onClick.AddListener(() => clickAlphabet(g_btnObj));
-        CollectBtnObj[pointer] = g_btnObj.gameObject;
-        pointer++;
+            Button g_btnObj = Instantiate(btn_alphabet);//Options
+            g_btnObj.transform.SetParent(GameObject.Find("Content").transform);
+            g_btnObj.GetComponentInChildren<Text>().text = randomAns[pointer].ToString();
+            g_btnObj.transform.localPosition = new Vector3(0 + pointer * 150, 0.0f, 0.0f);
+            g_btnObj.transform.localScale = Vector3.one;
+            g_btnObj.name = randomAns[pointer].ToString();
+            g_btnObj.onClick.AddListener(() => clickAlphabet(g_btnObj));
+            CollectBtnObj[pointer] = g_btnObj.gameObject;
+            pointer++;
         }
     }
 
@@ -299,7 +300,7 @@ public class PracticeView : MonoBehaviour {
     }
 
     void resetAns() {
-        initialComposeQuestion(quesID);
+        initialComposeButton(quesID);
     }
 
     IEnumerator compareComposeAns(int _quesID) {
@@ -358,7 +359,7 @@ public class PracticeView : MonoBehaviour {
                         showPracticeQues(quesID);
                         break;
                     case "compose":
-                        initialComposeQuestion(quesID);
+                        initialComposeButton(quesID);
                         break;
                 }
             }

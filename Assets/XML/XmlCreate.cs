@@ -87,13 +87,19 @@ public class XmlCreate{
         rank_record.SetAttribute("updateTime", "");//刷新最高分數的時間
 
         /*-------點擊rank紀錄---------*/
-        XmlElement touch_history = xmlDoc.CreateElement("touch_rank_history");
+        XmlElement touch_history = xmlDoc.CreateElement("touch_history");
         Loadfile.AppendChild(touch_history);
-        XmlElement touch_rank = xmlDoc.CreateElement("touch_rank");//點擊排行榜的次數
-        touch_history.AppendChild(touch_rank);
-        touch_rank.SetAttribute("count", Strcount);
-
-
+        XmlElement touch_achieve = xmlDoc.CreateElement("touch_achieve");//點擊成就頁面的次數
+        touch_history.AppendChild(touch_achieve);
+        touch_achieve.SetAttribute("count", Strcount);
+        XmlElement touch_leaderboard = xmlDoc.CreateElement("touch_leaderboard");
+        touch_history.AppendChild(touch_leaderboard);
+        for(int i = 0; i <= 2; i++)
+        {
+            XmlElement touch_level = xmlDoc.CreateElement("touch_level"+i);//點擊各難易度排行榜的次數
+            touch_leaderboard.AppendChild(touch_level);
+            touch_level.SetAttribute("count", Strcount);
+        }
         /*====================================---Log紀錄---====================================*/
         XmlElement log_record = xmlDoc.CreateElement("log_record");
 		    Loadfile.AppendChild(log_record);

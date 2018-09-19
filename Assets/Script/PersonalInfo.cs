@@ -8,6 +8,8 @@ public class PersonalInfo : MonoBehaviour {
     string []userInfo;
 	public Text userName,level;
     public Image userImg;
+    public Button btn_achievement;
+    public GameObject AchieveUI;
 	void Start(){
         xmlprocess = new Xmlprocess ();
         userInfo = xmlprocess.getUserInfo();
@@ -21,6 +23,11 @@ public class PersonalInfo : MonoBehaviour {
                 userImg.sprite = Resources.Load("Image/girl", typeof(Sprite)) as Sprite;
                 break;
         }
-    }
 
+        btn_achievement.onClick.AddListener(showAchievementUI);
+    }
+    void showAchievementUI()
+    {
+        AchieveUI.SetActive(true);
+    }
 }
