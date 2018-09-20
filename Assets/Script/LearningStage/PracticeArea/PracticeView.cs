@@ -9,6 +9,7 @@ public class PracticeView : MonoBehaviour {
     PracticeManager pm;
     int currentLevel,vocabularyID;
     static int p_score;
+    public static bool showAchieve;
     Text text_score;
     public GameObject UI_showAnsfeedback;
 
@@ -39,6 +40,7 @@ public class PracticeView : MonoBehaviour {
         text_score = GetComponentsInChildren<Text>()[1];
         p_score = 0;
         vocabularyID = 0;
+        showAchieve = false;
         StartCoroutine(showReviewVocabulary());
         UIManager.Instance.CloseAllPanel();
 
@@ -313,8 +315,8 @@ public class PracticeView : MonoBehaviour {
 
         }
         else {
-            Debug.Log("你的答案:" + userAns);
-            Debug.Log("正確答案:" + pm.E_vocabularyDic[randomQuestion[quesID]]);
+            //Debug.Log("你的答案:" + userAns);
+            //Debug.Log("正確答案:" + pm.E_vocabularyDic[randomQuestion[quesID]]);
             text_quescontent.text = pm.E_vocabularyDic[randomQuestion[quesID]];
             StartCoroutine(showfeedback(1));
         }
@@ -328,8 +330,9 @@ public class PracticeView : MonoBehaviour {
         pm.setLearningTimes("learning_count");//更新單字練習次數
         pm.setLearningScore(p_score);//紀錄此次單字練習成績
         yield return new WaitForSeconds(0.1f);
+        showAchieve = true;
         UIManager.Instance.CloseAllPanel();
-        SceneManager.LoadScene("LearningStage");
+        SceneManager.LoadScene("ChooseStage");
     }
     #endregion
 
@@ -347,6 +350,7 @@ public class PracticeView : MonoBehaviour {
                         break;
                     case "compose":
                         StartCoroutine(ComposeEnd());
+                        Debug.Log("Learning End");
                         break;
                 }
             }
@@ -382,12 +386,12 @@ public class PracticeView : MonoBehaviour {
         if (_state == 0)
         {
             img_correct.gameObject.SetActive(true);
-            Debug.Log("Correct");
+            //Debug.Log("Correct");
         }
         else
         {
             img_wrong.gameObject.SetActive(true);
-            Debug.Log("Wrong");
+            //Debug.Log("Wrong");
 
         }
         yield return new WaitForSeconds(0.5f);

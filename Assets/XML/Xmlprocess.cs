@@ -1013,14 +1013,14 @@ public class Xmlprocess{
             XmlNode competeNode = xmlDoc.SelectSingleNode("Loadfile/User/compete/level" + level);
             XmlElement learningElement = (XmlElement)learningNode;
             XmlElement competeElement = (XmlElement)competeNode;
-            XmlAttribute learning_count = learningElement.GetAttributeNode("learning_count");
             XmlAttribute learning_highscore = learningElement.GetAttributeNode("highscore");
-            XmlAttribute compete_count = competeElement.GetAttributeNode("compete_count");
+            XmlAttribute learning_count = learningElement.GetAttributeNode("learning_count");
             XmlAttribute compete_highscore = competeElement.GetAttributeNode("highscore");
-            _tmp[0] = learning_count.Value;
-            _tmp[1] = learning_highscore.Value;
-            _tmp[2] = compete_count.Value;
-            _tmp[3] = compete_highscore.Value;
+            XmlAttribute compete_count = competeElement.GetAttributeNode("compete_count");
+            _tmp[0] = learning_highscore.Value; 
+            _tmp[1] = learning_count.Value;
+            _tmp[2] = compete_highscore.Value; 
+            _tmp[3] = compete_count.Value;
 
             return _tmp;
         }

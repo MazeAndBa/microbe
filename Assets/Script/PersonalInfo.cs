@@ -23,9 +23,22 @@ public class PersonalInfo : MonoBehaviour {
                 userImg.sprite = Resources.Load("Image/girl", typeof(Sprite)) as Sprite;
                 break;
         }
-
         btn_achievement.onClick.AddListener(showAchievementUI);
+
+        //如果完成練習，顯示成就UI
+        if (PracticeView.showAchieve)
+        {
+            showAchievementUI();
+            PracticeView.showAchieve = false;
+        }
+        //如果離開對戰畫面，顯示成就UI
+        if (Btn_BackEvent.showAchieve)
+        {
+            showAchievementUI();
+            Btn_BackEvent.showAchieve = false;
+        }
     }
+
     void showAchievementUI()
     {
         AchieveUI.SetActive(true);

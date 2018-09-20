@@ -2,9 +2,9 @@
   <User ID="527" name="527" level="1" sex="1" money="100">
     <current_icon icon="" />
     <learning>
-      <level0 review_count="4" learning_count="0" highscore="0" />
-      <level1 review_count="12" learning_count="1" highscore="9992" />
-      <level2 review_count="2" learning_count="0" highscore="0" />
+      <level0 review_count="1" learning_count="0" highscore="0" />
+      <level1 review_count="1" learning_count="1" highscore="9992" />
+      <level2 review_count="0" learning_count="0" highscore="0" />
     </learning>
     <compete>
       <level0 compete_count="0" highscore="0" update_count="0" />
@@ -16,123 +16,30 @@
     <rank_record level="" highscore="" rank="" updateTime="" />
   </rank_history>
   <touch_history>
-    <touch_achieve count="7" />
+    <touch_achieve count="2" />
     <touch_leaderboard>
       <touch_level0 count="0" />
       <touch_level1 count="0" />
       <touch_level2 count="0" />
     </touch_leaderboard>
   </touch_history>
-  <log_record day="2018-09-19">
+  <log_record day="2018-09-20">
     <learning_history>
-      <learning_record level="1" startTime="15: 27:03" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 27:03" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 27:03" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 31:21" score="0" endTime="" />
-      <learning_record level="0" startTime="15: 43:11" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 50:04" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 50:04" score="0" endTime="" />
-      <learning_record level="2" startTime="15: 53:06" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 53:35" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 53:35" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 56:40" score="0" endTime="" />
-      <learning_record level="1" startTime="15: 56:40" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 00:26" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 00:26" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 00:26" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 05:53" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 05:53" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 05:53" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 08:20" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 08:20" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 08:20" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 08:20" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 08:20" score="0" endTime="" />
-      <learning_record level="1" startTime="16: 13:43" score="9992" endTime="16: 14:37" />
+      <learning_record level="1" startTime="13: 43:31" score="9992" endTime="13: 44:40" />
     </learning_history>
     <compete_history />
     <scene_history>
-      <scene_record scence="Login" startTime="13:21:37" />
-      <scene_record scence="Login" startTime="13:22:22" />
-      <scene_record scence="Login" startTime="13:23:16" />
-      <scene_record scence="Login" startTime="13:23:59" />
-      <scene_record scence="Login" startTime="14:53:58" />
-      <scene_record scence="Login" startTime="15:02:39" />
-      <scene_record scence="Login" startTime="15:06:26" />
-      <scene_record scence="Login" startTime="15:10:47" />
-      <scene_record scence="Login" startTime="15:17:01" />
-      <scene_record scence="Medium" startTime="15:17:19" />
-      <scene_record scence="Easy" startTime="15:17:23" />
-      <scene_record scence="Hard" startTime="15:17:34" />
-      <scene_record scence="Hard" startTime="15:17:42" />
-      <scene_record scence="Medium" startTime="15:17:46" />
-      <scene_record scence="Medium" startTime="15:18:12" />
-      <scene_record scence="Login" startTime="15:19:19" />
-      <scene_record scence="Easy" startTime="15:19:28" />
-      <scene_record scence="Login" startTime="15:21:17" />
-      <scene_record scence="Medium" startTime="15:21:18" />
-      <scene_record scence="Login" startTime="15:22:26" />
-      <scene_record scence="Medium" startTime="15:22:27" />
-      <scene_record scence="Login" startTime="15:23:00" />
-      <scene_record scence="Medium" startTime="15:23:02" />
-      <scene_record scence="Medium_Practice" startTime="15:23:07" />
-      <scene_record scence="Login" startTime="15:24:26" />
-      <scene_record scence="Easy" startTime="15:24:32" />
-      <scene_record scence="Easy_Practice" startTime="15:25:09" />
-      <scene_record scence="Login" startTime="15:26:51" />
-      <scene_record scence="Medium" startTime="15:26:52" />
-      <scene_record scence="Medium_Practice" startTime="15:26:53" />
-      <scene_record scence="Medium_Practice" startTime="15:31:16" />
-      <scene_record scence="Login" startTime="15:34:41" />
-      <scene_record scence="Medium" startTime="15:34:42" />
-      <scene_record scence="Medium_Practice" startTime="15:34:43" />
-      <scene_record scence="Login" startTime="15:35:11" />
-      <scene_record scence="Easy" startTime="15:35:16" />
-      <scene_record scence="Easy_Practice" startTime="15:35:19" />
-      <scene_record scence="Login" startTime="15:37:03" />
-      <scene_record scence="Easy" startTime="15:37:05" />
-      <scene_record scence="Easy_Practice" startTime="15:37:05" />
-      <scene_record scence="Easy_Practice" startTime="15:37:15" />
-      <scene_record scence="Login" startTime="15:40:14" />
-      <scene_record scence="Medium" startTime="15:40:15" />
-      <scene_record scence="Medium_Practice" startTime="15:40:16" />
-      <scene_record scence="Login" startTime="15:41:10" />
-      <scene_record scence="Medium" startTime="15:41:11" />
-      <scene_record scence="Medium_Practice" startTime="15:41:12" />
-      <scene_record scence="Login" startTime="15:42:51" />
-      <scene_record scence="Easy" startTime="15:42:52" />
-      <scene_record scence="Easy_Practice" startTime="15:42:53" />
-      <scene_record scence="Login" startTime="15:49:44" />
-      <scene_record scence="Easy" startTime="15:49:50" />
-      <scene_record scence="Medium" startTime="15:49:52" />
-      <scene_record scence="Hard" startTime="15:49:54" />
-      <scene_record scence="Medium" startTime="15:49:55" />
-      <scene_record scence="Medium_Practice" startTime="15:49:57" />
-      <scene_record scence="Login" startTime="15:52:59" />
-      <scene_record scence="Medium" startTime="15:53:01" />
-      <scene_record scence="Hard" startTime="15:53:03" />
-      <scene_record scence="Hard_Practice" startTime="15:53:04" />
-      <scene_record scence="Hard_Practice" startTime="15:53:30" />
-      <scene_record scence="Medium" startTime="15:53:32" />
-      <scene_record scence="Medium_Practice" startTime="15:53:33" />
-      <scene_record scence="Login" startTime="15:56:33" />
-      <scene_record scence="Medium" startTime="15:56:35" />
-      <scene_record scence="Medium_Practice" startTime="15:56:35" />
-      <scene_record scence="Login" startTime="16:00:20" />
-      <scene_record scence="Medium" startTime="16:00:21" />
-      <scene_record scence="Medium_Practice" startTime="16:00:22" />
-      <scene_record scence="Login" startTime="16:05:48" />
-      <scene_record scence="Medium" startTime="16:05:49" />
-      <scene_record scence="Medium_Practice" startTime="16:05:50" />
-      <scene_record scence="Login" startTime="16:08:14" />
-      <scene_record scence="Medium" startTime="16:08:16" />
-      <scene_record scence="Medium_Practice" startTime="16:08:17" />
-      <scene_record scence="Login" startTime="16:13:36" />
-      <scene_record scence="Medium" startTime="16:13:38" />
-      <scene_record scence="Medium_Practice" startTime="16:13:39" />
-      <scene_record scence="Login" startTime="16:40:51" />
-      <scene_record scence="Login" startTime="16:42:26" />
-      <scene_record scence="Medium" startTime="16:42:27" />
+      <scene_record scence="Login" startTime="13:43:00" />
+      <scene_record scence="Medium" startTime="13:43:17" />
+      <scene_record scence="Medium_Learning" startTime="13:43:23" />
+      <scene_record scence="Easy" startTime="13:45:11" />
+      <scene_record scence="Easy_Learning" startTime="13:45:13" />
+      <scene_record scence="Medium" startTime="13:45:22" />
+      <scene_record scence="Medium_Compete" startTime="13:45:22" />
+      <scene_record scence="WaitingCompete" startTime="13:45:29" />
+      <scene_record scence="Login" startTime="14:04:20" />
+      <scene_record scence="Medium" startTime="14:04:21" />
+      <scene_record scence="Medium_Compete" startTime="14:04:22" />
     </scene_history>
   </log_record>
 </Loadfile>
