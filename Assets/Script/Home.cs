@@ -1,31 +1,60 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Home : MonoBehaviour {
-    public Button btn_easy, btn_medium, btn_hard;
-    //public Text e_Leaderboard, m_Leaderboard, h_Leaderboard;
+
+    Button btn_practice, btn_compete;
+    Button btn_LPractice, btn_LCompete;//排行榜
     Xmlprocess xmlprocess;
-    static int chooseLevel;
 
-	void Start () {
+    void Start () {
         xmlprocess = new Xmlprocess();
-        btn_easy.onClick.AddListener(delegate { goScene("Easy",0); });
-        btn_medium.onClick.AddListener(delegate { goScene("Medium",1); });
-        btn_hard.onClick.AddListener(delegate { goScene("Hard", 2); });
+        btn_practice = GetComponentsInChildren<Button>()[0];
+        btn_compete = GetComponentsInChildren<Button>()[1];
+        btn_LPractice = GetComponentsInChildren<Button>()[2];
+        btn_LCompete = GetComponentsInChildren<Button>()[3];
+
+        btn_practice.onClick.AddListener(goPractice);
+        btn_LPractice.onClick.AddListener(delegate() { showLeaderboard(0); });
+        btn_LCompete.onClick.AddListener(delegate () { showLeaderboard(1); });
+
+        if (!xmlprocess.getLearningState())//必須先完成練習1次才可以進入對戰區
+        {
+            btn_compete.interactable = false;
+            btn_compete.image.color = Color.gray;
+        }
+        else {
+            btn_compete.interactable = true;
+            btn_compete.onClick.AddListener(goCompete);
+        }
 
     }
-    void goScene(string sceneName, int Level) {
-        chooseLevel = Level;
-        //Debug.Log("chooseLevel:"+Level);
-        string startTime = (System.DateTime.Now).ToString("HH:mm:ss");
-        xmlprocess.ScceneHistoryRecord(sceneName, startTime);
-        SceneManager.LoadScene("ChooseStage");
+
+    void goPractice() {
+
+        //xmlprocess.New_timeHistoryRecord(levelName + "_Practice", System.DateTime.Now.ToString("HH-mm-ss"));
+        xmlprocess.ScceneHistoryRecord( "Learning", DateTime.Now.ToString("HH:mm:ss"));
+        SceneManager.LoadScene("LearningArea");
     }
 
-    public static int getLevel() {
-        return chooseLevel;
+    void goCompete()
+    {
+        //xmlprocess.New_timeHistoryRecord(levelName + "_Compete", System.DateTime.Now.ToString("HH-mm-ss"));
+        xmlprocess.ScceneHistoryRecord( "Compete", DateTime.Now.ToString("HH:mm:ss"));
+        SceneManager.LoadScene("CompeteArea");
     }
+
+    void showLeaderboard(int i) {
+        switch (i) {
+            case 0:
+                break;
+            case 1:
+                break;
+        }
+    }
+
 }

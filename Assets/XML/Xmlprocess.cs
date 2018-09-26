@@ -792,6 +792,8 @@ public class Xmlprocess{
 
             compete_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
             compete_record.SetAttribute("endTime", "");
+            compete_record.SetAttribute("hint_LA", "0");//使用提示再聽一次的總次數
+            compete_record.SetAttribute("hint_ST", "0");//使用提示中譯的總次數
             compete_record.SetAttribute("score", "0");
             compete_record.SetAttribute("rank", "0");//本次對戰排名
             saveData();
@@ -799,7 +801,7 @@ public class Xmlprocess{
     }
 
     //新增每回合的對戰紀錄
-    public void createRoundRecord(string quesID,string ans_state,int duration)
+    public void createRoundRecord(string quesID)
     {
         XmlNode nodeLast = null;
         if (isExits())
@@ -819,15 +821,83 @@ public class Xmlprocess{
             XmlElement round_record = xmlDoc.CreateElement("round_record");
             compete_record.AppendChild(round_record);
             round_record.SetAttribute("ques_id", quesID.ToString());//題號
-            round_record.SetAttribute("ans_state", ans_state);//作答正確或錯誤
-            round_record.SetAttribute("duration", duration.ToString());//作答時間
+            round_record.SetAttribute("ans_state", "");//作答正確或錯誤
+            round_record.SetAttribute("duration", "0");//作答時間
+            round_record.SetAttribute("hint_LA", "0");//提示再聽一次的次數
+            round_record.SetAttribute("hint_ST", "0");//提示中譯的次數
             round_record.SetAttribute("score", "0");//作答時間
             round_record.SetAttribute("rank", "0");//當回合的排名
             saveData();
         }
     }
 
-   public void setRoundScore(int score,int rank)
+    public void setRoundAns(string ans_state, int duration)
+    {
+        XmlNode nodeLast = null;
+        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+        foreach (XmlNode item_File in nodelist)
+        {
+            XmlAttributeCollection xAT = item_File.Attributes;
+            for (int i = 0; i < xAT.Count; i++)
+            {
+                nodeLast = item_File;
+            }
+        }
+        XmlElement round_record = (XmlElement)nodeLast;
+        XmlAttribute attr_ansState = round_record.GetAttributeNode("ans_state");
+        XmlAttribute attr_duration = round_record.GetAttributeNode("duration");
+        attr_ansState.Value = ans_state;
+        attr_duration.Value = duration.ToString();
+
+        saveData();
+    }
+
+
+    public void setRoundHintcount(string hintName)
+    {
+        XmlNode nodeLast = null;
+        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+        foreach (XmlNode item_File in nodelist)
+        {
+            XmlAttributeCollection xAT = item_File.Attributes;
+            for (int i = 0; i < xAT.Count; i++)
+            {
+                nodeLast = item_File;
+            }
+        }
+        XmlElement round_record = (XmlElement)nodeLast;
+        XmlAttribute attr_hint = round_record.GetAttributeNode(hintName);
+        int count = XmlConvert.ToInt32(attr_hint.Value);
+        count = count + 1;
+        attr_hint.Value = count.ToString();
+
+        saveData();
+    }
+
+
+    public int getRoundHintcount(string hintName) {
+        if (isExits())
+        {
+            XmlNode nodeLast = null;
+            XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+            foreach (XmlNode item_File in nodelist)
+            {
+                XmlAttributeCollection xAT = item_File.Attributes;
+                for (int i = 0; i < xAT.Count; i++)
+                {
+                    nodeLast = item_File;
+                }
+            }
+            XmlElement round_record = (XmlElement)nodeLast;
+            XmlAttribute attr_hint = round_record.GetAttributeNode(hintName);
+            int count = XmlConvert.ToInt32(attr_hint.Value);
+            return count;
+        }
+        return 0;
+    }
+
+
+    public void setRoundScore(int score,int rank)
     {
         XmlNode nodeLast = null;
         XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
@@ -848,8 +918,8 @@ public class Xmlprocess{
         saveData();
     }
 
-    //更新每回對戰紀錄
-    public void setCompeteScoreRecord(int score,int rank)
+    //對戰結束更新對戰紀錄
+    public void setCompeteScoreRecord(int hintLACount,int hintSTCount,int score,int rank)
     {
         if (isExits())
         {
@@ -866,7 +936,11 @@ public class Xmlprocess{
             XmlElement element = (XmlElement)nodeLastLearning;
             XmlAttribute attr_score = element.GetAttributeNode("score");
             XmlAttribute attr_endTime = element.GetAttributeNode("endTime");
+            XmlAttribute attr_hintLA = element.GetAttributeNode("hint_LA");
+            XmlAttribute attr_hintST = element.GetAttributeNode("hint_ST");
             XmlAttribute attr_rank = element.GetAttributeNode("rank");
+            attr_hintLA.Value = hintLACount.ToString();
+            attr_hintST.Value = hintSTCount.ToString();
             attr_score.Value = score.ToString();
             attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
             attr_rank.Value = rank.ToString();
