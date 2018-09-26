@@ -8,14 +8,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Login.unity
     guid: 8b27b599b94fedd4aa92f9c8d30a251f
-  - enabled: 1
-    path: Assets/Scenes/Home.unity
+  - enabled: 0
+    path: Assets/Scenes/_Home.unity
     guid: a1935d139bc668c4583993111d7bf108
   - enabled: 1
-    path: Assets/Scenes/LearningStage.unity
+    path: Assets/Scenes/Home.unity
     guid: b9dcd1fe622bd7347b4e550bff8f7099
   - enabled: 1
-    path: Assets/Scenes/PracticeArea.unity
+    path: Assets/Scenes/LearningArea.unity
     guid: 93379c6379325a948a5d0e774943d12d
   - enabled: 1
     path: Assets/Scenes/CompeteArea.unity

@@ -175,7 +175,7 @@ public class PunTurnManager : PunBehaviour
     }
 
     /// <summary>
-    /// Tells the TurnManager to select a question.
+    /// Tells the TurnManager to select a question.0:ID；1:Translate;2:English
     /// </summary>
     public void selectQues(string[] ques)//Select Question
     {
@@ -227,12 +227,12 @@ public class PunTurnManager : PunBehaviour
             option[randomindex] = option[i];
             option[i] = tmp;
         }
-
+        /*
         for (int i = 0; i < s_optionRand.Length; i++)
         {
             s_optionRand[i] = option[i];
-        }
-        TurnOption = s_optionRand;
+        }*/
+        TurnOption = option;
 
 
     }

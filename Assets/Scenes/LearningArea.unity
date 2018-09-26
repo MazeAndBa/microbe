@@ -717,7 +717,7 @@ Prefab:
     - target: {fileID: 114214888582684020, guid: df10668adf2f9814a8fba24cbd0e3d55,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: ChooseStage
+      value: Home
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: df10668adf2f9814a8fba24cbd0e3d55, type: 2}

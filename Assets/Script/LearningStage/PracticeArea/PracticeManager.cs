@@ -1,26 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using UnityEngine;
 
 public class PracticeManager {
     private string serverlink = "140.115.126.137/microbe/";
+    HttpWebRequest request;
     Xmlprocess xmlprocess;
-    int level;
     public Dictionary<int, string> E_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文單字
     public Dictionary<int, string> T_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文中譯
-    public PracticeManager(int level) {
+
+    public PracticeManager() {
         xmlprocess = new Xmlprocess();
-        this.level = level;
     }
 
-    public IEnumerator LoadVocabulary(string fileName,int currentLevel)
+    public IEnumerator LoadVocabulary(string fileName)
     {
-
         WWWForm phpform = new WWWForm();
-        phpform.AddField("chooseLevel", currentLevel);
+        phpform.AddField("action", fileName);
         WWW reg = new WWW(serverlink + fileName, phpform);
         yield return reg;
-        string[] tmp,tmp2;
+        string[] tmp, tmp2;
         if (reg.error == null)
         {
             tmp = reg.text.Split(';');//最後一個是空的
@@ -39,18 +40,18 @@ public class PracticeManager {
     }
 
     ///<summary>
-    ///將題目亂數重新排序
+    ///將題目亂數重新排序,並回傳前7個
     ///</summary>
     public int[] randomQuestion() {
 
         int randomindex = 0, dicLength = E_vocabularyDic.Count;
         int[] i_indexRand = new int[dicLength];
-        //亂數排列key(0~dicLength)
         for (int i = 0; i < dicLength; i++)
         {
             i_indexRand[i] = i;
         }
         int tmp =0;
+        //亂數排列key(0~dicLength)
         for (int i = 0; i < i_indexRand.Length; i++)
         {
             randomindex = UnityEngine.Random.Range(i, i_indexRand.Length- 1);
@@ -97,15 +98,15 @@ public class PracticeManager {
     /// 新增回合單字練習紀錄
     /// </summary>
     public void startLeaning() {
-        xmlprocess.createLearningRecord(level);
+        xmlprocess.createLearningRecord();
     }
 
     /// <summary>
     /// 更新單字總練習次數
     /// </summary>
     /// <param name="eventname">要更新的attribute</param>
-    public void setLearningTimes(string eventname) {
-        xmlprocess.setLearningCount(eventname, level);
+    public void setLearningCount(string eventname) {
+        xmlprocess.setLearningCount(eventname);
     }
 
     /// <summary>
@@ -113,6 +114,6 @@ public class PracticeManager {
     /// </summary>
     public void setLearningScore(int score)
     {
-        xmlprocess.setLearningScoreRecord(level,score);
+        xmlprocess.setLearningScoreRecord(score);
     }
 }

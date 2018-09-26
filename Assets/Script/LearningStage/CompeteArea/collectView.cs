@@ -16,6 +16,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     bool timerflag = false;
 
     int currentTime;
+    int cardCount;//卡牌數量
     string[] s_option;//該回合的選項
     string[] quesInfo, optionInfo;
     DateTime TurnStartTime;
@@ -30,7 +31,6 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
     #region 記錄資料
     Xmlprocess xmlprocess;
-    int currentLevel;
     #endregion
 
     public enum ResultType
@@ -42,10 +42,10 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
     void Start() {
         xmlprocess = new Xmlprocess();
-        currentLevel = Home.getLevel();
         this.turnManager = this.gameObject.AddComponent<PunTurnManager>();
         this.turnManager.TurnManagerListener = this;
         this.turnManager.TurnDuration = 15f;
+        cardCount = 16;
         RefreshConnectUI();
     }
 
@@ -141,7 +141,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 if (player[i].NickName == local.NickName) localRank = i+1;
                 ResultUIView.GetComponentsInChildren<Text>()[1].text +=(i+1)+"\t"+player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2")+"\n";
             }
-            xmlprocess.setCompeteScoreRecord(currentLevel, local.GetScore(), localRank);
+            xmlprocess.setCompeteScoreRecord(local.GetScore(), localRank);
             this.StartCoroutine(gameover(PlayerLists));
         }
 
@@ -202,24 +202,36 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     //建立卡牌
     void createCard()
     {
-        //int ans_pos = UnityEngine.Random.Range(0, s_option.Length);
+        int ans_pos = UnityEngine.Random.Range(0, cardCount-1);
         if (quesInfo != null && quesInfo.Length > 0)
         {
-            this.question.text = quesInfo[1];// ques_content
-            for (int i = 0; i < s_option.Length; i++)
+            this.question.text = quesInfo[1];// ques_content.
+
+            for (int i = 0, j = -1; i < cardCount; i++)
             {
-                if (s_option[i]!="") {
-                    GameObject cardObj = Instantiate(card);
-                    cardObj.gameObject.SetActive(true);
-                    optionInfo = s_option[i].Split(',');
+                GameObject cardObj = Instantiate(card);
+                cardObj.gameObject.SetActive(true);
+
+                do {//如果選項與答案相同,則跳過抓下一個選項
+                    j++;
+                    optionInfo = s_option[j].Split(',');
+                } while (optionInfo[1] == quesInfo[2]);
+
+                if (i == ans_pos)//如果當前位置為答案位置
+                {
+                    cardObj.GetComponentInChildren<Text>().text = quesInfo[2];
+                    cardObj.name = quesInfo[2];
+                }
+                else
+                {
                     cardObj.GetComponentInChildren<Text>().text = optionInfo[1];
                     cardObj.name = optionInfo[1];
                     //Debug.Log("options: " + optionInfo[1]);
+                }
                     cardObj.GetComponent<Button>().onClick.AddListener(delegate () { MakeTurn(cardObj.name); });
                     cardObj.transform.SetParent(cardgroup.transform);
-                    cardObj.transform.localPosition = new Vector3(-350 + (i % 4) * 160, (i / 4) * -150, 0);
+                    cardObj.transform.localPosition = new Vector3(-350 + (i % 4) * 160, (i / 4) * -150+150, 0);
                     cardObj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                }
             }
         }
     }
@@ -454,8 +466,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (PhotonNetwork.room.PlayerCount > 1)
         {
             xmlprocess.ScceneHistoryRecord("StartCompete", DateTime.Now.ToString("HH:mm:ss"));
-            xmlprocess.setCompeteCount("compete_count",currentLevel);
-            xmlprocess.createCompeteRecord(currentLevel);
+            xmlprocess.setCompeteCount("compete_count");
+            xmlprocess.createCompeteRecord();
             this.photonView.RPC("GameStart", PhotonTargets.All);
         }
         else

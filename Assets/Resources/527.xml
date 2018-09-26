@@ -1,45 +1,51 @@
 <Loadfile>
   <User ID="527" name="527" level="1" sex="1" money="100">
     <current_icon icon="" />
-    <learning>
-      <level0 review_count="1" learning_count="0" highscore="0" />
-      <level1 review_count="1" learning_count="1" highscore="9992" />
-      <level2 review_count="0" learning_count="0" highscore="0" />
-    </learning>
-    <compete>
-      <level0 compete_count="0" highscore="0" update_count="0" />
-      <level1 compete_count="0" highscore="0" update_count="0" />
-      <level2 compete_count="0" highscore="0" update_count="0" />
-    </compete>
+    <learning review_count="1" learning_count="2" highscore="75" />
+    <compete compete_count="3" highscore="49" update_count="0" />
   </User>
   <rank_history>
-    <rank_record level="" highscore="" rank="" updateTime="" />
+    <rank_record highscore="" rank="" updateTime="" />
   </rank_history>
   <touch_history>
     <touch_achieve count="2" />
-    <touch_leaderboard>
-      <touch_level0 count="0" />
-      <touch_level1 count="0" />
-      <touch_level2 count="0" />
-    </touch_leaderboard>
+    <touch_leaderboard count="0" />
   </touch_history>
-  <log_record day="2018-09-20">
+  <log_record day="2018-09-26">
     <learning_history>
-      <learning_record level="1" startTime="13: 43:31" score="9992" endTime="13: 44:40" />
+      <learning_record startTime="15: 15:29" score="0" endTime="" />
+      <learning_record startTime="15: 15:29" score="75" endTime="15: 16:05" />
     </learning_history>
-    <compete_history />
+    <compete_history>
+      <compete_record startTime="15: 16:47" endTime="15: 17:32" score="0" rank="2">
+        <round_record ques_id="3" ans_state="wrong" duration="10" score="0" rank="2" />
+        <round_record ques_id="9" ans_state="wrong" duration="6" score="0" rank="2" />
+        <round_record ques_id="15" ans_state="wrong" duration="6" score="0" rank="2" />
+        <round_record ques_id="23" ans_state="wrong" duration="5" score="0" rank="2" />
+        <round_record ques_id="25" ans_state="wrong" duration="4" score="0" rank="2" />
+      </compete_record>
+      <compete_record startTime="15: 48:30" endTime="" score="0" rank="0">
+        <round_record ques_id="2" ans_state="none" duration="31" score="-5" rank="2" />
+      </compete_record>
+      <compete_record startTime="15: 51:01" endTime="15: 51:44" score="49" rank="1">
+        <round_record ques_id="1" ans_state="correct" duration="4" score="6" rank="2" />
+        <round_record ques_id="17" ans_state="correct" duration="2" score="10" rank="1" />
+        <round_record ques_id="21" ans_state="correct" duration="6" score="22" rank="1" />
+        <round_record ques_id="22" ans_state="correct" duration="5" score="36" rank="1" />
+        <round_record ques_id="24" ans_state="correct" duration="2" score="49" rank="1" />
+      </compete_record>
+    </compete_history>
     <scene_history>
-      <scene_record scence="Login" startTime="13:43:00" />
-      <scene_record scence="Medium" startTime="13:43:17" />
-      <scene_record scence="Medium_Learning" startTime="13:43:23" />
-      <scene_record scence="Easy" startTime="13:45:11" />
-      <scene_record scence="Easy_Learning" startTime="13:45:13" />
-      <scene_record scence="Medium" startTime="13:45:22" />
-      <scene_record scence="Medium_Compete" startTime="13:45:22" />
-      <scene_record scence="WaitingCompete" startTime="13:45:29" />
-      <scene_record scence="Login" startTime="14:04:20" />
-      <scene_record scence="Medium" startTime="14:04:21" />
-      <scene_record scence="Medium_Compete" startTime="14:04:22" />
+      <scene_record scence="Login" startTime="15:15:17" />
+      <scene_record scence="Learning" startTime="15:15:19" />
+      <scene_record scence="Compete" startTime="15:16:40" />
+      <scene_record scence="StartCompete" startTime="15:16:47" />
+      <scene_record scence="Login" startTime="15:48:13" />
+      <scene_record scence="Compete" startTime="15:48:20" />
+      <scene_record scence="StartCompete" startTime="15:48:30" />
+      <scene_record scence="Login" startTime="15:50:39" />
+      <scene_record scence="Compete" startTime="15:50:41" />
+      <scene_record scence="StartCompete" startTime="15:51:01" />
     </scene_history>
   </log_record>
 </Loadfile>

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PracticeView : MonoBehaviour {
 
     PracticeManager pm;
-    int currentLevel,vocabularyID;
+    int vocabularyID,totalQuesNum;
     static int p_score;
     public static bool showAchieve;
     Text text_score;
@@ -35,11 +35,11 @@ public class PracticeView : MonoBehaviour {
     #endregion
 
     void Start () {
-        currentLevel = Home.getLevel();
-        pm = new PracticeManager(currentLevel);
+        pm = new PracticeManager();
         text_score = GetComponentsInChildren<Text>()[1];
         p_score = 0;
         vocabularyID = 0;
+        totalQuesNum = 7;//練習題數
         showAchieve = false;
         StartCoroutine(showReviewVocabulary());
         UIManager.Instance.CloseAllPanel();
@@ -66,9 +66,9 @@ public class PracticeView : MonoBehaviour {
     }
     
     IEnumerator showReviewVocabulary(){
-        pm.setLearningTimes("review_count");//更新單字瀏覽次數
-        StartCoroutine(pm.LoadVocabulary("loadVocabulary.php", currentLevel));
-        yield return new WaitForSeconds(0.1f);
+        pm.setLearningCount("review_count");//更新單字瀏覽次數
+        StartCoroutine(pm.LoadVocabulary("loadVocabulary"));
+        yield return new WaitForSeconds(0.2f);
         changeVocabularyID(0);
     }
 
@@ -104,6 +104,7 @@ public class PracticeView : MonoBehaviour {
 
     void showPracticeUI()
     {
+        pm.startLeaning();//創建單字練習紀錄
         btn_option = new Button[4];
         UIManager.Instance.TogglePanel("P_ReviewUI",false);
         if (!UIManager.Instance.IsUILive("P_PracticeUI"))
@@ -123,7 +124,6 @@ public class PracticeView : MonoBehaviour {
         btn_option[1].onClick.AddListener(delegate () { StartCoroutine(compareAns(1, quesID)); });
         btn_option[2].onClick.AddListener(delegate () { StartCoroutine(compareAns(2, quesID)); });
         btn_option[3].onClick.AddListener(delegate () { StartCoroutine(compareAns(3, quesID)); });
-        pm.startLeaning();//創建單字練習紀錄
         initialQuestion();
     }
 
@@ -136,7 +136,7 @@ public class PracticeView : MonoBehaviour {
     void showPracticeQues(int quesID) {//更新每回合的題目與選項
         //Debug.Log("題號"+ quesID);
         playAudio(randomQuestion[quesID]);
-        text_totalQues.text = (quesID+1).ToString()+"/"+ pm.E_vocabularyDic.Count;
+        text_totalQues.text = (quesID+1).ToString()+"/"+ totalQuesNum;
         text_Question.text = pm.E_vocabularyDic[randomQuestion[quesID]];
         showPracticeOption(randomQuestion[quesID]);
     }
@@ -242,7 +242,7 @@ public class PracticeView : MonoBehaviour {
         userAns = "";
 
         playAudio(randomQuestion[quesID]);
-        text_totalQues.text = (quesID + 1).ToString() + "/" + pm.T_vocabularyDic.Count;
+        text_totalQues.text = (quesID + 1).ToString() + "/" + totalQuesNum;
         text_Question.text = pm.T_vocabularyDic[randomQuestion[quesID]];
         for (int i = 0; i < pm.E_vocabularyDic[randomQuestion[quesID]].Length; i++) {
             text_quescontent.text += "_ ";
@@ -310,7 +310,7 @@ public class PracticeView : MonoBehaviour {
         if (userAns == pm.E_vocabularyDic[randomQuestion[quesID]])
         {
             StartCoroutine(showfeedback(0));
-            p_score += (int)(p_score *(currentLevel+0.5)) + 30;
+            p_score += (int)(p_score *0.1);
             text_score.text = p_score.ToString();
 
         }
@@ -327,12 +327,12 @@ public class PracticeView : MonoBehaviour {
 
 
     IEnumerator ComposeEnd() {
-        pm.setLearningTimes("learning_count");//更新單字練習次數
+        pm.setLearningCount("learning_count");//更新單字練習次數
         pm.setLearningScore(p_score);//紀錄此次單字練習成績
         yield return new WaitForSeconds(0.1f);
         showAchieve = true;
         UIManager.Instance.CloseAllPanel();
-        SceneManager.LoadScene("ChooseStage");
+        SceneManager.LoadScene("Home");
     }
     #endregion
 
@@ -341,7 +341,8 @@ public class PracticeView : MonoBehaviour {
     {
         if (_quesID == quesID)
         {
-            if (quesID >= pm.E_vocabularyDic.Count - 1)
+            //if (quesID >= pm.E_vocabularyDic.Count - 1)
+            if (quesID >= totalQuesNum-1)
             {
                 switch (functionName)
                 {

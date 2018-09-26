@@ -607,10 +607,10 @@ public class Xmlprocess{
     }
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    public bool getLearningState(int level) {
+    public bool getLearningState() {
         if (isExits())
         {
-            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level" + level);
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning");
             XmlElement element = (XmlElement)node;
             XmlAttribute attribute = element.GetAttributeNode("learning_count");
             int learningcount = XmlConvert.ToInt32(attribute.Value);
@@ -625,11 +625,11 @@ public class Xmlprocess{
     /// 更新單字瀏覽與學習次數紀錄
     /// </summary>
     /// <param name="attributeName"></param>
-    public void setLearningCount(string attributeName, int level)
+    public void setLearningCount(string attributeName)
     {
         if (isExits())
         {
-            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level"+level);
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning");
             XmlElement element = (XmlElement)node;
             XmlAttribute attribute = element.GetAttributeNode(attributeName);
             int count = XmlConvert.ToInt32(attribute.Value);
@@ -640,7 +640,7 @@ public class Xmlprocess{
     }
 
     //新增每回單字學習紀錄
-    public void createLearningRecord(int level)
+    public void createLearningRecord()
     {
         XmlNode nodeLast = null;
         XmlElement learning_history = null;
@@ -682,7 +682,6 @@ public class Xmlprocess{
             XmlElement learning_record = xmlDoc.CreateElement("learning_record");
             learning_history.AppendChild(learning_record);
 
-            learning_record.SetAttribute("level", level.ToString());
             learning_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
             learning_record.SetAttribute("score", "0");
             learning_record.SetAttribute("endTime", "");
@@ -693,7 +692,7 @@ public class Xmlprocess{
 
 
     //更新每回單字學習紀錄
-    public void setLearningScoreRecord(int level,int score)
+    public void setLearningScoreRecord(int score)
     {
         if (isExits())
         {
@@ -712,14 +711,14 @@ public class Xmlprocess{
             XmlAttribute attr_endTime = element.GetAttributeNode("endTime");
             attr_score.Value = score.ToString();
             attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
-            updateHighScore(level, score);
+            updateHighScore(score);
             saveData();
         }
     }
 
-    void updateHighScore(int level,int score)
+    void updateHighScore(int score)
     {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning/level" + level);
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("highscore");    
         int highscore = XmlConvert.ToInt32(attribute.Value);
@@ -734,11 +733,11 @@ public class Xmlprocess{
     /// 更新對戰次數紀錄
     /// </summary>
     /// <param name="attributeName"></param>
-    public void setCompeteCount(string attributeName, int level)
+    public void setCompeteCount(string attributeName)
     {
         if (isExits())
         {
-            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete/level" + level);
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete");
             XmlElement element = (XmlElement)node;
             XmlAttribute attribute = element.GetAttributeNode(attributeName);
             int count = XmlConvert.ToInt32(attribute.Value);
@@ -749,7 +748,7 @@ public class Xmlprocess{
     }
 
     //新增一筆對戰紀錄
-    public void createCompeteRecord(int level)
+    public void createCompeteRecord()
     {
         XmlNode nodeLast = null;
         XmlElement compete_history = null;
@@ -791,7 +790,6 @@ public class Xmlprocess{
             XmlElement compete_record = xmlDoc.CreateElement("compete_record");
             compete_history.AppendChild(compete_record);
 
-            compete_record.SetAttribute("level", level.ToString());
             compete_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
             compete_record.SetAttribute("endTime", "");
             compete_record.SetAttribute("score", "0");
@@ -851,7 +849,7 @@ public class Xmlprocess{
     }
 
     //更新每回對戰紀錄
-    public void setCompeteScoreRecord(int level, int score,int rank)
+    public void setCompeteScoreRecord(int score,int rank)
     {
         if (isExits())
         {
@@ -872,14 +870,14 @@ public class Xmlprocess{
             attr_score.Value = score.ToString();
             attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
             attr_rank.Value = rank.ToString();
-            updateCompeteHighScore(level, score);
+            updateCompeteHighScore(score);
             saveData();
         }
     }
 
-    void updateCompeteHighScore(int level, int score)
+    void updateCompeteHighScore(int score)
     {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete/level" + level);
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete" );
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("highscore");
         int highscore = XmlConvert.ToInt32(attribute.Value);
@@ -894,7 +892,7 @@ public class Xmlprocess{
     ///成就UI點擊次數
     /// </summary>
     /// <param name="attributeName"></param>
-    public void setTouchCount()
+    public void setTouchACount()
     {
         if (isExits())
         {
@@ -912,11 +910,11 @@ public class Xmlprocess{
     ///排行榜UI點擊次數
     /// </summary>
     /// <param name="attributeName"></param>
-    public void setTouchCount(int level)
+    public void setTouchLCount()
     {
         if (isExits())
         {
-            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/touch_history/touch_leaderboard/touch_level" + level);
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/touch_history/touch_leaderboard");
             XmlElement element = (XmlElement)node;
             XmlAttribute attribute = element.GetAttributeNode("count");
             int count = XmlConvert.ToInt32(attribute.Value);
@@ -1002,15 +1000,15 @@ public class Xmlprocess{
     }
 
     /// <summary>
-    ///Get 各難易度的學習狀況
+    ///Get學習狀況
     /// </summary>
-    public string[] getAchieveState(int level)
+    public string[] getAchieveState()
     {
         if (isExits())
         {
             string[] _tmp = new string[4];
-            XmlNode learningNode = xmlDoc.SelectSingleNode("Loadfile/User/learning/level"+level);
-            XmlNode competeNode = xmlDoc.SelectSingleNode("Loadfile/User/compete/level" + level);
+            XmlNode learningNode = xmlDoc.SelectSingleNode("Loadfile/User/learning");
+            XmlNode competeNode = xmlDoc.SelectSingleNode("Loadfile/User/compete");
             XmlElement learningElement = (XmlElement)learningNode;
             XmlElement competeElement = (XmlElement)competeNode;
             XmlAttribute learning_highscore = learningElement.GetAttributeNode("highscore");

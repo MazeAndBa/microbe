@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Achievement : MonoBehaviour {
 
-    public GameObject[] levelObj = new GameObject[3];
+    public GameObject levelObj;
     Button btn_close;
     Xmlprocess xmlprocess;
 
@@ -14,18 +14,16 @@ public class Achievement : MonoBehaviour {
         xmlprocess = new Xmlprocess();
         btn_close = GetComponentsInChildren<Button>()[0];
         btn_close.onClick.AddListener(closeAchieveUI);
-        for (int j = 0; j < 3; j++)
+        _tmp = xmlprocess.getAchieveState();
+        for (int i = 0; i < _tmp.Length; i++)
         {
-            _tmp = xmlprocess.getAchieveState(j);
-            for (int i = 0; i < _tmp.Length; i++)
-            {
-                levelObj[j].GetComponentsInChildren<Text>()[i].text = _tmp[i];
-            }
+            levelObj.GetComponentsInChildren<Text>()[i].text = _tmp[i];
         }
+
     }
 
     void closeAchieveUI() {
-        xmlprocess.setTouchCount();
+        xmlprocess.setTouchACount();
         gameObject.SetActive(false);
 
     }

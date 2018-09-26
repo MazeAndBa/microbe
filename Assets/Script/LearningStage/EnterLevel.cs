@@ -9,30 +9,14 @@ public class EnterLevel : MonoBehaviour {
 
     Button btn_practice, btn_compete;
     Xmlprocess xmlprocess;
-    int currentLevel;
-    string levelName = "";
 
     void Start () {
-        currentLevel = Home.getLevel();
         xmlprocess = new Xmlprocess();
-        switch (currentLevel)
-        {
-            case 0:
-                levelName = "Easy";
-                break;
-            case 1:
-                levelName = "Medium";
-                break;
-            case 2:
-                levelName = "Hard";
-                break;
-        }
-
         btn_practice = GetComponentsInChildren<Button>()[0];
         btn_compete = GetComponentsInChildren<Button>()[1];
 
         btn_practice.onClick.AddListener(goPractice);
-        if (!xmlprocess.getLearningState(currentLevel))
+        if (!xmlprocess.getLearningState())
         {
             btn_compete.interactable = false;
             btn_compete.image.color = Color.gray;
@@ -46,14 +30,14 @@ public class EnterLevel : MonoBehaviour {
     void goPractice() {
 
         //xmlprocess.New_timeHistoryRecord(levelName + "_Practice", System.DateTime.Now.ToString("HH-mm-ss"));
-        xmlprocess.ScceneHistoryRecord(levelName + "_Learning", DateTime.Now.ToString("HH:mm:ss"));
+        xmlprocess.ScceneHistoryRecord( "Learning", DateTime.Now.ToString("HH:mm:ss"));
         SceneManager.LoadScene("LearningArea");
     }
 
     void goCompete()
     {
         //xmlprocess.New_timeHistoryRecord(levelName + "_Compete", System.DateTime.Now.ToString("HH-mm-ss"));
-        xmlprocess.ScceneHistoryRecord(levelName + "_Compete", DateTime.Now.ToString("HH:mm:ss"));
+        xmlprocess.ScceneHistoryRecord( "Compete", DateTime.Now.ToString("HH:mm:ss"));
         SceneManager.LoadScene("CompeteArea");
     }
 
