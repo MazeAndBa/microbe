@@ -1045,34 +1045,6 @@ public class Xmlprocess{
     }
 
 
-    //0830場景離開紀錄
-    public void ExitSceneRecord(string sceneName)
-    {
-        if (isExits())
-        {
-            XmlNode nodeLast_Previous = null;
-            string tmp_sceneName= "";
-            // 抓取最近一次進入的場景紀錄
-            XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//scene_record");
-
-            foreach (XmlNode item_File_Previous in nodelist_Previous)
-            {
-                XmlAttributeCollection xAT2 = item_File_Previous.Attributes;
-                for (int j = 0; j < xAT2.Count; j++)
-                {
-                    if (xAT2.Item(j).Name == "scene") tmp_sceneName = xAT2.Item(j).Value;
-                    nodeLast_Previous = item_File_Previous;
-                }
-            }
-            if (tmp_sceneName == sceneName)
-            {
-                XmlElement elementLast_Previous = (XmlElement)nodeLast_Previous;
-                elementLast_Previous.SetAttribute("endTime", DateTime.Now.ToString("HH:mm:ss"));
-                saveData();
-            }
-        }
-    }
-
     /// <summary>
     ///Get學習狀況
     /// </summary>

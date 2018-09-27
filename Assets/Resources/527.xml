@@ -1,31 +1,36 @@
 <Loadfile>
   <User ID="527" name="527" level="1" sex="1" money="100">
     <current_icon icon="" />
-    <learning review_count="1" learning_count="1" highscore="142" />
+    <learning review_count="1" learning_count="1" highscore="30" />
     <compete compete_count="1" highscore="0" update_count="0" />
   </User>
   <rank_history>
     <rank_record highscore="" rank="" updateTime="" />
   </rank_history>
   <touch_history>
-    <touch_achieve count="0" />
+    <touch_achieve count="1" />
     <touch_leaderboard count="0" />
   </touch_history>
-  <log_record day="2018-09-26">
+  <log_record day="2018-09-27">
     <learning_history>
-      <learning_record startTime="17: 30:31" score="142" endTime="17: 30:51" />
+      <learning_record startTime="12: 17:38" score="30" endTime="12: 19:35" />
     </learning_history>
     <compete_history>
-      <compete_record startTime="17: 36:29" endTime="" hint_LA="0" hint_ST="0" score="0" rank="0">
-        <round_record ques_id="1" ans_state="correct" duration="10" hint_LA="1" hint_ST="0" score="14" rank="1" />
-        <round_record ques_id="3" ans_state="" duration="0" hint_LA="0" hint_ST="2" score="0" rank="0" />
+      <compete_record startTime="12: 20:48" endTime="12: 22:08" hint_LA="0" hint_ST="0" score="-25" rank="2">
+        <round_record ques_id="1" ans_state="none" duration="49" hint_LA="0" hint_ST="0" score="-5" rank="2" />
+        <round_record ques_id="3" ans_state="none" duration="5" hint_LA="0" hint_ST="0" score="-10" rank="2" />
+        <round_record ques_id="5" ans_state="none" duration="21" hint_LA="0" hint_ST="0" score="-15" rank="2" />
+        <round_record ques_id="8" ans_state="none" duration="37" hint_LA="0" hint_ST="0" score="-20" rank="2" />
+        <round_record ques_id="9" ans_state="none" duration="54" hint_LA="0" hint_ST="0" score="-25" rank="2" />
       </compete_record>
     </compete_history>
     <scene_history>
-      <scene_record scence="Login" startTime="17:30:24" />
-      <scene_record scence="Learning" startTime="17:30:25" />
-      <scene_record scence="Compete" startTime="17:35:54" />
-      <scene_record scence="StartCompete" startTime="17:36:29" />
+      <scene_record scence="Login" startTime="12:16:43" />
+      <scene_record scence="Learning" startTime="12:17:13" />
+      <scene_record scence="Compete" startTime="12:19:41" />
+      <scene_record scence="StartCompete" startTime="12:20:48" />
+      <scene_record scence="Login" startTime="13:41:45" />
+      <scene_record scence="Login" startTime="14:19:11" />
     </scene_history>
   </log_record>
 </Loadfile>

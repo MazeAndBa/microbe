@@ -217,7 +217,7 @@ public class PunTurnManager : PunBehaviour
         TurnOption = s_optionRand;
         */
         int randomindex = 0;
-        string[] s_optionRand = new string[option.Length];
+        //string[] s_optionRand = new string[option.Length];
         string tmp = "";
 
         for (int i = 0; i < option.Length-1; i++)

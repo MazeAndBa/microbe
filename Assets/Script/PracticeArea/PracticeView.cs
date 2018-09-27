@@ -78,8 +78,8 @@ public class PracticeView : MonoBehaviour {
         {
             if (pm.E_vocabularyDic.ContainsKey(vocabularyID + count))
             {
+                playAudio(vocabularyID);
                 btn_gotonext.gameObject.SetActive(false);
-
                 vocabularyID += count;
                 text_English.text = pm.E_vocabularyDic[vocabularyID];
                 text_Translation.text = pm.T_vocabularyDic[vocabularyID];

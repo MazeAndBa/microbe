@@ -177,6 +177,7 @@
     <Compile Include="Assets\Script\PersonalInfo.cs" />
     <Compile Include="Assets\Script\PracticeArea\PracticeManager.cs" />
     <Compile Include="Assets\Script\PracticeArea\PracticeView.cs" />
+    <Compile Include="Assets\Script\UpdateSQL.cs" />
     <Compile Include="Assets\XML\Constants.cs" />
     <Compile Include="Assets\XML\XmlCreate.cs" />
     <Compile Include="Assets\XML\Xmlprocess.cs" />
