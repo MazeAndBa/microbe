@@ -5,27 +5,31 @@ using UnityEngine.UI;
 
 public class Achievement : MonoBehaviour {
 
-    public GameObject levelObj;
-    Button btn_close;
+    public GameObject LearningState,CompeteState,LearningBadge, CompeteBadge,badgeObj;
+    public Button btn_close;
+    string[] s_LearningState, s_CompeteState;
+
     Xmlprocess xmlprocess;
 
-    void Start () {
-        string[] _tmp;
+    private void Awake()
+    {
         xmlprocess = new Xmlprocess();
-        btn_close = GetComponentsInChildren<Button>()[0];
+        s_LearningState = xmlprocess.getAchieveLearningState();
+        s_CompeteState = xmlprocess.getAchieveCompeteState();
+    }
+    void Start () {
         btn_close.onClick.AddListener(closeAchieveUI);
-        _tmp = xmlprocess.getAchieveState();
-        for (int i = 0; i < _tmp.Length; i++)
+        for (int i = 0; i < s_LearningState.Length; i++)
         {
-            levelObj.GetComponentsInChildren<Text>()[i].text = _tmp[i];
+            LearningState.GetComponentsInChildren<Text>()[i].text = s_LearningState[i];
+            LearningState.GetComponentsInChildren<Text>()[i].text = s_CompeteState[i];
         }
-
     }
 
     void closeAchieveUI() {
         xmlprocess.setTouchACount();
         gameObject.SetActive(false);
-
     }
+
 
 }

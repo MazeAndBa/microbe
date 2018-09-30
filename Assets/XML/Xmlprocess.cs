@@ -12,9 +12,9 @@ public class Xmlprocess{
 	public string Strtime = (System.DateTime.Now).ToString();
 	public static string path, _FileName;
 
-    //<summary>
-    //initial file,search the same xml file with the same userID
-    //</summary>
+    ///<summary>
+    ///initial file,search the same xml file with the same userID
+    ///</summary>
     public Xmlprocess(string filename) { //database initial
 		if (Application.platform == RuntimePlatform.Android) {
 			path = Constants.DATABASE_PATH ;
@@ -52,11 +52,12 @@ public class Xmlprocess{
 	{
 		xmlDoc.Save(path + _FileName);
 	}
+
     //---------------------------------個人狀態--------------------------------------
 
-    //<summary>
-    //When registering,initial set userInfo.
-    //</summary>
+    ///<summary>
+    ///When registering,initial set userInfo.
+    ///</summary>
     public void setUserInfo(string []userInfo){
         if (isExits())
         {
@@ -91,22 +92,6 @@ public class Xmlprocess{
             return info;
         }
         return null;
-    }
-
-    //<summary>
-    //record competeInfo
-    //</summary>
-    public void setEnemy(string enemy_id,string searchtime,string starttime) {
-        if (isExits()) {
-                XmlNode competenode = xmlDoc.SelectSingleNode("Loadfile/User/compete");
-                XmlElement compete = (XmlElement)competenode;
-                XmlElement enemyList = xmlDoc.CreateElement("enemy");
-                enemyList.SetAttribute("enemy_id", enemy_id);
-                enemyList.SetAttribute("searchTime", searchtime);
-                enemyList.SetAttribute("startTime", starttime);
-                compete.AppendChild(enemyList);
-                 saveData();
-        }
     }
 
     public int getmoney(int money, bool cost) {
@@ -469,108 +454,6 @@ public class Xmlprocess{
 		return 0 ;
 	}
 
-	//初次建立Log紀錄
-	public void timeHistoryRecord(string scence) {
-		if (isExits ()) {
-			XmlNode nodeLast = null;
-			XmlNode nodeLast_Previous = null;
-
-			// Find the previous scence start time ********************************************************************************************
-			XmlNodeList nodelist_Previous = xmlDoc.SelectNodes ("//time_history_record");
-			foreach (XmlNode item_File_Previous in nodelist_Previous) {
-				XmlAttributeCollection xAT2 = item_File_Previous.Attributes;
-				for (int j = 0; j < xAT2.Count; j++) {
-					nodeLast_Previous = item_File_Previous;
-				}					
-			}
-			XmlElement elementLast_Previous = (XmlElement)nodeLast_Previous;
-			XmlAttribute attributeLast_Previous = elementLast_Previous.GetAttributeNode ("startTime");
-			XmlAttribute attributeLast_Duration = elementLast_Previous.GetAttributeNode ("duration");
-
-			DateTime nowTime = Convert.ToDateTime (DateTime.Now.ToString ("HH:mm:ss"));
-			DateTime getTime = Convert.ToDateTime (attributeLast_Previous.Value.ToString ());
-
-			System.TimeSpan diff = nowTime.Subtract (getTime);
-			int timerNum = (int)diff.TotalSeconds;
-
-			attributeLast_Duration.Value = (timerNum / 60).ToString () + ":" + (timerNum % 60).ToString ();
-			// *********************************************************************************************************************************************
-			
-			XmlNodeList nodelist = xmlDoc.SelectNodes ("//time_history_day");
-			foreach (XmlNode item_File in nodelist) {
-				XmlAttributeCollection xAT = item_File.Attributes;
-				for (int i = 0; i < xAT.Count; i++) {
-					nodeLast = item_File;
-				}					
-			}
-
-			XmlNode node = xmlDoc.SelectSingleNode ("Loadfile/log_record/time_history");
-			XmlElement element = (XmlElement)node;			
-			XmlElement elementLast = (XmlElement)nodeLast;
-			XmlAttribute attributeLast = elementLast.GetAttributeNode ("day");
-
-			if (attributeLast.Value.ToString () != DateTime.Now.ToString ("yyyy-MM-dd")) {			
-				XmlElement time_history_day = xmlDoc.CreateElement ("time_history_day");
-				time_history_day.SetAttribute ("day", DateTime.Now.ToString ("yyyy-MM-dd"));	
-				element.AppendChild (time_history_day);
-
-				//Refind the last node
-				/*
-				 * nodelist = xmlDoc.SelectNodes ("//time_history_day");
-					foreach (XmlNode item_File in nodelist) {
-						XmlAttributeCollection xAT = item_File.Attributes;
-						for (int i = 0; i < xAT.Count; i++) {
-							nodeLast = item_File;
-						}					
-					}
-				*/			
-				elementLast = (XmlElement)nodeLast;
-			}	
-
-			XmlElement time_history_record = xmlDoc.CreateElement ("time_history_record");
-			elementLast.AppendChild (time_history_record);
-			time_history_record.SetAttribute ("scence", scence);
-			time_history_record.SetAttribute ("startTime", DateTime.Now.ToString ("HH:mm:ss"));
-			time_history_record.SetAttribute ("duration", "");
-
-			saveData();
-			
-		}
-	}
-
-    
-	//Log紀錄
-	public void New_timeHistoryRecord(string scence, string starttime){
-		XmlNode nodeLast = null;
-		if (isExits()) {
-			XmlNodeList nodelist = xmlDoc.SelectNodes("//time_history_day");
-			foreach (XmlNode item_File in nodelist) {
-				XmlAttributeCollection xAT = item_File.Attributes;
-				for (int i = 0 ; i < xAT.Count ; i++) {
-					nodeLast = item_File;
-				}					
-			}
-
-			XmlNode node = xmlDoc.SelectSingleNode ("Loadfile/log_record/time_history");
-			XmlElement element = (XmlElement)node;
-			XmlElement elementLast = (XmlElement)nodeLast;
-			XmlAttribute attributeLast = elementLast.GetAttributeNode ("day");
-					
-			if (attributeLast.Value.ToString () != DateTime.Now.ToString ("yyyy-MM-dd")) {			
-				XmlElement time_history_day = xmlDoc.CreateElement ("time_history_day");
-				time_history_day.SetAttribute ("day", DateTime.Now.ToString ("yyyy-MM-dd"));	
-				element.AppendChild (time_history_day);
-				elementLast = (XmlElement)nodeLast;
-			}
-
-			XmlElement time_history_record = xmlDoc.CreateElement("time_history_record");;
-			elementLast.AppendChild(time_history_record);
-			time_history_record.SetAttribute("scence", scence);
-			time_history_record.SetAttribute("startTime", starttime);
-			saveData();
-		}
-	}
-
     public void ExitTimeHistoryRecord(string endTime)
     {
         if (isExits())
@@ -606,7 +489,14 @@ public class Xmlprocess{
         }
     }
 
+
+
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    /// <summary>
+    /// 取得目前個人學習區練習次數
+    /// </summary>
+    /// <returns></returns>
     public bool getLearningState() {
         if (isExits())
         {
@@ -620,11 +510,10 @@ public class Xmlprocess{
         return false;
     }
 
-
     /// <summary>
-    /// 更新單字瀏覽與學習次數紀錄
+    /// 更新單字瀏覽與練習次數
     /// </summary>
-    /// <param name="attributeName"></param>
+    /// <param name="attributeName">review或是learning</param>
     public void setLearningCount(string attributeName)
     {
         if (isExits())
@@ -639,7 +528,9 @@ public class Xmlprocess{
         }
     }
 
-    //新增每回單字學習紀錄
+    /// <summary>
+    /// 新增每回單字學習紀錄
+    /// </summary>
     public void createLearningRecord()
     {
         XmlNode nodeLast = null;
@@ -690,8 +581,9 @@ public class Xmlprocess{
         }
     }
 
-
-    //更新每回單字學習紀錄
+    /// <summary>
+    /// 更新每回單字學習紀錄
+    /// </summary>
     public void setLearningScoreRecord(int score)
     {
         if (isExits())
@@ -728,9 +620,10 @@ public class Xmlprocess{
         saveData();
     }
 
+    /*===============================---同儕對戰區的紀錄---===============================*/
 
     /// <summary>
-    /// 更新對戰次數紀錄
+    /// 更新個人對戰的次數
     /// </summary>
     /// <param name="attributeName"></param>
     public void setCompeteCount(string attributeName)
@@ -747,7 +640,9 @@ public class Xmlprocess{
         }
     }
 
-    //新增一筆對戰紀錄
+    /// <summary>
+    /// 新增一筆對戰紀錄
+    /// </summary>
     public void createCompeteRecord()
     {
         XmlNode nodeLast = null;
@@ -800,126 +695,10 @@ public class Xmlprocess{
         }
     }
 
-    //新增每回合的對戰紀錄
-    public void createRoundRecord(string quesID)
-    {
-        XmlNode nodeLast = null;
-        if (isExits())
-        {
-
-            XmlNodeList nodelist = xmlDoc.SelectNodes("//compete_record");
-            foreach (XmlNode item_File in nodelist)
-            {
-                XmlAttributeCollection xAT = item_File.Attributes;
-                for (int i = 0; i < xAT.Count; i++)
-                {
-                    nodeLast = item_File;
-                }
-            }
-
-            XmlElement compete_record = (XmlElement)nodeLast;
-            XmlElement round_record = xmlDoc.CreateElement("round_record");
-            compete_record.AppendChild(round_record);
-            round_record.SetAttribute("ques_id", quesID.ToString());//題號
-            round_record.SetAttribute("ans_state", "");//作答正確或錯誤
-            round_record.SetAttribute("duration", "0");//作答時間
-            round_record.SetAttribute("hint_LA", "0");//提示再聽一次的次數
-            round_record.SetAttribute("hint_ST", "0");//提示中譯的次數
-            round_record.SetAttribute("score", "0");//作答時間
-            round_record.SetAttribute("rank", "0");//當回合的排名
-            saveData();
-        }
-    }
-
-    public void setRoundAns(string ans_state, int duration)
-    {
-        XmlNode nodeLast = null;
-        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
-        foreach (XmlNode item_File in nodelist)
-        {
-            XmlAttributeCollection xAT = item_File.Attributes;
-            for (int i = 0; i < xAT.Count; i++)
-            {
-                nodeLast = item_File;
-            }
-        }
-        XmlElement round_record = (XmlElement)nodeLast;
-        XmlAttribute attr_ansState = round_record.GetAttributeNode("ans_state");
-        XmlAttribute attr_duration = round_record.GetAttributeNode("duration");
-        attr_ansState.Value = ans_state;
-        attr_duration.Value = duration.ToString();
-
-        saveData();
-    }
-
-
-    public void setRoundHintcount(string hintName)
-    {
-        XmlNode nodeLast = null;
-        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
-        foreach (XmlNode item_File in nodelist)
-        {
-            XmlAttributeCollection xAT = item_File.Attributes;
-            for (int i = 0; i < xAT.Count; i++)
-            {
-                nodeLast = item_File;
-            }
-        }
-        XmlElement round_record = (XmlElement)nodeLast;
-        XmlAttribute attr_hint = round_record.GetAttributeNode(hintName);
-        int count = XmlConvert.ToInt32(attr_hint.Value);
-        count = count + 1;
-        attr_hint.Value = count.ToString();
-
-        saveData();
-    }
-
-
-    public int getRoundHintcount(string hintName) {
-        if (isExits())
-        {
-            XmlNode nodeLast = null;
-            XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
-            foreach (XmlNode item_File in nodelist)
-            {
-                XmlAttributeCollection xAT = item_File.Attributes;
-                for (int i = 0; i < xAT.Count; i++)
-                {
-                    nodeLast = item_File;
-                }
-            }
-            XmlElement round_record = (XmlElement)nodeLast;
-            XmlAttribute attr_hint = round_record.GetAttributeNode(hintName);
-            int count = XmlConvert.ToInt32(attr_hint.Value);
-            return count;
-        }
-        return 0;
-    }
-
-
-    public void setRoundScore(int score,int rank)
-    {
-        XmlNode nodeLast = null;
-        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
-        foreach (XmlNode item_File in nodelist)
-        {
-            XmlAttributeCollection xAT = item_File.Attributes;
-            for (int i = 0; i < xAT.Count; i++)
-            {
-                nodeLast = item_File;
-            }
-        }
-        XmlElement round_record = (XmlElement)nodeLast;
-        XmlAttribute attr_score = round_record.GetAttributeNode("score");
-        XmlAttribute attr_rank = round_record.GetAttributeNode("rank");
-        attr_score.Value = score.ToString();
-        attr_rank.Value = rank.ToString();
-
-        saveData();
-    }
-
-    //對戰結束更新對戰紀錄
-    public void setCompeteScoreRecord(int hintLACount,int hintSTCount,int score,int rank)
+    /// <summary>
+    ///對戰結束更新對戰紀錄
+    /// </summary>
+    public void setCompeteScoreRecord(int hintLACount, int hintSTCount, int score, int rank)
     {
         if (isExits())
         {
@@ -951,7 +730,7 @@ public class Xmlprocess{
 
     void updateCompeteHighScore(int score)
     {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete" );
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("highscore");
         int highscore = XmlConvert.ToInt32(attribute.Value);
@@ -962,6 +741,144 @@ public class Xmlprocess{
         saveData();
     }
 
+    /// <summary>
+    /// 新增每回合的對戰紀錄
+    /// </summary>
+    /// <param name="quesID">題號</param>
+    public void createRoundRecord(string quesID)
+    {
+        XmlNode nodeLast = null;
+        if (isExits())
+        {
+
+            XmlNodeList nodelist = xmlDoc.SelectNodes("//compete_record");
+            foreach (XmlNode item_File in nodelist)
+            {
+                XmlAttributeCollection xAT = item_File.Attributes;
+                for (int i = 0; i < xAT.Count; i++)
+                {
+                    nodeLast = item_File;
+                }
+            }
+
+            XmlElement compete_record = (XmlElement)nodeLast;
+            XmlElement round_record = xmlDoc.CreateElement("round_record");
+            compete_record.AppendChild(round_record);
+            round_record.SetAttribute("ques_id", quesID.ToString());//題號
+            round_record.SetAttribute("ans_state", "");//作答正確或錯誤
+            round_record.SetAttribute("duration", "0");//作答時間
+            round_record.SetAttribute("hint_LA", "0");//提示再聽一次的次數
+            round_record.SetAttribute("hint_ST", "0");//提示中譯的次數
+            round_record.SetAttribute("score", "0");//作答時間
+            round_record.SetAttribute("rank", "0");//當回合的排名
+            saveData();
+        }
+    }
+
+    /// <summary>
+    /// 設置當回合的答案
+    /// </summary>
+    /// <param name="ans_state">正確或錯誤</param>
+    /// <param name="duration">花費時間</param>
+    public void setRoundAns(string ans_state, int duration)
+    {
+        XmlNode nodeLast = null;
+        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+        foreach (XmlNode item_File in nodelist)
+        {
+            XmlAttributeCollection xAT = item_File.Attributes;
+            for (int i = 0; i < xAT.Count; i++)
+            {
+                nodeLast = item_File;
+            }
+        }
+        XmlElement round_record = (XmlElement)nodeLast;
+        XmlAttribute attr_ansState = round_record.GetAttributeNode("ans_state");
+        XmlAttribute attr_duration = round_record.GetAttributeNode("duration");
+        attr_ansState.Value = ans_state;
+        attr_duration.Value = duration.ToString();
+
+        saveData();
+    }
+
+    /// <summary>
+    /// 當回合使用提示次數
+    /// </summary>
+    /// <param name="hintName">提示名稱</param>
+    public void setRoundHintcount(string hintName)
+    {
+        XmlNode nodeLast = null;
+        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+        foreach (XmlNode item_File in nodelist)
+        {
+            XmlAttributeCollection xAT = item_File.Attributes;
+            for (int i = 0; i < xAT.Count; i++)
+            {
+                nodeLast = item_File;
+            }
+        }
+        XmlElement round_record = (XmlElement)nodeLast;
+        XmlAttribute attr_hint = round_record.GetAttributeNode(hintName);
+        int count = XmlConvert.ToInt32(attr_hint.Value);
+        count = count + 1;
+        attr_hint.Value = count.ToString();
+
+        saveData();
+    }
+
+    /// <summary>
+    /// 取得回合使用提示的次數
+    /// </summary>
+    /// <param name="hintName">提示名稱</param>
+    /// <returns></returns>
+    public int getRoundHintcount(string hintName) {
+        if (isExits())
+        {
+            XmlNode nodeLast = null;
+            XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+            foreach (XmlNode item_File in nodelist)
+            {
+                XmlAttributeCollection xAT = item_File.Attributes;
+                for (int i = 0; i < xAT.Count; i++)
+                {
+                    nodeLast = item_File;
+                }
+            }
+            XmlElement round_record = (XmlElement)nodeLast;
+            XmlAttribute attr_hint = round_record.GetAttributeNode(hintName);
+            int count = XmlConvert.ToInt32(attr_hint.Value);
+            return count;
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// 設置當前回合的分數
+    /// </summary>
+    /// <param name="score">分數</param>
+    /// <param name="rank">當前排名</param>
+    public void setRoundScore(int score,int rank)
+    {
+        XmlNode nodeLast = null;
+        XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
+        foreach (XmlNode item_File in nodelist)
+        {
+            XmlAttributeCollection xAT = item_File.Attributes;
+            for (int i = 0; i < xAT.Count; i++)
+            {
+                nodeLast = item_File;
+            }
+        }
+        XmlElement round_record = (XmlElement)nodeLast;
+        XmlAttribute attr_score = round_record.GetAttributeNode("score");
+        XmlAttribute attr_rank = round_record.GetAttributeNode("rank");
+        attr_score.Value = score.ToString();
+        attr_rank.Value = rank.ToString();
+
+        saveData();
+    }
+
+    /*===============================---點擊紀錄---===============================*/
     /// <summary>
     ///成就UI點擊次數
     /// </summary>
@@ -998,7 +915,8 @@ public class Xmlprocess{
         }
     }
 
-    //0830場景進入紀錄
+    /*===============================---場景紀錄---===============================*/
+
     public void ScceneHistoryRecord(string scence, string starttime)
     {
         XmlNode nodeLast = null;
@@ -1044,29 +962,77 @@ public class Xmlprocess{
         }
     }
 
-
+    /*===============================---成就頁面---===============================*/
     /// <summary>
     ///Get學習狀況
     /// </summary>
-    public string[] getAchieveState()
+    public string[] getAchieveLearningState()
     {
         if (isExits())
         {
-            string[] _tmp = new string[4];
+            string[] _tmp = new string[2];
             XmlNode learningNode = xmlDoc.SelectSingleNode("Loadfile/User/learning");
-            XmlNode competeNode = xmlDoc.SelectSingleNode("Loadfile/User/compete");
             XmlElement learningElement = (XmlElement)learningNode;
-            XmlElement competeElement = (XmlElement)competeNode;
             XmlAttribute learning_highscore = learningElement.GetAttributeNode("highscore");
             XmlAttribute learning_count = learningElement.GetAttributeNode("learning_count");
-            XmlAttribute compete_highscore = competeElement.GetAttributeNode("highscore");
-            XmlAttribute compete_count = competeElement.GetAttributeNode("compete_count");
             _tmp[0] = learning_highscore.Value; 
             _tmp[1] = learning_count.Value;
-            _tmp[2] = compete_highscore.Value; 
-            _tmp[3] = compete_count.Value;
 
             return _tmp;
+        }
+        return null;
+
+    }
+    /// <summary>
+    ///Get學習獎章狀況
+    /// </summary>
+    public string getAchieveLearningBadges(int badgeID)
+    {
+        if (isExits())
+        {
+
+            XmlNode competeBadgesNode = xmlDoc.SelectSingleNode("Loadfile/User/badge_record/badge_learning/badge" + badgeID);
+            XmlElement competeBadgesElement = (XmlElement)competeBadgesNode;
+            XmlAttribute level = competeBadgesElement.GetAttributeNode("level");
+            return level.Value;
+        }
+        return null;
+
+    }
+
+    /// <summary>
+    ///Get對戰狀況
+    /// </summary>
+    public string[] getAchieveCompeteState()
+    {
+        if (isExits())
+        {
+            string[] _tmp = new string[2];
+            XmlNode competeNode = xmlDoc.SelectSingleNode("Loadfile/User/compete");
+            XmlElement competeElement = (XmlElement)competeNode;
+            XmlAttribute compete_highscore = competeElement.GetAttributeNode("highscore");
+            XmlAttribute compete_count = competeElement.GetAttributeNode("compete_count");
+            _tmp[0] = compete_highscore.Value;
+            _tmp[1] = compete_count.Value;
+
+            return _tmp;
+        }
+        return null;
+
+    }
+
+    /// <summary>
+    ///Get對戰獎章狀況
+    /// </summary>
+    public string getAchieveCompeteBadges(int badgeID)
+    {
+        if (isExits())
+        {
+
+            XmlNode competeBadgesNode = xmlDoc.SelectSingleNode("Loadfile/User/badge_record/badge_compete/badge"+ badgeID);
+            XmlElement competeBadgesElement = (XmlElement)competeBadgesNode;
+            XmlAttribute level = competeBadgesElement.GetAttributeNode("level");
+            return level.Value;
         }
         return null;
 

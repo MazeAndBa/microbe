@@ -32,8 +32,14 @@ public class XmlCreate{
             User.AppendChild(current_icon);
             current_icon.SetAttribute("icon","");
 
+        /*====================================---兩區域獲得的獎章總數量---====================================*/
+            XmlElement badge = xmlDoc.CreateElement("badge");
+            User.AppendChild(badge);
+            badge.SetAttribute("learning_count", Strcount);
+            badge.SetAttribute("compete_count", Strcount);
+
         /*===============================---每一關卡的練習狀況---===============================*/
-            XmlElement learning  = xmlDoc.CreateElement("learning");
+           XmlElement learning  = xmlDoc.CreateElement("learning");
 		    User.AppendChild(learning);
             learning.SetAttribute("review_count", Strcount);//查看單字的次數
             learning.SetAttribute("learning_count", Strcount);//完成練習的次數
@@ -67,7 +73,31 @@ public class XmlCreate{
 				goods.AppendChild(_guitar);
     -----*/
 
-        /*-------排行榜更新紀錄---------*/
+        /*====================================---各類獎章獲得紀錄---====================================*/
+        XmlElement badge_record = xmlDoc.CreateElement("badge_record");
+        Loadfile.AppendChild(badge_record);
+        XmlElement badge_learning = xmlDoc.CreateElement("badge_learning");//個人學習區的獎章
+        XmlElement badge_compete = xmlDoc.CreateElement("badge_compete");//同儕對戰區的獎章
+        badge_record.AppendChild(badge_learning);
+        badge_record.AppendChild(badge_compete);
+        badge_learning.SetAttribute("count", Strcount);//目前獲得數量
+        badge_compete.SetAttribute("count", Strcount);
+
+        ///練習區獎章總共6個，對戰區獎章共8個///
+        for (int i = 1; i <=14; i++)
+        {
+            XmlElement _badge = xmlDoc.CreateElement("badge"+i);
+            if (i < 7) {
+                badge_learning.AppendChild(_badge);
+            }
+            else {
+                badge_compete.AppendChild(_badge);
+            }
+            _badge.SetAttribute("level", "0");//獎章目前等級(0:未獲得、1:銅、2:銀、3:金)
+            _badge.SetAttribute("time", "");//獲得的時間
+        }
+
+        /*====================================---排行榜更新紀錄---====================================*/
         XmlElement rank_history = xmlDoc.CreateElement("rank_history");
         Loadfile.AppendChild(rank_history);
         XmlElement rank_record = xmlDoc.CreateElement("rank_record");
@@ -76,7 +106,7 @@ public class XmlCreate{
         rank_record.SetAttribute("rank", "");//目前排名
         rank_record.SetAttribute("updateTime", "");//刷新最高分數的時間
 
-        /*-------點擊rank紀錄---------*/
+        /*====================================---查看排行榜與成就次數---====================================*/
         XmlElement touch_history = xmlDoc.CreateElement("touch_history");
         Loadfile.AppendChild(touch_history);
         XmlElement touch_achieve = xmlDoc.CreateElement("touch_achieve");//點擊成就頁面的次數
