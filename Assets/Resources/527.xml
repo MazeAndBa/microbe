@@ -2,7 +2,7 @@
   <User ID="527" name="527" level="1" sex="1" money="100">
     <current_icon icon="" />
     <badge learning_count="0" compete_count="0" />
-    <learning review_count="0" learning_count="0" highscore="0" />
+    <learning review_count="1" learning_count="0" highscore="0" />
     <compete compete_count="0" highscore="0" update_count="0" />
   </User>
   <badge_record>
@@ -29,14 +29,26 @@
     <rank_record highscore="" rank="" updateTime="" />
   </rank_history>
   <touch_history>
-    <touch_achieve count="0" />
+    <touch_achieve count="8" />
     <touch_leaderboard count="0" />
   </touch_history>
-  <log_record day="2018-09-30">
+  <log_record day="2018-10-03">
     <learning_history />
     <compete_history />
     <scene_history>
-      <scene_record scence="Login" startTime="17:45:19" />
+      <scene_record scence="Login" startTime="14:03:52" />
+      <scene_record scence="Login" startTime="14:05:44" />
+      <scene_record scence="Login" startTime="14:06:58" />
+      <scene_record scence="Login" startTime="14:07:39" />
+      <scene_record scence="Login" startTime="14:08:57" />
+      <scene_record scence="Login" startTime="14:18:16" />
+      <scene_record scence="Login" startTime="14:19:57" />
+      <scene_record scence="Login" startTime="14:22:42" />
+      <scene_record scence="Login" startTime="14:25:13" />
+      <scene_record scence="Login" startTime="14:27:29" />
+      <scene_record scence="Login" startTime="14:34:32" />
+      <scene_record scence="Learning" startTime="14:34:39" />
+      <scene_record scence="Login" startTime="14:36:09" />
     </scene_history>
   </log_record>
 </Loadfile>

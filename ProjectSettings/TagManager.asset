@@ -12,6 +12,7 @@ TagManager:
   - Player4
   - GameRank
   - PlayerLists
+  - badgeDescription
   layers:
   - Default
   - TransparentFX

@@ -143,6 +143,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 if (player[i].NickName == local.NickName) localRank = i+1;
                 ResultUIView.GetComponentsInChildren<Text>()[1].text +=(i+1)+"\t"+player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2")+"\n";
             }
+            ResultUIView.GetComponentsInChildren<Text>()[2].text = c_hintLA_count.ToString();
+            ResultUIView.GetComponentsInChildren<Text>()[3].text = c_hintST_count.ToString();
             xmlprocess.setCompeteScoreRecord(c_hintLA_count,c_hintST_count,local.GetScore(), localRank);
             this.StartCoroutine(gameover(PlayerLists));
         }
@@ -325,13 +327,14 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     {
         PhotonPlayer local = PhotonNetwork.player;
         int spendTime = DateDiff(this.localTime, TurnStartTime);
+        int restTime = (int)this.turnManager.TurnDuration - spendTime;//剩餘時間
         int _hintLA = xmlprocess.getRoundHintcount("hint_LA");//當回合使用提示再聽一次的次數
         int _hintST = xmlprocess.getRoundHintcount("hint_ST");//當回合使用提示中譯的次數
         string resultState = "";
         switch (this.result)
         {
             case ResultType.CorrectAns:
-                PhotonNetwork.player.AddScore((int)(spendTime * 1.5 + local.GetScore() * 0.3 - (_hintLA * 1) - (_hintST *3)));
+                PhotonNetwork.player.AddScore((int)(restTime * 1.5 + local.GetScore() * 0.3 - (_hintLA * 1) - (_hintST *3)+ (PhotonNetwork.room.PlayerCount * 0.5) ));//剩餘時間*1.5+原本分數*0.3-使用提示+房間人數*0.5
                 resultState = "correct";
                 break;
             case ResultType.None:

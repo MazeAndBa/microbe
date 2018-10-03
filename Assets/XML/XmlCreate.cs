@@ -43,14 +43,15 @@ public class XmlCreate{
 		    User.AppendChild(learning);
             learning.SetAttribute("review_count", Strcount);//查看單字的次數
             learning.SetAttribute("learning_count", Strcount);//完成練習的次數
+            learning.SetAttribute("learningImprove", Strcount);//練習進步的次數
             learning.SetAttribute("highscore", Strcount);
 
         /*===============================---每一關卡的對戰狀況---===============================*/
             XmlElement compete = xmlDoc.CreateElement("compete");
 		    User.AppendChild(compete);
             compete.SetAttribute("compete_count", Strcount);//對戰的次數
+            compete.SetAttribute("competeImprove", Strcount);//對戰進步的次數
             compete.SetAttribute("highscore", Strcount);//對戰的最高分數
-            compete.SetAttribute("update_count", Strcount);//最高分數刷新次數
 
         /* ----商店物品
 			XmlElement goods = xmlDoc.CreateElement("goods_item");
