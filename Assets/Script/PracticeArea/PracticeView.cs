@@ -11,7 +11,7 @@ public class PracticeView : MonoBehaviour {
     static int p_score;
     public static bool showAchieve;
     Text text_score;
-    public GameObject UI_showAnsfeedback;
+    public GameObject UI_showAnsfeedback,score;
 
     #region ReviewVocabulary UI
     Text text_English,text_Translation;
@@ -36,7 +36,7 @@ public class PracticeView : MonoBehaviour {
 
     void Start () {
         pm = new PracticeManager();
-        text_score = GetComponentsInChildren<Text>()[1];
+        text_score = score.GetComponentsInChildren<Text>()[0];
         p_score = 0;
         vocabularyID = 0;
         totalQuesNum = 7;//練習題數
@@ -51,8 +51,8 @@ public class PracticeView : MonoBehaviour {
     void showReviewUI()
     {
         UIManager.Instance.ShowPanel("P_ReviewUI");
-        text_English = GetComponentsInChildren<Text>()[2];
-        text_Translation = GetComponentsInChildren<Text>()[3];
+        text_English = GetComponentsInChildren<Text>()[1];
+        text_Translation = GetComponentsInChildren<Text>()[2];
         btn_pronun = GetComponentsInChildren<Button>()[1];
         btn_pre = GetComponentsInChildren<Button>()[2];
         btn_next = GetComponentsInChildren<Button>()[3];
@@ -111,6 +111,7 @@ public class PracticeView : MonoBehaviour {
         {
             UIManager.Instance.ShowPanel("P_PracticeUI");
         }
+        score.SetActive(true);
         VocabularyAS = GetComponentsInChildren<AudioSource>()[0];
         text_totalQues =  GetComponentsInChildren<Text>()[2];
         text_Question = GetComponentsInChildren<Text>()[3];

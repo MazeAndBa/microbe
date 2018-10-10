@@ -141,7 +141,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
             {
                 if (player[i].NickName == local.NickName) localRank = i+1;
-                ResultUIView.GetComponentsInChildren<Text>()[1].text +=(i+1)+"\t"+player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2")+"\n";
+                ResultUIView.GetComponentsInChildren<Text>()[1].text +=(i+1)+"\t"+player[i].NickName + "　分數:" + player[i].GetScore().ToString("D2")+"\n";
             }
             ResultUIView.GetComponentsInChildren<Text>()[2].text = c_hintLA_count.ToString();
             ResultUIView.GetComponentsInChildren<Text>()[3].text = c_hintST_count.ToString();
@@ -381,8 +381,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         }
         if (local != null)
         {
-            // should be this format: "YOU   00"
-            this.LocalPlayerText.text = "You: " + local.NickName + "　Score:" + local.GetScore().ToString("D2");
+            this.LocalPlayerText.text = local.GetScore().ToString("D2");
         }
         xmlprocess.setRoundScore(local.GetScore(),localRank);
         //回合結束
@@ -410,12 +409,24 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         PhotonPlayer hostPlayer = PhotonNetwork.masterClient;
         GameObject HostInfo = GameObject.FindGameObjectWithTag("Host");
         HostInfo.GetComponentsInChildren<Text>()[0].text = hostPlayer.NickName;
+        switch (xmlprocess.getUserInfo()[3])
+        {
+            case "0":
+                HostInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.Load("Image/boy", typeof(Sprite)) as Sprite;
+                break;
+            case "1":
+                HostInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.Load("Image/girl", typeof(Sprite)) as Sprite;
+                break;
+        }
+
         //Initialize players'name
         for (int i = 1; i < 5; i++)
         {
             PhotonPlayer[] player = PhotonNetwork.playerList;
             GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + i);
             PlayerInfo.GetComponentsInChildren<Text>()[0].text = "";
+            PlayerInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.LoadAll<Sprite>("compete")[1];
+
         }
         if (PhotonNetwork.room.PlayerCount > 1)
         {
@@ -424,6 +435,15 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 PhotonPlayer[] player = PhotonNetwork.playerList;
                 GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + i);
                 PlayerInfo.GetComponentsInChildren<Text>()[0].text = player[i].NickName;
+                switch (xmlprocess.getUserInfo()[3])
+                {
+                    case "0":
+                        PlayerInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.Load("Image/boy", typeof(Sprite)) as Sprite;
+                        break;
+                    case "1":
+                        PlayerInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.Load("Image/girl", typeof(Sprite)) as Sprite;
+                        break;
+                }
             }
         }
 
@@ -439,15 +459,15 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
         {
             PhotonPlayer local = PhotonNetwork.player;
-            LocalPlayerText.text = "You: " + local.NickName + "　Score:" + local.GetScore().ToString("D2");
+            LocalPlayerText.text = local.GetScore().ToString("D2");
             PhotonPlayer[] player = PhotonNetwork.playerList;
             Text remote = Instantiate(RemotePlayerText);
             GameObject GameRank = GameObject.FindGameObjectWithTag("GameRank");
             remote.transform.SetParent(GameRank.transform);
-            remote.transform.localPosition = new Vector3(0, - i * 100, 0);
+            remote.transform.localPosition = new Vector3(25, - i * 80+165, 0);
             remote.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             remote.name = (i+1)+"";
-            remote.text = player[i].NickName + "　Score:" + player[i].GetScore().ToString("D2");
+            remote.text = player[i].NickName + "\n分數:" + player[i].GetScore().ToString("D2");
         }
     }
 
