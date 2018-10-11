@@ -60,7 +60,6 @@ public class PracticeView : MonoBehaviour {
         btn_gotonext.gameObject.SetActive(false);
         VocabularyAS = btn_pronun.GetComponent<AudioSource>();
         btn_pronun.onClick.AddListener(delegate () { playAudio(vocabularyID); });
-
         btn_pre.onClick.AddListener(delegate () { changeVocabularyID(-1); });
         btn_next.onClick.AddListener(delegate () { changeVocabularyID(1); });
     }
@@ -74,13 +73,13 @@ public class PracticeView : MonoBehaviour {
 
     void changeVocabularyID(int count) {
 
-        if (vocabularyID >= 0)
+        if (vocabularyID >= 0 && (vocabularyID + count)>=0)
         {
             if (pm.E_vocabularyDic.ContainsKey(vocabularyID + count))
             {
+                vocabularyID += count;
                 playAudio(vocabularyID);
                 btn_gotonext.gameObject.SetActive(false);
-                vocabularyID += count;
                 text_English.text = pm.E_vocabularyDic[vocabularyID];
                 text_Translation.text = pm.T_vocabularyDic[vocabularyID];
             }
@@ -388,12 +387,10 @@ public class PracticeView : MonoBehaviour {
         if (_state == 0)
         {
             img_correct.gameObject.SetActive(true);
-            //Debug.Log("Correct");
         }
         else
         {
             img_wrong.gameObject.SetActive(true);
-            //Debug.Log("Wrong");
 
         }
         yield return new WaitForSeconds(0.5f);

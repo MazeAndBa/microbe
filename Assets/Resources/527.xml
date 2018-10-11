@@ -2,14 +2,14 @@
   <User ID="527" name="527" level="1" sex="1" money="100">
     <current_icon icon="" />
     <badge learning_count="0" compete_count="0" />
-    <learning review_count="3" learning_count="0" learningImprove="0" highscore="0" />
+    <learning review_count="1" learning_count="3" learningImprove="1" highscore="2236" />
     <compete compete_count="0" competeImprove="0" highscore="0" />
   </User>
   <badge_record>
     <badge_learning count="0">
-      <badge1 level="0" time="" />
-      <badge2 level="0" time="" />
-      <badge3 level="0" time="" />
+      <badge1 level="1" time="" />
+      <badge2 level="2" time="" />
+      <badge3 level="1" time="" />
       <badge4 level="0" time="" />
       <badge5 level="0" time="" />
       <badge6 level="0" time="" />
@@ -29,22 +29,19 @@
     <rank_record highscore="" rank="" updateTime="" />
   </rank_history>
   <touch_history>
-    <touch_achieve count="0" />
+    <touch_achieve count="1" />
     <touch_leaderboard count="0" />
   </touch_history>
-  <log_record day="2018-10-06">
+  <log_record day="2018-10-11">
     <learning_history>
-      <learning_record startTime="14: 15:14" score="0" endTime="" />
-      <learning_record startTime="14: 15:15" score="0" endTime="" />
+      <learning_record startTime="11: 48:19" score="0" endTime="" />
+      <learning_record startTime="11: 48:19" score="0" endTime="" />
+      <learning_record startTime="11: 48:19" score="2236" endTime="11: 48:40" />
     </learning_history>
     <compete_history />
     <scene_history>
-      <scene_record scence="Login" startTime="14:11:30" />
-      <scene_record scence="Learning" startTime="14:11:45" />
-      <scene_record scence="Login" startTime="14:14:16" />
-      <scene_record scence="Learning" startTime="14:14:17" />
-      <scene_record scence="Login" startTime="14:15:01" />
-      <scene_record scence="Learning" startTime="14:15:03" />
+      <scene_record scence="Login" startTime="11:48:09" />
+      <scene_record scence="Learning" startTime="11:48:11" />
     </scene_history>
   </log_record>
 </Loadfile>

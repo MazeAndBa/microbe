@@ -1190,17 +1190,12 @@ public class Xmlprocess
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
         int _level = 0;
-        switch (learningCounts)
-        {
-            case 1:
-                _level = 1;
-                break;
-            case 5:
-                _level = 2;
-                break;
-            case 10:
-                _level = 3;
-                break;
+        if (learningCounts > 0 && learningCounts < 5) {
+            _level = 1;
+        }else if (learningCounts >= 5 && learningCounts < 10) {
+            _level = 2;
+        } else if (learningCounts>=10) {
+            _level = 3;
         }
         attribute.Value = _level.ToString();
         saveData();
@@ -1243,13 +1238,13 @@ public class Xmlprocess
         int _level = 0;
         switch (improveCounts)
         {
-            case 1:
+            case 2:
                 _level = 1;
                 break;
-            case 3:
+            case 5:
                 _level = 2;
                 break;
-            case 5:
+            case 8:
                 _level = 3;
                 break;
         }

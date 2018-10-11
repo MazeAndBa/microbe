@@ -72,19 +72,19 @@ public class Achievement : MonoBehaviour {
             _badgeName = _badgeBtn[i - 1].GetComponentsInChildren<Text>()[0];//獎章名稱
             _badgeName.text = badgeName[i - 1];//因為陣列索引直起始為0,故要減1
 
-            switch (_targetLevel[i - 1])
+            switch (_targetLevel[i - 1]-1)//當前階段
             {
                 case 0:
                     _badgeBtn[i - 1].image.color = Color.gray;
                     break;
                 case 1:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.color = Color.green;
                     break;
                 case 2:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.color = Color.red;
                     break;
                 case 3:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.color = Color.yellow;
                     break;
             }
         }
@@ -113,19 +113,19 @@ public class Achievement : MonoBehaviour {
             _badgeName = _badgeBtn[i - 1].GetComponentsInChildren<Text>()[0];//獎章名稱
             _badgeName.text = badgeName[(learningBadgeCount-1)+i];//因為陣列0~learningBadgeCount-1存放值為學習區的Badge名稱，因此在此起始值為learningBadgeCount
 
-            switch (_targetLevel[i - 1])
+            switch (_targetLevel[i - 1] - 1)//當前階段
             {
                 case 0:
                     _badgeBtn[i - 1].image.color = Color.gray;
                     break;
                 case 1:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.color = Color.green;
                     break;
                 case 2:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.color = Color.red;
                     break;
                 case 3:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.color = Color.yellow;
                     break;
             }
         }
@@ -157,11 +157,11 @@ public class Achievement : MonoBehaviour {
                 badgeDesciption[i,0] = "未獲得\n"+_tmp2[2];//目標第一階段
 
                 _tmp2 = _tmp1[1].Split(',');
-                badgeDesciption[i,1] = _tmp2[2];
+                badgeDesciption[i,1] = "下一階段\n"+_tmp2[2];
 
                 _tmp2 = _tmp1[2].Split(',');
-                badgeDesciption[i,2] = _tmp2[2];
-                badgeDesciption[i,3] = "已完成　"+ _tmp2[2];//已達第三階段
+                badgeDesciption[i,2] = "下一階段\n" + _tmp2[2];
+                badgeDesciption[i,3] = "已完成\n" + _tmp2[2];//已達第三階段
 
             }
         }

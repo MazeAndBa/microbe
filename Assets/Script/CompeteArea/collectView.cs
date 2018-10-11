@@ -141,7 +141,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
             {
                 if (player[i].NickName == local.NickName) localRank = i+1;
-                ResultUIView.GetComponentsInChildren<Text>()[1].text +=(i+1)+"\t"+player[i].NickName + "　分數:" + player[i].GetScore().ToString("D2")+"\n";
+                ResultUIView.GetComponentsInChildren<Text>()[1].text +=(i+1)+"\t"+player[i].NickName + "　分數:" + player[i].GetScore().ToString("D2")+ "\n\n";
             }
             ResultUIView.GetComponentsInChildren<Text>()[2].text = c_hintLA_count.ToString();
             ResultUIView.GetComponentsInChildren<Text>()[3].text = c_hintST_count.ToString();
@@ -425,7 +425,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             PhotonPlayer[] player = PhotonNetwork.playerList;
             GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + i);
             PlayerInfo.GetComponentsInChildren<Text>()[0].text = "";
-            PlayerInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.LoadAll<Sprite>("compete")[1];
+            PlayerInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.LoadAll<Sprite>("Image/Compete/compete")[1];
 
         }
         if (PhotonNetwork.room.PlayerCount > 1)
