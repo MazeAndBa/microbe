@@ -22,7 +22,8 @@ public class Home : MonoBehaviour {
         btn_LPractice.onClick.AddListener(delegate() { showLeaderboard(0); });
         btn_LCompete.onClick.AddListener(delegate () { showLeaderboard(1); });
 
-        if (!xmlprocess.getLearningState())//必須先完成練習1次才可以進入對戰區
+        /*//必須先完成練習1次才可以進入對戰區
+        if (!xmlprocess.getLearningState())
         {
             btn_compete.interactable = false;
             btn_compete.image.color = Color.gray;
@@ -31,6 +32,8 @@ public class Home : MonoBehaviour {
             btn_compete.interactable = true;
             btn_compete.onClick.AddListener(goCompete);
         }
+        */
+        btn_compete.onClick.AddListener(goCompete);
 
     }
 

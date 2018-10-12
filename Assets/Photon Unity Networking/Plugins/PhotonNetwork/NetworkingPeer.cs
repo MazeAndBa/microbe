@@ -321,6 +321,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         }
     }
 
+
     // "public" access to the current game - is null unless a room is joined on a gameserver
     // isLocalClientInside becomes true when op join result is positive on GameServer
     private bool mPlayernameHasToBeUpdated;

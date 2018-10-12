@@ -306,6 +306,7 @@ public static class PhotonNetwork
         }
     }
 
+
     /// <summary>The list of players in the current room, including the local player.</summary>
     /// <remarks>
     /// This list is only valid, while the client is in a room.

@@ -51,6 +51,8 @@ public class collectConn : PunBehaviour
         PhotonNetwork.AuthValues.UserId = id.text;
         Debug.Log("playerName: " + username.text + "AuthValues userID: " + PhotonNetwork.AuthValues.UserId);
         PhotonNetwork.playerName = username.text;
+ 
+
         PlayerPrefs.SetString(NickNamePlayerPrefsKey, username.text);
         PhotonNetwork.ConnectUsingSettings("0.5");
         PhotonHandler.StopFallbackSendAckThread();

@@ -1,0 +1,69 @@
+<Loadfile>
+  <User ID="528" name="528" level="1" sex="0" money="100">
+    <current_icon icon="" />
+    <badge learning_count="0" compete_count="0" />
+    <learning review_count="1" learning_count="3" learningImprove="0" highscore="0" />
+    <compete compete_count="3" competeImprove="0" highscore="0" />
+  </User>
+  <badge_record>
+    <badge_learning count="0">
+      <badge1 level="1" time="" />
+      <badge2 level="0" time="" />
+      <badge3 level="0" time="" />
+      <badge4 level="0" time="" />
+      <badge5 level="0" time="" />
+      <badge6 level="0" time="" />
+    </badge_learning>
+    <badge_compete count="0">
+      <badge7 level="0" time="" />
+      <badge8 level="0" time="" />
+      <badge9 level="0" time="" />
+      <badge10 level="0" time="" />
+      <badge11 level="0" time="" />
+      <badge12 level="0" time="" />
+      <badge13 level="0" time="" />
+      <badge14 level="0" time="" />
+    </badge_compete>
+  </badge_record>
+  <rank_history>
+    <rank_record highscore="" rank="" updateTime="" />
+  </rank_history>
+  <touch_history>
+    <touch_achieve count="1" />
+    <touch_leaderboard count="0" />
+  </touch_history>
+  <log_record day="2018-10-11">
+    <learning_history>
+      <learning_record startTime="16: 31:17" score="0" endTime="" />
+      <learning_record startTime="16: 31:17" score="0" endTime="" />
+      <learning_record startTime="16: 31:17" score="0" endTime="16: 31:36" />
+    </learning_history>
+    <compete_history>
+      <compete_record startTime="16: 32:37" endTime="16: 33:57" hint_LA="1" hint_ST="1" score="-15" rank="2">
+        <round_record ques_id="2" ans_state="none" duration="38" hint_LA="1" hint_ST="1" score="-5" rank="2" />
+        <round_record ques_id="4" ans_state="none" duration="55" hint_LA="0" hint_ST="0" score="-10" rank="2" />
+        <round_record ques_id="7" ans_state="none" duration="11" hint_LA="0" hint_ST="0" score="-15" rank="2" />
+        <round_record ques_id="8" ans_state="wrong" duration="10" hint_LA="0" hint_ST="0" score="-15" rank="2" />
+        <round_record ques_id="9" ans_state="wrong" duration="1" hint_LA="0" hint_ST="0" score="-15" rank="2" />
+      </compete_record>
+      <compete_record startTime="17: 11:00" endTime="" hint_LA="0" hint_ST="0" score="0" rank="0" />
+      <compete_record startTime="17: 11:13" endTime="17: 12:33" hint_LA="3" hint_ST="3" score="-25" rank="2">
+        <round_record ques_id="6" ans_state="none" duration="14" hint_LA="3" hint_ST="1" score="-5" rank="2" />
+        <round_record ques_id="8" ans_state="none" duration="31" hint_LA="0" hint_ST="2" score="-10" rank="2" />
+        <round_record ques_id="9" ans_state="none" duration="47" hint_LA="0" hint_ST="0" score="-15" rank="2" />
+        <round_record ques_id="11" ans_state="none" duration="3" hint_LA="0" hint_ST="0" score="-20" rank="2" />
+        <round_record ques_id="13" ans_state="none" duration="19" hint_LA="0" hint_ST="0" score="-25" rank="2" />
+      </compete_record>
+    </compete_history>
+    <scene_history>
+      <scene_record scence="Login" startTime="16:31:03" />
+      <scene_record scence="Learning" startTime="16:31:05" />
+      <scene_record scence="Compete" startTime="16:31:40" />
+      <scene_record scence="StartCompete" startTime="16:32:37" />
+      <scene_record scence="Compete" startTime="16:42:28" />
+      <scene_record scence="StartCompete" startTime="17:11:00" />
+      <scene_record scence="Compete" startTime="17:11:06" />
+      <scene_record scence="StartCompete" startTime="17:11:13" />
+    </scene_history>
+  </log_record>
+</Loadfile>
