@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class AccountViewer : MonoBehaviour {
 
     AccountManager am;
+    Text Loadingrmsg;
 
     #region Login UI
     static InputField login_ac, login_pw;
@@ -34,6 +35,7 @@ public class AccountViewer : MonoBehaviour {
         btn_log.onClick.AddListener(confirmlogin);
         btn_reg.onClick.AddListener(showregister);
         UIManager.Instance.ShowPanel("UI_ShowMes");
+        Loadingrmsg = GetComponentsInChildren<Text>()[7];
         UIManager.Instance.TogglePanel("UI_ShowMes", false);
     }
 
@@ -146,6 +148,7 @@ public class AccountViewer : MonoBehaviour {
     IEnumerator waitload()
     {
         UIManager.Instance.TogglePanel("UI_ShowMes", true);
+        Loadingrmsg.text = "載入中......";
         yield return new WaitForSeconds(0.8f);
         UIManager.Instance.TogglePanel("UI_ShowMes", false);
     }

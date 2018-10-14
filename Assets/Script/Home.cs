@@ -10,7 +10,12 @@ public class Home : MonoBehaviour {
     Button btn_practice, btn_compete;
     Button btn_LPractice, btn_LCompete;//排行榜
     Xmlprocess xmlprocess;
+    public static bool showAchieve;
 
+    void Awake()
+    {
+        showAchieve = true;
+    }
     void Start () {
         xmlprocess = new Xmlprocess();
         btn_practice = GetComponentsInChildren<Button>()[0];
@@ -23,7 +28,7 @@ public class Home : MonoBehaviour {
         btn_LCompete.onClick.AddListener(delegate () { showLeaderboard(1); });
 
         /*//必須先完成練習1次才可以進入對戰區
-        if (!xmlprocess.getLearningState())
+        if (!xmlprocess.getLearningCount())
         {
             btn_compete.interactable = false;
             btn_compete.image.color = Color.gray;

@@ -11,11 +11,11 @@ public class PracticeView : MonoBehaviour {
     static int p_score;
     public static bool showAchieve;
     Text text_score;
-    public GameObject UI_showAnsfeedback,score;
+    public GameObject UI_showAnsfeedback, UI_ShowMes,score;
 
     #region ReviewVocabulary UI
     Text text_English,text_Translation;
-    Button btn_pronun,btn_pre, btn_next, btn_gotonext;
+    Button btn_pronun,btn_pre, btn_next, btn_gotonext, btn_skip;
     AudioSource VocabularyAS;
     #endregion
 
@@ -57,15 +57,17 @@ public class PracticeView : MonoBehaviour {
         btn_pre = GetComponentsInChildren<Button>()[2];
         btn_next = GetComponentsInChildren<Button>()[3];
         btn_gotonext = GetComponentsInChildren<Button>()[4];
+        btn_skip = GetComponentsInChildren<Button>()[5];
         btn_gotonext.gameObject.SetActive(false);
         VocabularyAS = btn_pronun.GetComponent<AudioSource>();
         btn_pronun.onClick.AddListener(delegate () { playAudio(vocabularyID); });
         btn_pre.onClick.AddListener(delegate () { changeVocabularyID(-1); });
         btn_next.onClick.AddListener(delegate () { changeVocabularyID(1); });
+        btn_skip.onClick.AddListener(skip);
     }
-    
+
+
     IEnumerator showReviewVocabulary(){
-        pm.setLearningCount("review_count");//更新單字瀏覽次數
         StartCoroutine(pm.LoadVocabulary("loadVocabulary"));
         yield return new WaitForSeconds(0.2f);
         changeVocabularyID(0);
@@ -85,9 +87,9 @@ public class PracticeView : MonoBehaviour {
             }
             else
             {
+                string _state = pm.setLearningCount("review_count");//更新單字瀏覽次數
                 btn_gotonext.gameObject.SetActive(true);
                 btn_gotonext.onClick.AddListener(showPracticeUI);
-
             }
         }
     }
@@ -97,6 +99,10 @@ public class PracticeView : MonoBehaviour {
         VocabularyAS.Play();
     }
 
+    void skip()
+    {
+        showPracticeUI();
+    }
     #endregion
 
     #region PracticeMuitiselect function
@@ -327,9 +333,16 @@ public class PracticeView : MonoBehaviour {
 
 
     IEnumerator ComposeEnd() {
-        pm.setLearningCount("learning_count");//更新單字練習次數
+
+        UIManager.Instance.CloseAllPanel();
+        string _state = pm.setLearningCount("learning_count");//更新單字練習次數
+        if (_state != null) {
+            Achievement.badgeName[0] = "練習不是一兩天的事";
+            UI_ShowMes.SetActive(true);
+            UI_ShowMes.GetComponentInChildren<Text>().text = _state;
+        }
         pm.setLearningScore(p_score);//紀錄此次單字練習成績
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1.5f);
         showAchieve = true;
         UIManager.Instance.CloseAllPanel();
         SceneManager.LoadScene("Home");

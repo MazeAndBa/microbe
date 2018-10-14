@@ -25,6 +25,14 @@ public class PersonalInfo : MonoBehaviour {
         }
         btn_achievement.onClick.AddListener(showAchievementUI);
 
+        //如果初次進入主畫面，顯示成就UI
+        if (Home.showAchieve)
+        {
+            showAchievementUI();
+            Home.showAchieve = false;
+        }
+
+
         //如果完成練習，顯示成就UI
         if (PracticeView.showAchieve)
         {

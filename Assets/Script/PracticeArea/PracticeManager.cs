@@ -105,8 +105,8 @@ public class PracticeManager {
     /// 更新單字總練習次數
     /// </summary>
     /// <param name="eventname">要更新的attribute</param>
-    public void setLearningCount(string eventname) {
-        xmlprocess.setLearningCount(eventname);
+    public string setLearningCount(string eventname) {
+        return xmlprocess.setLearningCount(eventname);
     }
 
     /// <summary>

@@ -10,7 +10,8 @@ public class Achievement : MonoBehaviour {
     public Button btn_learningBadge, btn_competeBadge,btn_close;
     int learningBadgeCount, competeBadgeCount;
     GameObject[] g_badgeDescription ;
-    string[] s_LearningState, s_CompeteState, badgeName;
+    string[] s_LearningState, s_CompeteState;
+    public static string[]badgeName;
     string [,] badgeDesciption;
 
     Xmlprocess xmlprocess;

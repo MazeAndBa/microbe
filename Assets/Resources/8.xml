@@ -1,0 +1,45 @@
+<Loadfile>
+  <User ID="8" name="測試者8" level="1" sex="0" money="100">
+    <current_icon icon="" />
+    <badge learning_count="0" compete_count="0" />
+    <learning review_count="0" learning_count="1" learningImprove="1" highscore="75" />
+    <compete compete_count="0" competeImprove="0" highscore="0" />
+  </User>
+  <badge_record>
+    <badge_learning count="0">
+      <badge1 level="1" time="" />
+      <badge2 level="0" time="" />
+      <badge3 level="0" time="" />
+      <badge4 level="0" time="" />
+      <badge5 level="0" time="" />
+      <badge6 level="0" time="" />
+    </badge_learning>
+    <badge_compete count="0">
+      <badge7 level="0" time="" />
+      <badge8 level="0" time="" />
+      <badge9 level="0" time="" />
+      <badge10 level="0" time="" />
+      <badge11 level="0" time="" />
+      <badge12 level="0" time="" />
+      <badge13 level="0" time="" />
+      <badge14 level="0" time="" />
+    </badge_compete>
+  </badge_record>
+  <rank_history>
+    <rank_record highscore="" rank="" updateTime="" />
+  </rank_history>
+  <touch_history>
+    <touch_achieve count="1" />
+    <touch_leaderboard count="0" />
+  </touch_history>
+  <log_record day="2018-10-14">
+    <learning_history>
+      <learning_record startTime="13: 50:23" score="75" endTime="13: 50:36" />
+    </learning_history>
+    <compete_history />
+    <scene_history>
+      <scene_record scence="Login" startTime="13:50:20" />
+      <scene_record scence="Learning" startTime="13:50:23" />
+    </scene_history>
+  </log_record>
+</Loadfile>
