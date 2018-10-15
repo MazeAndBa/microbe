@@ -112,8 +112,14 @@ public class PracticeManager {
     /// <summary>
     /// 回合單字練習的成績紀錄
     /// </summary>
-    public void setLearningScore(int score)
+    public string[] setLearningScore(int score)
     {
-        xmlprocess.setLearningScoreRecord(score);
+        string tmp = xmlprocess.setLearningScoreRecord(score);
+        if (tmp != null)
+        {
+            string[] state = tmp.Split(',');
+            return state;
+        }
+        return null;
     }
 }

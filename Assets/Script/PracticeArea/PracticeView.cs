@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PracticeView : MonoBehaviour {
 
     PracticeManager pm;
-    int vocabularyID,totalQuesNum;
+    int vocabularyID,totalQuesNum,correctNum,wrongNum;
     static int p_score;
     public static bool showAchieve;
     Text text_score;
@@ -34,11 +34,17 @@ public class PracticeView : MonoBehaviour {
     string userAns;
     #endregion
 
+    #region Result UI
+    Text text_correct,text_wrong;
+    #endregion
+
     void Start () {
         pm = new PracticeManager();
         text_score = score.GetComponentsInChildren<Text>()[0];
         p_score = 0;
         vocabularyID = 0;
+        correctNum = 0;//正確題數
+        wrongNum = 0;//錯誤題數
         totalQuesNum = 7;//練習題數
         showAchieve = false;
         StartCoroutine(showReviewVocabulary());
@@ -51,8 +57,8 @@ public class PracticeView : MonoBehaviour {
     void showReviewUI()
     {
         UIManager.Instance.ShowPanel("P_ReviewUI");
-        text_English = GetComponentsInChildren<Text>()[1];
-        text_Translation = GetComponentsInChildren<Text>()[2];
+        text_English = GetComponentsInChildren<Text>()[0];
+        text_Translation = GetComponentsInChildren<Text>()[1];
         btn_pronun = GetComponentsInChildren<Button>()[1];
         btn_pre = GetComponentsInChildren<Button>()[2];
         btn_next = GetComponentsInChildren<Button>()[3];
@@ -118,8 +124,8 @@ public class PracticeView : MonoBehaviour {
         }
         score.SetActive(true);
         VocabularyAS = GetComponentsInChildren<AudioSource>()[0];
-        text_totalQues =  GetComponentsInChildren<Text>()[2];
-        text_Question = GetComponentsInChildren<Text>()[3];
+        text_totalQues =  GetComponentsInChildren<Text>()[1];
+        text_Question = GetComponentsInChildren<Text>()[2];
 
         for (int i = 0; i < btn_option.Length; i++)
         {
@@ -213,9 +219,9 @@ public class PracticeView : MonoBehaviour {
     void showComposeUI() {
 
         btn_alphabet = Resources.Load("UI/Btn_Alphabet", typeof(Button)) as Button;
-        text_totalQues = GetComponentsInChildren<Text>()[2];
-        text_Question = GetComponentsInChildren<Text>()[3];
-        text_quescontent = GetComponentsInChildren<Text>()[4];
+        text_totalQues = GetComponentsInChildren<Text>()[1];
+        text_Question = GetComponentsInChildren<Text>()[2];
+        text_quescontent = GetComponentsInChildren<Text>()[3];
         VocabularyAS = GetComponentsInChildren<AudioSource>()[0];
 
         btn_clear = GetComponentsInChildren<Button>()[1];
@@ -331,30 +337,68 @@ public class PracticeView : MonoBehaviour {
         checkNextQues(_quesID, "compose");
     }
 
-
-    IEnumerator ComposeEnd() {
-
-        UIManager.Instance.CloseAllPanel();
-        string _state = pm.setLearningCount("learning_count");//更新單字練習次數
-        if (_state != null) {
-            Achievement.badgeName[0] = "練習不是一兩天的事";
-            UI_ShowMes.SetActive(true);
-            UI_ShowMes.GetComponentInChildren<Text>().text = _state;
+    IEnumerator ComposeEnd()
+    {
+        yield return new WaitForSeconds(0.1f);
+        UIManager.Instance.TogglePanel("P_ComposeUI", false);
+        if (!UIManager.Instance.IsUILive("P_ResultUI"))
+        {
+            UIManager.Instance.ShowPanel("P_ResultUI");
         }
-        pm.setLearningScore(p_score);//紀錄此次單字練習成績
-        yield return new WaitForSeconds(1.5f);
-        showAchieve = true;
-        UIManager.Instance.CloseAllPanel();
-        SceneManager.LoadScene("Home");
+        showResultUI();
     }
     #endregion
 
+    void showResultUI()
+    {
+        score.SetActive(false);
+        text_score = GetComponentsInChildren<Text>()[0];
+        text_correct = GetComponentsInChildren<Text>()[1];
+        text_wrong = GetComponentsInChildren<Text>()[2];
+        text_score.text = p_score.ToString();
+        text_correct.text = correctNum.ToString();
+        text_wrong.text = wrongNum.ToString();
+        StartCoroutine(LearningEnd());
+    }
+
+    IEnumerator LearningEnd() {
+        yield return new WaitForSeconds(2f);
+        UIManager.Instance.CloseAllPanel();
+        string c_state = pm.setLearningCount("learning_count");//更新單字練習次數
+        string[] s_state = pm.setLearningScore(p_score);//紀錄此次單字練習成績
+        if (c_state != null)
+        {
+            Achievement.badgeName[0] = "練習不是一兩天的事";
+            UI_ShowMes.SetActive(true);
+            UI_ShowMes.GetComponentInChildren<Text>().text = c_state;
+        }
+        if (s_state != null)
+        {
+            switch (s_state[0])
+            {
+                case "0"://獲得badge2得分達標
+                    Achievement.badgeName[1] = "得分魔人";
+                    break;
+                case "1"://獲得badge3進步獎章
+                    Achievement.badgeName[2] = "努力沒有白費";
+                    break;
+                case "2"://獲得兩者
+                    Achievement.badgeName[1] = "得分魔人";
+                    Achievement.badgeName[2] = "努力沒有白費";
+                    break;
+            }
+            UI_ShowMes.SetActive(true);
+            UI_ShowMes.GetComponentInChildren<Text>().text = s_state[1];
+        }
+        yield return new WaitForSeconds(1f);
+        showAchieve = true;
+        SceneManager.LoadScene("Home");
+    }
 
     void checkNextQues(int _quesID, string functionName)
     {
         if (_quesID == quesID)
         {
-            //if (quesID >= pm.E_vocabularyDic.Count - 1)
             if (quesID >= totalQuesNum-1)
             {
                 switch (functionName)
@@ -364,7 +408,7 @@ public class PracticeView : MonoBehaviour {
                         break;
                     case "compose":
                         StartCoroutine(ComposeEnd());
-                        Debug.Log("Learning End");
+                        //Debug.Log("Learning End");
                         break;
                 }
             }
@@ -399,10 +443,12 @@ public class PracticeView : MonoBehaviour {
 
         if (_state == 0)
         {
+            correctNum++;
             img_correct.gameObject.SetActive(true);
         }
         else
         {
+            wrongNum++;
             img_wrong.gameObject.SetActive(true);
 
         }
