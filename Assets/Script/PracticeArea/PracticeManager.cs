@@ -122,4 +122,21 @@ public class PracticeManager {
         }
         return null;
     }
+
+    /// <summary>
+    /// 一回合答對題數
+    /// </summary>
+    public string setLearningCorrect(int correctCount,int worngCount)
+    {
+        return xmlprocess.setLearningCorrect(correctCount, worngCount);
+    }
+
+    /// <summary>
+    /// 連續答對題數
+    /// </summary>
+    public string setLearningMaxCorrect(int max_correctCount)
+    {
+        return  xmlprocess.setLearningMaxCorrect(max_correctCount);
+    }
+
 }

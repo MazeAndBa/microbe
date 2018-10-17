@@ -43,6 +43,8 @@ public class XmlCreate{
 		    User.AppendChild(learning);
             learning.SetAttribute("review_count", Strcount);//查看單字的次數
             learning.SetAttribute("learning_count", Strcount);//完成練習的次數
+            learning.SetAttribute("learning_correct", Strcount);//累積答對題數
+            learning.SetAttribute("learning_wrong", Strcount);//累積答錯題數
             learning.SetAttribute("learningImprove", Strcount);//練習進步的次數
             learning.SetAttribute("highscore", Strcount);
 
@@ -50,8 +52,11 @@ public class XmlCreate{
             XmlElement compete = xmlDoc.CreateElement("compete");
 		    User.AppendChild(compete);
             compete.SetAttribute("compete_count", Strcount);//對戰的次數
+            compete.SetAttribute("compete_correct", Strcount);//累積答對題數
+            compete.SetAttribute("compete_wrong", Strcount);//累積答錯題數
             compete.SetAttribute("competeImprove", Strcount);//對戰進步的次數
             compete.SetAttribute("highscore", Strcount);//對戰的最高分數
+
 
         /* ----商店物品
 			XmlElement goods = xmlDoc.CreateElement("goods_item");
@@ -84,18 +89,17 @@ public class XmlCreate{
         badge_learning.SetAttribute("count", Strcount);//目前獲得數量
         badge_compete.SetAttribute("count", Strcount);
 
-        ///練習區獎章總共6個，對戰區獎章共8個///
-        for (int i = 1; i <=14; i++)
+        ///練習區獎章總共5個，對戰區獎章共7個///
+        for (int i = 1; i <=12; i++)
         {
             XmlElement _badge = xmlDoc.CreateElement("badge"+i);
-            if (i < 7) {
+            if (i < 6) {
                 badge_learning.AppendChild(_badge);
             }
             else {
                 badge_compete.AppendChild(_badge);
             }
             _badge.SetAttribute("level", "0");//獎章目前等級(0:未獲得、1:銅、2:銀、3:金)
-            _badge.SetAttribute("time", "");//獲得的時間
         }
 
         /*====================================---排行榜更新紀錄---====================================*/

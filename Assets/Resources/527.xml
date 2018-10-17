@@ -1,0 +1,51 @@
+<Loadfile>
+  <User ID="527" name="527" level="1" sex="1" money="100">
+    <current_icon icon="" />
+    <badge learning_count="0" compete_count="0" />
+    <learning review_count="0" learning_count="1" learning_correct="7" learning_wrong="7" learningImprove="1" highscore="683" />
+    <compete compete_count="0" compete_correct="0" compete_wrong="0" competeImprove="0" highscore="0" />
+  </User>
+  <badge_record>
+    <badge_learning count="0">
+      <badge1 level="1" />
+      <badge2 level="1" />
+      <badge3 level="0" />
+      <badge4 level="2" />
+      <badge5 level="0" />
+    </badge_learning>
+    <badge_compete count="0">
+      <badge6 level="0" />
+      <badge7 level="0" />
+      <badge8 level="0" />
+      <badge9 level="0" />
+      <badge10 level="0" />
+      <badge11 level="0" />
+      <badge12 level="0" />
+    </badge_compete>
+  </badge_record>
+  <rank_history>
+    <rank_record highscore="" rank="" updateTime="" />
+  </rank_history>
+  <touch_history>
+    <touch_achieve count="1" />
+    <touch_leaderboard count="0" />
+  </touch_history>
+  <log_record day="2018-10-17">
+    <learning_history>
+      <learning_record startTime="16: 40:29" score="683" correct="7" maxcorrect="4" endTime="16: 40:59" />
+    </learning_history>
+    <compete_history />
+    <scene_history>
+      <scene_record scence="Login" startTime="16:40:25" />
+      <scene_record scence="Learning" startTime="16:40:28" />
+      <scene_record scence="Login" startTime="17:00:14" />
+      <scene_record scence="Login" startTime="17:01:06" />
+      <scene_record scence="Login" startTime="17:16:46" />
+      <scene_record scence="Compete" startTime="17:16:49" />
+      <scene_record scence="WaitingCompete" startTime="17:16:50" />
+      <scene_record scence="Login" startTime="17:18:09" />
+      <scene_record scence="Compete" startTime="17:18:11" />
+      <scene_record scence="WaitingCompete" startTime="17:18:12" />
+    </scene_history>
+  </log_record>
+</Loadfile>

@@ -25,8 +25,8 @@ public class Achievement : MonoBehaviour {
     private void Awake()
     {
 
-        learningBadgeCount = 6;//設定練習區的獎章數量
-        competeBadgeCount = 8;//設定對戰區的獎章數量
+        learningBadgeCount = 5;//設定練習區的獎章數量
+        competeBadgeCount = 7;//設定對戰區的獎章數量
 
         xmlprocess = new Xmlprocess();
         badgeName = new string[learningBadgeCount+ competeBadgeCount];
@@ -79,13 +79,16 @@ public class Achievement : MonoBehaviour {
                     _badgeBtn[i - 1].image.color = Color.gray;
                     break;
                 case 1:
-                    _badgeBtn[i - 1].image.color = Color.green;
+                    _badgeBtn[i - 1].image.color = Color.white;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[2];
                     break;
                 case 2:
-                    _badgeBtn[i - 1].image.color = Color.red;
+                    _badgeBtn[i - 1].image.color = Color.white;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[1];
                     break;
                 case 3:
-                    _badgeBtn[i - 1].image.color = Color.yellow;
+                    _badgeBtn[i - 1].image.color = Color.white;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[0];
                     break;
             }
         }
@@ -95,7 +98,6 @@ public class Achievement : MonoBehaviour {
         _badgeBtn[2].onClick.AddListener(delegate () { showDescription(3, _targetLevel[2]); });
         _badgeBtn[3].onClick.AddListener(delegate () { showDescription(4, _targetLevel[3]); });
         _badgeBtn[4].onClick.AddListener(delegate () { showDescription(5, _targetLevel[4]); });
-        _badgeBtn[5].onClick.AddListener(delegate () { showDescription(6, _targetLevel[5]); });
     }
 
 
@@ -120,24 +122,26 @@ public class Achievement : MonoBehaviour {
                     _badgeBtn[i - 1].image.color = Color.gray;
                     break;
                 case 1:
-                    _badgeBtn[i - 1].image.color = Color.green;
+                    _badgeBtn[i - 1].image.color = Color.white;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[5];
                     break;
                 case 2:
-                    _badgeBtn[i - 1].image.color = Color.red;
+                    _badgeBtn[i - 1].image.color = Color.white;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[4];
                     break;
                 case 3:
-                    _badgeBtn[i - 1].image.color = Color.yellow;
+                    _badgeBtn[i - 1].image.color = Color.white;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[3];
                     break;
             }
         }
-        _badgeBtn[0].onClick.AddListener(delegate () { showDescription(7, _targetLevel[0]); });
-        _badgeBtn[1].onClick.AddListener(delegate () { showDescription(8, _targetLevel[1]); });
-        _badgeBtn[2].onClick.AddListener(delegate () { showDescription(9, _targetLevel[2]); });
-        _badgeBtn[3].onClick.AddListener(delegate () { showDescription(10, _targetLevel[3]); });
-        _badgeBtn[4].onClick.AddListener(delegate () { showDescription(11, _targetLevel[4]); });
-        _badgeBtn[5].onClick.AddListener(delegate () { showDescription(12, _targetLevel[5]); });
-        _badgeBtn[6].onClick.AddListener(delegate () { showDescription(13, _targetLevel[6]); });
-        _badgeBtn[7].onClick.AddListener(delegate () { showDescription(14, _targetLevel[7]); });
+        _badgeBtn[0].onClick.AddListener(delegate () { showDescription(6, _targetLevel[0]); });
+        _badgeBtn[1].onClick.AddListener(delegate () { showDescription(7, _targetLevel[1]); });
+        _badgeBtn[2].onClick.AddListener(delegate () { showDescription(8, _targetLevel[2]); });
+        _badgeBtn[3].onClick.AddListener(delegate () { showDescription(9, _targetLevel[3]); });
+        _badgeBtn[4].onClick.AddListener(delegate () { showDescription(10, _targetLevel[4]); });
+        _badgeBtn[5].onClick.AddListener(delegate () { showDescription(11, _targetLevel[5]); });
+        _badgeBtn[6].onClick.AddListener(delegate () { showDescription(12, _targetLevel[6]); });
 
 
     }

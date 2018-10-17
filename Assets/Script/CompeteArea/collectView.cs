@@ -16,6 +16,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     bool timerflag = false;
 
     int currentTime;
+    int max_correctNum, C_correctNum, correctNum, wrongNum;
     int cardCount;//卡牌數量
     int c_hintLA_count, c_hintST_count;//當前使用提示的次數
     int hintLA_count, hintST_count;//使用提示的最大次數
@@ -48,6 +49,10 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         this.turnManager.TurnManagerListener = this;
         this.turnManager.TurnDuration = 15f;
         cardCount = 12;
+        C_correctNum = 0;//當前連續答對題數
+        max_correctNum = -1;//最大連續答對數
+        correctNum = 0;//累計正確題數
+        wrongNum = 0;
         RefreshConnectUI();
     }
 
@@ -57,10 +62,11 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (PhotonNetwork.connected)
         {
             this.ConnectUiView.SetActive(false);
+            /*
             if (PhotonNetwork.masterClient == null) {
                 OnMasterClientSwitched(PhotonNetwork.player);
             }
-
+            */
         }
 
         if (!PhotonNetwork.connected && !PhotonNetwork.connecting && !this.ConnectUiView.GetActive())
@@ -129,7 +135,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
     public void OnEndTurn()
     {
-        if (this.turnManager.Turn < 5)
+        if (this.turnManager.Turn < 10)
         {
             this.StartCoroutine("ShowResultsBeginNextTurnCoroutine");
         }
@@ -150,6 +156,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             ResultUIView.GetComponentsInChildren<Text>()[1].text = c_hintLA_count.ToString();
             ResultUIView.GetComponentsInChildren<Text>()[2].text = c_hintST_count.ToString();
             xmlprocess.setCompeteScoreRecord(c_hintLA_count,c_hintST_count,local.GetScore(), localRank);
+            xmlprocess.setCompeteCorrectRecord(correctNum,wrongNum);
+            xmlprocess.setCompeteMaxCorrectRecord(max_correctNum);
             this.StartCoroutine(gameover(PlayerLists));
         }
 
@@ -272,6 +280,12 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         {
             this.result = ResultType.None;
             Debug.Log("You hadn't select");
+            if (C_correctNum >= max_correctNum)
+            {
+                max_correctNum = C_correctNum;
+                C_correctNum = 0;
+            }
+            wrongNum++;
             return;
         }
 
@@ -284,10 +298,19 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         {
            this.result = ResultType.CorrectAns;
             Debug.Log("Correct answer!");
+            C_correctNum++;
+            correctNum ++;
         }
         else {
             this.result = ResultType.WrongAns;
             Debug.Log("Wrong answer");
+            if (C_correctNum >= max_correctNum)
+            {
+                max_correctNum = C_correctNum;
+                C_correctNum = 0;
+            }
+            wrongNum++;
+
         }
     }
 
@@ -407,8 +430,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     void RefreshWaitUI() {
         btn_gamestart = this.WaitingUI.GetComponentsInChildren<Button>()[0];
         btn_gamestart.onClick.AddListener(ClickGameStart);
-        btn_exit = this.WaitingUI.GetComponentsInChildren<Button>()[1];
-        btn_exit.onClick.AddListener(ExitGame);
+        //btn_exit = this.WaitingUI.GetComponentsInChildren<Button>()[1];
+        //btn_exit.onClick.AddListener(ExitGame);
 
         PhotonPlayer hostPlayer = PhotonNetwork.masterClient;
         GameObject HostInfo = GameObject.FindGameObjectWithTag("Host");

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c5f2b929ada50f24794f905eadbe02b8
-timeCreated: 1539186371
+timeCreated: 1539766685
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,8 @@ TextureImporter:
     21300008: "\u6210\u5C31\u756B\u97622_0"
     21300010: "\u6210\u5C31\u756B\u97622_3"
     21300012: "\u6210\u5C31\u756B\u97622_6"
+    21300014: "\u6210\u5C31\u756B\u97622_7"
+    21300016: "\u6210\u5C31\u756B\u97622_8"
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -90,10 +92,10 @@ TextureImporter:
         serializedVersion: 2
         x: 13
         y: 315
-        width: 239
-        height: 239
+        width: 245
+        height: 245
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -101,12 +103,12 @@ TextureImporter:
       name: "\u6210\u5C31\u756B\u97622_2"
       rect:
         serializedVersion: 2
-        x: 9
-        y: 51
-        width: 238
-        height: 242
+        x: 291
+        y: 369
+        width: 51
+        height: 163
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -114,12 +116,12 @@ TextureImporter:
       name: "\u6210\u5C31\u756B\u97622_3"
       rect:
         serializedVersion: 2
-        x: 276
-        y: 280
+        x: 373
+        y: 371
         width: 51
         height: 163
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -127,12 +129,12 @@ TextureImporter:
       name: "\u6210\u5C31\u756B\u97622_4"
       rect:
         serializedVersion: 2
-        x: 354
-        y: 286
-        width: 56
-        height: 131
+        x: 9
+        y: 51
+        width: 245
+        height: 245
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -140,12 +142,12 @@ TextureImporter:
       name: "\u6210\u5C31\u756B\u97622_5"
       rect:
         serializedVersion: 2
-        x: 276
-        y: 17
+        x: 281
+        y: 181
         width: 51
         height: 163
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -153,12 +155,38 @@ TextureImporter:
       name: "\u6210\u5C31\u756B\u97622_6"
       rect:
         serializedVersion: 2
+        x: 373
+        y: 181
+        width: 51
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "\u6210\u5C31\u756B\u97622_7"
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 17
+        width: 56
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "\u6210\u5C31\u756B\u97622_8"
+      rect:
+        serializedVersion: 2
         x: 354
         y: 17
         width: 56
         height: 131
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

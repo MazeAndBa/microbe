@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PracticeView : MonoBehaviour {
 
     PracticeManager pm;
-    int vocabularyID,totalQuesNum,correctNum,wrongNum;
+    int vocabularyID,totalQuesNum, C_correctNum,max_correctNum, correctNum, wrongNum;
     static int p_score;
     public static bool showAchieve;
     Text text_score;
@@ -43,8 +43,10 @@ public class PracticeView : MonoBehaviour {
         text_score = score.GetComponentsInChildren<Text>()[0];
         p_score = 0;
         vocabularyID = 0;
-        correctNum = 0;//正確題數
-        wrongNum = 0;//錯誤題數
+        C_correctNum = 0;//當前連續答對題數
+        max_correctNum = -1;//最大連續答對數
+        correctNum = 0;//累計正確題數
+        wrongNum = 0;//累計錯誤題數
         totalQuesNum = 7;//練習題數
         showAchieve = false;
         StartCoroutine(showReviewVocabulary());
@@ -176,14 +178,14 @@ public class PracticeView : MonoBehaviour {
         //Color c_original =new Color(0.5f,0.68f,0.47f,1f) ;
         if (_quesID == quesID)
         {
-            if (correctOption.Equals(optionID))
+            if (correctOption.Equals(optionID))//答對
             {
                 btn_option[optionID].GetComponent<Button>().interactable = false;//避免重複點擊,增加分數
                 StartCoroutine(showfeedback(0));
                 p_score += (int)(p_score * 0.5) + 30;
                 text_score.text = p_score.ToString();
             }
-            else
+            else//答錯
             {
                 btn_option[correctOption].GetComponent<Button>().interactable = false;//避免重複點擊,增加分數
                 btn_option[correctOption].GetComponent<Image>().color = Color.red;
@@ -363,9 +365,13 @@ public class PracticeView : MonoBehaviour {
 
     IEnumerator LearningEnd() {
         yield return new WaitForSeconds(2f);
-        UIManager.Instance.CloseAllPanel();
+        UIManager.Instance.TogglePanel("P_ResultUI",false);
         string c_state = pm.setLearningCount("learning_count");//更新單字練習次數
         string[] s_state = pm.setLearningScore(p_score);//紀錄此次單字練習成績
+        string mcorrect_state = pm.setLearningMaxCorrect(max_correctNum);//更新單字最高連續答對題數
+        string correct_state = pm.setLearningCorrect(correctNum, wrongNum);//更新單字答對與錯誤題數
+
+        /*---顯示獲得獎章與稱號---*/
         if (c_state != null)
         {
             Achievement.badgeName[0] = "練習不是一兩天的事";
@@ -390,9 +396,26 @@ public class PracticeView : MonoBehaviour {
             UI_ShowMes.SetActive(true);
             UI_ShowMes.GetComponentInChildren<Text>().text = s_state[1];
         }
-        yield return new WaitForSeconds(1f);
+        if (mcorrect_state != null)
+        {
+            Achievement.badgeName[3] = "難不倒我";
+            UI_ShowMes.SetActive(true);
+            UI_ShowMes.GetComponentInChildren<Text>().text = mcorrect_state;
+        }
+
+        if (correct_state != null)
+        {
+            Achievement.badgeName[4] = "答對一點都不難";
+            UI_ShowMes.SetActive(true);
+            UI_ShowMes.GetComponentInChildren<Text>().text = correct_state;
+        }
+
+    /*--------------------------*/
+    yield return new WaitForSeconds(1f);
         showAchieve = true;
         SceneManager.LoadScene("Home");
+        UIManager.Instance.CloseAllPanel();
+
     }
 
     void checkNextQues(int _quesID, string functionName)
@@ -441,13 +464,19 @@ public class PracticeView : MonoBehaviour {
         img_correct.gameObject.SetActive(false);
         img_wrong.gameObject.SetActive(false);
 
-        if (_state == 0)
+        if (_state == 0)//答對
         {
+            C_correctNum++;
             correctNum++;
             img_correct.gameObject.SetActive(true);
         }
-        else
+        else//答錯
         {
+            if (C_correctNum >= max_correctNum)
+            {
+                max_correctNum = C_correctNum;
+                C_correctNum = 0;
+            }
             wrongNum++;
             img_wrong.gameObject.SetActive(true);
 
