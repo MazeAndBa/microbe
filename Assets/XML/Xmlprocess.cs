@@ -726,7 +726,7 @@ public class Xmlprocess
     /// <summary>
     /// 更新每回單字學習紀錄的分數與結束時間
     /// </summary>
-    public string setLearningScoreRecord(int score)
+    public string[] setLearningScoreRecord(int score)
     {
         if (isExits())
         {
@@ -743,44 +743,32 @@ public class Xmlprocess
             XmlElement element = (XmlElement)nodeLastLearning;
             XmlAttribute attr_score = element.GetAttributeNode("score");
             XmlAttribute attr_endTime = element.GetAttributeNode("endTime");
-            string state = null;
+
             attr_score.Value = score.ToString();
             attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
-            state = updateHighScore(score);
+            string[] _state = updateHighScore(score);
             saveData();
-            return state;
+            return _state;
         }
         return null;
     }
 
-    string updateHighScore(int score)
+    string[] updateHighScore(int score)
     {
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("highscore");
         int highscore = XmlConvert.ToInt32(attribute.Value);
-        string H_state = null;
-        string I_state = null;
+        string[] _state = new string[2];
         if (score > highscore)
         {
             attribute.Value = score.ToString();
             int improveCounts = setLearningScoreImprove();//當前進步次數
-            H_state = setBadgeLearningHighScore(score);
-            I_state = setBadgeLearningImprove(improveCounts);
+            _state[0] = setBadgeLearningHighScore(score);
+            _state[1]= setBadgeLearningImprove(improveCounts);
+            return _state;
         }
         saveData();
-
-        if (H_state != null || I_state != null) {
-            if (H_state != null && I_state != null) {
-                return "2," + H_state;
-            }
-            else if (H_state != null) {
-                return "0,"+H_state;
-            }
-            else {
-                return "1,"+I_state;
-            }
-        }
         return null;
     }
 
@@ -879,7 +867,7 @@ public class Xmlprocess
     /// 更新個人對戰的次數
     /// </summary>
     /// <param name="attributeName"></param>
-    public void setCompeteCount(string attributeName)
+    public string setCompeteCount(string attributeName)
     {
         if (isExits())
         {
@@ -891,11 +879,12 @@ public class Xmlprocess
             attribute.Value = count.ToString();
             if (attributeName == "compete_count")
             {
-                setBadgeCompeteCounts(count);
+                return setBadgeCompeteCounts(count);
             }
-
             saveData();
+            return null;
         }
+        return null;
     }
 
     /// <summary>
@@ -956,9 +945,9 @@ public class Xmlprocess
     }
 
     /// <summary>
-    ///對戰結束更新對戰紀錄
+    ///對戰結束更新對戰紀錄 0:improve;1:highscore;2:rank
     /// </summary>
-    public void setCompeteScoreRecord(int hintLACount, int hintSTCount, int score, int rank)
+    public string[] setCompeteScoreRecord(int hintLACount, int hintSTCount, int score, int rank)
     {
         if (isExits())
         {
@@ -983,33 +972,38 @@ public class Xmlprocess
             attr_score.Value = score.ToString();
             attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
             attr_rank.Value = rank.ToString();
-            updateCompeteHighScore(score);
+            string []_state = updateCompeteHighScore(score,rank);
             saveData();
+            return _state;
         }
+        return null;
     }
 
-    void updateCompeteHighScore(int score)
+    string [] updateCompeteHighScore(int score,int rank)
     {
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("highscore");
         int highscore = XmlConvert.ToInt32(attribute.Value);
+        string[] _state = new string[3];
         if (score > highscore)
         {
             attribute.Value = score.ToString();
             int improveCounts = CompeteScoreImprove();//當前進步次數
-            setBadgeCompeteImprove(improveCounts);
-            setBadgeCompeteHighScore(score);
-
+            _state[0] = setBadgeCompeteHighScore(score);
+            _state[1] = setBadgeCompeteImprove(improveCounts);
         }
+        _state[2] = setBadgeCompeteRank(rank);//將三個狀態一起存在同一陣列
         saveData();
+        return _state;
+
     }
 
 
     /// <summary>
     /// 更新本次對戰紀錄的正確與錯誤題數
     /// </summary>
-    public void setCompeteCorrectRecord(int correctCount, int wrongCount)
+    public string setCompeteCorrectRecord(int correctCount, int wrongCount)
     {
         if (isExits())
         {
@@ -1040,16 +1034,18 @@ public class Xmlprocess
 
             /*更新獎章狀況*/
             //string state = null;
-            setBadgeCompeteCorrect(correctCount);
+            string _state = setBadgeCompeteCorrect(correctCount);
             saveData();
+            return _state;
         }
+        return null;
     }
 
 
     /// <summary>
     /// 更新每回單字學習紀錄的最高連續正確題數
     /// </summary>
-    public void setCompeteMaxCorrectRecord(int max_correctCount)
+    public string setCompeteMaxCorrectRecord(int max_correctCount)
     {
         if (isExits())
         {
@@ -1067,9 +1063,11 @@ public class Xmlprocess
             XmlAttribute attr_maxcorrect = element.GetAttributeNode("maxcorrect");
             //string state = null;
             attr_maxcorrect.Value = max_correctCount.ToString();
-            setBadgeCompeteMaxCorrect(max_correctCount);
+            string _state = setBadgeCompeteMaxCorrect(max_correctCount);
             saveData();
+            return _state;
         }
+        return null;
     }
 
     /// <summary>
@@ -1129,7 +1127,7 @@ public class Xmlprocess
     /// </summary>
     /// <param name="ans_state">正確或錯誤</param>
     /// <param name="duration">花費時間</param>
-    public void setRoundAns(string ans_state, int duration)
+    public string setRoundAns(string ans_state, int duration)
     {
         XmlNode nodeLast = null;
         XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
@@ -1146,8 +1144,12 @@ public class Xmlprocess
         XmlAttribute attr_duration = round_record.GetAttributeNode("duration");
         attr_ansState.Value = ans_state;
         attr_duration.Value = duration.ToString();
-
+        if (ans_state == "correct")
+        {
+            return setBadgeCompeteSpendtime(duration);
+        }
         saveData();
+        return null;
     }
 
     /// <summary>
@@ -1498,10 +1500,10 @@ public class Xmlprocess
                 _state = "獲得新獎章!";
                 _level = 1;
                 break;
-            case 5:
+            case 4:
                 _level = 2;
                 break;
-            case 8:
+            case 6:
                 _state = "了解\"努力沒有白費\"稱號!";
                 _level = 3;
                 break;
@@ -1512,12 +1514,58 @@ public class Xmlprocess
     }
 
     /// <summary>
-    /// badge4練習最高連續答對獎章
+    /// badge4練習累積答對題數獎章
+    /// </summary>
+    /// <param name="highscore">最高分數</param>
+    string setBadgeLearningCorrect(int correct)
+    {
+
+
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge4");
+        XmlElement element = (XmlElement)node;
+        XmlAttribute attribute = element.GetAttributeNode("level");
+        string _state = null;
+        int _level = 0;
+        if (correct >= 15 && correct < 30)
+        {
+            if (attribute.Value == "0")
+            {
+                _state = "獲得新獎章!";
+
+                XmlNode node2 = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning");//個人學習區獎章+1
+                XmlElement element2 = (XmlElement)node;
+                XmlAttribute attr_count = element.GetAttributeNode("count");
+                int count = XmlConvert.ToInt32(attr_count.Value);
+                count = count + 1;
+                attr_count.Value = count.ToString();
+            }
+            _level = 1;
+        }
+        else if (correct >= 30 && correct < 60)
+        {
+            _level = 2;
+        }
+        else if (correct >= 60)
+        {
+            if (attribute.Value == "2")
+            {
+                _state = "了解\"腳踏實地!\"稱號!";
+            }
+            _level = 3;
+        }
+        attribute.Value = _level.ToString();
+        saveData();
+        return _state;
+    }
+
+
+    /// <summary>
+    /// badge5練習最高連續答對獎章
     /// </summary>
     /// <param name="max_correct">連續答對題數</param>
     string setBadgeLearningMaxCorrect(int max_correct)
     {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge4");
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge5");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
         string _state = null;
@@ -1546,44 +1594,34 @@ public class Xmlprocess
         saveData();
         return _state;
     }
-
     /// <summary>
-    /// badge5練習累積答對題數獎章
+    /// badge6對戰答題迅速獎章
     /// </summary>
-    /// <param name="highscore">最高分數</param>
-    string setBadgeLearningCorrect(int correct)
+    /// <param name="spendtime">答題時間</param>
+    string setBadgeCompeteSpendtime(int spendtime)
     {
-
-
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge5");
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge9");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
-        string _state = null;
         int _level = 0;
-        if (correct >= 15 && correct < 30)
+        string _state = null;
+        if (spendtime <= 10 && spendtime > 8)
         {
             if (attribute.Value == "0")
             {
                 _state = "獲得新獎章!";
-
-                XmlNode node2 = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning");//個人學習區獎章+1
-                XmlElement element2 = (XmlElement)node;
-                XmlAttribute attr_count = element.GetAttributeNode("count");
-                int count = XmlConvert.ToInt32(attr_count.Value);
-                count = count + 1;
-                attr_count.Value = count.ToString();
             }
             _level = 1;
         }
-        else if (correct >= 30 && correct < 60)
+        else if (spendtime <= 8 && spendtime > 5)
         {
             _level = 2;
         }
-        else if (correct >= 60)
+        else if (spendtime <= 5)
         {
             if (attribute.Value == "2")
             {
-                _state = "了解\"答對一點都不難!\"稱號!";
+                _state = "了解\"快!狠!準!\"稱號!";
             }
             _level = 3;
         }
@@ -1591,82 +1629,37 @@ public class Xmlprocess
         saveData();
         return _state;
     }
+
 
 
     /// <summary>
     /// badge7對戰次數獎章
     /// </summary>
     /// <param name="competeCounts">當前對戰總次數</param>
-    void setBadgeCompeteCounts(int competeCounts)
+    string setBadgeCompeteCounts(int competeCounts)
     {
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge7");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
-        int _level = 0;
-        switch (competeCounts)
-        {
-            case 1:
-                _level = 1;
-                break;
-            case 5:
-                _level = 2;
-                break;
-            case 10:
-                _level = 3;
-                break;
-        }
-        attribute.Value = _level.ToString();
-        saveData();
-    }
-    /// <summary>
-    /// badge8對戰分數達標獎章
-    /// </summary>
-    /// <param name="highscore">最高分數</param>
-    void setBadgeCompeteHighScore(int highscore) {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge8");
-        XmlElement element = (XmlElement)node;
-        XmlAttribute attribute = element.GetAttributeNode("level");
-        int _level = 0;
-        if (highscore >=30 && highscore<60) {
-            _level = 1;
-        }else if (highscore >= 60 && highscore<100) {
-            _level = 2;
-        }else if (highscore >= 100)
-        {
-            _level = 3;
-        }
-        attribute.Value = _level.ToString();
-        saveData();
-    }
-
-    /// <summary>
-    /// badge9對戰最高連續答對獎章
-    /// </summary>
-    /// <param name="max_correct">連續答對題數</param>
-    string setBadgeCompeteMaxCorrect(int max_correct)
-    {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge9");
-        XmlElement element = (XmlElement)node;
-        XmlAttribute attribute = element.GetAttributeNode("level");
         string _state = null;
         int _level = 0;
-        if (max_correct >= 1 && max_correct < 5)
+        if (competeCounts > 0 && competeCounts < 5)
         {
             if (attribute.Value == "0")
-            {
+            {//首次獲得
                 _state = "獲得新獎章!";
             }
             _level = 1;
         }
-        else if (max_correct >= 5 && max_correct < 10)
+        else if (competeCounts >= 5 && competeCounts < 8)
         {
             _level = 2;
         }
-        else if (max_correct >= 10)
+        else if (competeCounts >= 8)
         {
-            if (attribute.Value == "2")
+            if (attribute.Value == "2")//金牌達標
             {
-                _state = "了解\"對了又對!\"稱號!";
+                _state = "了解\"熱愛對戰!\"稱號!";
             }
             _level = 3;
         }
@@ -1676,41 +1669,13 @@ public class Xmlprocess
     }
 
 
-
     /// <summary>
-    /// badge10對戰進步獎章
-    /// </summary>
-    /// <param name="improveCounts">當前進步總次數</param>
-    void setBadgeCompeteImprove(int improveCounts)
-    {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge10");
-        XmlElement element = (XmlElement)node;
-        XmlAttribute attribute = element.GetAttributeNode("level");
-        int _level = 0;
-        switch (improveCounts)
-        {
-            case 1:
-                _level = 1;
-                break;
-            case 3:
-                _level = 2;
-                break;
-            case 5:
-                _level = 3;
-                break;
-        }
-        attribute.Value = _level.ToString();
-        saveData();
-    }
-
-
-    /// <summary>
-    /// badge11對戰累積答對題數獎章
+    /// badge8對戰累積答對題數獎章
     /// </summary>
     /// <param name="highscore">最高分數</param>
     string setBadgeCompeteCorrect(int correct)
     {
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge11");
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge8");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
         string _state = null;
@@ -1732,6 +1697,148 @@ public class Xmlprocess
             if (attribute.Value == "2")
             {
                 _state = "了解\"答對真的不難!\"稱號!";
+            }
+            _level = 3;
+        }
+        attribute.Value = _level.ToString();
+        saveData();
+        return _state;
+    }
+
+
+    /// <summary>
+    /// badge9對戰最高連續答對獎章
+    /// </summary>
+    /// <param name="max_correct">連續答對題數</param>
+    string setBadgeCompeteMaxCorrect(int max_correct)
+    {
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge9");
+        XmlElement element = (XmlElement)node;
+        XmlAttribute attribute = element.GetAttributeNode("level");
+        string _state = null;
+        int _level = 0;
+        if (max_correct >= 2 && max_correct < 4)
+        {
+            if (attribute.Value == "0")
+            {
+                _state = "獲得新獎章!";
+            }
+            _level = 1;
+        }
+        else if (max_correct >= 4 && max_correct < 6)
+        {
+            _level = 2;
+        }
+        else if (max_correct >= 8)
+        {
+            if (attribute.Value == "2")
+            {
+                _state = "了解\"屢戰屢勝!\"稱號!";
+            }
+            _level = 3;
+        }
+        attribute.Value = _level.ToString();
+        saveData();
+        return _state;
+    }
+
+    /// <summary>
+    /// badge10對戰分數達標獎章
+    /// </summary>
+    /// <param name="highscore">最高分數</param>
+    string setBadgeCompeteHighScore(int highscore) {
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge10");
+        XmlElement element = (XmlElement)node;
+        XmlAttribute attribute = element.GetAttributeNode("level");
+        int _level = 0;
+        string _state = null;
+
+        if (highscore >= 30 && highscore < 60)
+        {
+            if (attribute.Value == "0")
+            {
+                _state = "獲得新獎章!";
+            }
+            _level = 1;
+        }
+        else if (highscore >= 60 && highscore < 100)
+        {
+            _level = 2;
+        }
+        else if (highscore >= 100)
+        {
+            if (attribute.Value == "2")
+            {
+                _state = "了解\"無法阻止得分\"稱號!";
+            }
+            _level = 3;
+        }
+
+        attribute.Value = _level.ToString();
+        saveData();
+        return _state;
+    }
+
+    /// <summary>
+    /// badge11對戰進步獎章
+    /// </summary>
+    /// <param name="improveCounts">當前進步總次數</param>
+    string setBadgeCompeteImprove(int improveCounts)
+    {
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge11");
+        XmlElement element = (XmlElement)node;
+        XmlAttribute attribute = element.GetAttributeNode("level");
+        string _state = null;
+        int _level = 0;
+        switch (improveCounts)
+        {
+            case 2:
+                _state = "獲得新獎章!";
+                _level = 1;
+                break;
+            case 4:
+                _level = 2;
+                break;
+            case 6:
+                _state = "了解\"越戰越勇\"稱號!";
+                _level = 3;
+                break;
+        }
+        attribute.Value = _level.ToString();
+        saveData();
+        return _state;
+    }
+
+
+
+    /// <summary>
+    /// badge12對戰回合排名獎章
+    /// </summary>
+    /// <param name="rank">排名</param>
+    string setBadgeCompeteRank(int rank)
+    {
+        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge12");
+        XmlElement element = (XmlElement)node;
+        XmlAttribute attribute = element.GetAttributeNode("level");
+        string _state = null;
+        int _level = 0;
+        if (rank==3)
+        {
+            if (attribute.Value == "0")
+            {
+                _state = "獲得新獎章!";
+            }
+            _level = 1;
+        }
+        else if (rank==2)
+        {
+            _level = 2;
+        }
+        else if (rank==1)
+        {
+            if (attribute.Value == "2")
+            {
+                _state = "了解\"榜上有名!!!\"稱號!";
             }
             _level = 3;
         }

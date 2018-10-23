@@ -12,6 +12,7 @@ public class PracticeView : MonoBehaviour {
     public static bool showAchieve;
     Text text_score;
     public GameObject UI_showAnsfeedback, UI_ShowMes,score;
+    string []achievementState;
 
     #region ReviewVocabulary UI
     Text text_English,text_Translation;
@@ -38,8 +39,13 @@ public class PracticeView : MonoBehaviour {
     Text text_correct,text_wrong;
     #endregion
 
-    void Start () {
+    private void Awake()
+    {
+        achievementState = new string[5];//學習區獎章數量
         pm = new PracticeManager();
+    }
+
+    void Start () {
         text_score = score.GetComponentsInChildren<Text>()[0];
         p_score = 0;
         vocabularyID = 0;
@@ -366,50 +372,39 @@ public class PracticeView : MonoBehaviour {
     IEnumerator LearningEnd() {
         yield return new WaitForSeconds(2f);
         UIManager.Instance.TogglePanel("P_ResultUI",false);
-        string c_state = pm.setLearningCount("learning_count");//更新單字練習次數
+        achievementState[0] = pm.setLearningCount("learning_count");//更新單字練習次數
         string[] s_state = pm.setLearningScore(p_score);//紀錄此次單字練習成績
-        string mcorrect_state = pm.setLearningMaxCorrect(max_correctNum);//更新單字最高連續答對題數
-        string correct_state = pm.setLearningCorrect(correctNum, wrongNum);//更新單字答對與錯誤題數
-
+        achievementState[1] = s_state[0];
+        achievementState[2] = s_state[1];
+        achievementState[3] = pm.setLearningCorrect(correctNum, wrongNum);//更新單字答對與錯誤題數
+        achievementState[4] = pm.setLearningMaxCorrect(max_correctNum);//更新單字最高連續答對題數
         /*---顯示獲得獎章與稱號---*/
-        if (c_state != null)
+        for (int i = 0; i < achievementState.Length; i++)
         {
-            Achievement.badgeName[0] = "練習不是一兩天的事";
-            UI_ShowMes.SetActive(true);
-            UI_ShowMes.GetComponentInChildren<Text>().text = c_state;
-        }
-        if (s_state != null)
-        {
-            switch (s_state[0])
+            if (achievementState[i] != null)
             {
-                case "0"://獲得badge2得分達標
-                    Achievement.badgeName[1] = "得分魔人";
-                    break;
-                case "1"://獲得badge3進步獎章
-                    Achievement.badgeName[2] = "努力沒有白費";
-                    break;
-                case "2"://獲得兩者
-                    Achievement.badgeName[1] = "得分魔人";
-                    Achievement.badgeName[2] = "努力沒有白費";
-                    break;
+                UI_ShowMes.SetActive(true);
+                UI_ShowMes.GetComponentInChildren<Text>().text = achievementState[i];
+                switch (i)
+                {
+                    case 0:
+                        Achievement.badgeName[0] = "練習不是一兩天的事";
+                        break;
+                    case 1:
+                        Achievement.badgeName[1] = "得分魔人";
+                        break;
+                    case 2:
+                        Achievement.badgeName[2] = "努力沒有白費";
+                        break;
+                    case 3:
+                        Achievement.badgeName[3] = "難不倒我";
+                        break;
+                    case 4:
+                        Achievement.badgeName[4] = "腳踏實地";
+                        break;
+                }
             }
-            UI_ShowMes.SetActive(true);
-            UI_ShowMes.GetComponentInChildren<Text>().text = s_state[1];
         }
-        if (mcorrect_state != null)
-        {
-            Achievement.badgeName[3] = "難不倒我";
-            UI_ShowMes.SetActive(true);
-            UI_ShowMes.GetComponentInChildren<Text>().text = mcorrect_state;
-        }
-
-        if (correct_state != null)
-        {
-            Achievement.badgeName[4] = "答對一點都不難";
-            UI_ShowMes.SetActive(true);
-            UI_ShowMes.GetComponentInChildren<Text>().text = correct_state;
-        }
-
     /*--------------------------*/
     yield return new WaitForSeconds(1f);
         showAchieve = true;

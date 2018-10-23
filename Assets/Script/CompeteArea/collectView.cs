@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(PhotonView))]
 public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 {
-    public GameObject ConnectUiView, WaitingUI, GameStartUI,ShowResultMes, ResultUIView, cardgroup, card;
+    public GameObject ConnectUiView, WaitingUI, GameStartUI,ShowResultMes, ResultUIView,ShowMesUI, cardgroup, card;
     public Text question, RemotePlayerText, LocalPlayerText, TurnText, TimeText;
     public AudioSource vol_pronun;
     Button btn_gamestart, btn_exit,btn_hintLA,btn_hintST;
@@ -34,6 +34,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
     #region 記錄資料
     Xmlprocess xmlprocess;
+    string[] achievementState;//獎章狀態
     #endregion
 
     public enum ResultType
@@ -41,6 +42,9 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         None = 0,
         CorrectAns,
         WrongAns
+    }
+    void Awake() {
+        achievementState = new string[7];//對戰獎章數量
     }
 
     void Start() {
@@ -155,14 +159,16 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             }
             ResultUIView.GetComponentsInChildren<Text>()[1].text = c_hintLA_count.ToString();
             ResultUIView.GetComponentsInChildren<Text>()[2].text = c_hintST_count.ToString();
-            xmlprocess.setCompeteScoreRecord(c_hintLA_count,c_hintST_count,local.GetScore(), localRank);
-            xmlprocess.setCompeteCorrectRecord(correctNum,wrongNum);
-            xmlprocess.setCompeteMaxCorrectRecord(max_correctNum);
+            achievementState[2] = xmlprocess.setCompeteCorrectRecord(correctNum, wrongNum);//累積答對
+            achievementState[3] = xmlprocess.setCompeteMaxCorrectRecord(max_correctNum);//連續答對
+            string[] s_state = xmlprocess.setCompeteScoreRecord(c_hintLA_count, c_hintST_count, local.GetScore(), localRank);//提示與分數排名
+            achievementState[4] = s_state[0];
+            achievementState[5] = s_state[1];
+            achievementState[6] = s_state[2];
+
             this.StartCoroutine(gameover(PlayerLists));
         }
-
     }
-
     #endregion
 
 
@@ -374,7 +380,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 break;
         }
         //Debug.Log("花費時間: "+ spendTime);
-        xmlprocess.setRoundAns(resultState, spendTime);
+        achievementState[0] = xmlprocess.setRoundAns(resultState, spendTime);//答題迅速獎章
         StartCoroutine(UpdatePlayerTexts());
     }
 
@@ -484,22 +490,53 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     }
 
     IEnumerator gameover(GameObject [] PlayerLists) {
-
-        yield return new WaitForSeconds(3.0f);
-        ResultUIView.SetActive(false);
+        /*--------------------------*/
         //遊戲結束重置玩家分數
         PhotonPlayer[] player = PhotonNetwork.playerList;
         for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
         {
             player[i].SetScore(0);
         }
-
         //銷毀排行榜的玩家名單物件
         if (PlayerLists.Length > 0)
         {
             for (int i = 0; i < PlayerLists.Length; i++)
             {
                 Destroy(PlayerLists[i]);
+            }
+        }
+        yield return new WaitForSeconds(3.0f);
+
+        ResultUIView.SetActive(false);
+
+        /*---顯示獲得獎章與稱號---*/
+        for (int i = 0; i < achievementState.Length; i++) {
+            if (achievementState[i] != null) {
+                ShowMesUI.SetActive(true);
+                ShowMesUI.GetComponentInChildren<Text>().text = achievementState[i];
+                switch (i) {
+                    case 0:
+                        Achievement.badgeName[5] = "快!狠!準!";
+                        break;
+                    case 1:
+                        Achievement.badgeName[6] = "熱愛對戰";
+                        break;
+                    case 2:
+                        Achievement.badgeName[7] = "答對真的不難";
+                        break;
+                    case 3:
+                        Achievement.badgeName[8] = "屢戰屢勝";
+                        break;
+                    case 4:
+                        Achievement.badgeName[9] = "無法阻止得分";
+                        break;
+                    case 5:
+                        Achievement.badgeName[10] = "越戰越勇";
+                        break;
+                    case 6:
+                        Achievement.badgeName[11] = "榜上有名";
+                        break;
+                }
             }
         }
         ExitGame();
@@ -514,7 +551,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (PhotonNetwork.room.PlayerCount > 1)
         {
             xmlprocess.ScceneHistoryRecord("StartCompete", DateTime.Now.ToString("HH:mm:ss"));
-            xmlprocess.setCompeteCount("compete_count");
+            achievementState[1] = xmlprocess.setCompeteCount("compete_count");
             xmlprocess.createCompeteRecord();
             this.photonView.RPC("GameStart", PhotonTargets.All);
         }

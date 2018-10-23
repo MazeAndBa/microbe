@@ -110,17 +110,11 @@ public class PracticeManager {
     }
 
     /// <summary>
-    /// 回合單字練習的成績紀錄
+    /// 回合單字練習的成績紀錄 0:highscore;1:improve
     /// </summary>
     public string[] setLearningScore(int score)
     {
-        string tmp = xmlprocess.setLearningScoreRecord(score);
-        if (tmp != null)
-        {
-            string[] state = tmp.Split(',');
-            return state;
-        }
-        return null;
+        return xmlprocess.setLearningScoreRecord(score);
     }
 
     /// <summary>
