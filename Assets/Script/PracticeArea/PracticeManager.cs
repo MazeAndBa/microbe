@@ -40,7 +40,7 @@ public class PracticeManager {
     }
 
     ///<summary>
-    ///將題目亂數重新排序,並回傳前7個
+    ///將題目用索引值亂數重新排序
     ///</summary>
     public int[] randomQuestion() {
 

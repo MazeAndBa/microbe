@@ -1,0 +1,46 @@
+<Loadfile>
+  <User ID="528" name="528" level="1" sex="0" money="100">
+    <current_icon icon="" />
+    <badge learning_count="0" compete_count="0" />
+    <learning review_count="0" learning_count="0" learning_correct="0" learning_wrong="0" learningImprove="0" highscore="0" />
+    <compete compete_count="0" compete_correct="0" compete_wrong="0" competeImprove="0" highscore="0" />
+  </User>
+  <badge_record>
+    <badge_learning count="0">
+      <badge1 level="0" />
+      <badge2 level="0" />
+      <badge3 level="0" />
+      <badge4 level="0" />
+      <badge5 level="0" />
+    </badge_learning>
+    <badge_compete count="0">
+      <badge6 level="0" />
+      <badge7 level="0" />
+      <badge8 level="0" />
+      <badge9 level="3" />
+      <badge10 level="0" />
+      <badge11 level="0" />
+      <badge12 level="0" />
+    </badge_compete>
+  </badge_record>
+  <rank_history>
+    <rank_record highscore="" rank="" updateTime="" />
+  </rank_history>
+  <touch_history>
+    <touch_achieve count="0" />
+    <touch_leaderboard count="0" />
+  </touch_history>
+  <log_record day="2018-10-23">
+    <learning_history />
+    <compete_history>
+      <compete_record startTime="16: 39:54" endTime="" hint_LA="0" hint_ST="0" correct="0" maxcorrect="0" score="0" rank="0">
+        <round_record ques_id="1" ans_state="correct" duration="2" hint_LA="0" hint_ST="0" score="20" rank="1" />
+        <round_record ques_id="7" ans_state="" duration="0" hint_LA="0" hint_ST="0" score="0" rank="0" />
+      </compete_record>
+    </compete_history>
+    <scene_history>
+      <scene_record scence="Login" startTime="16:39:43" />
+      <scene_record scence="Compete" startTime="16:39:51" />
+    </scene_history>
+  </log_record>
+</Loadfile>

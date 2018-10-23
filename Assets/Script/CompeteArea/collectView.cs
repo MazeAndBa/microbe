@@ -165,8 +165,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             achievementState[4] = s_state[0];
             achievementState[5] = s_state[1];
             achievementState[6] = s_state[2];
-
-            this.StartCoroutine(gameover(PlayerLists));
+            ExitGame(PlayerLists);
         }
     }
     #endregion
@@ -187,6 +186,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         }
         currentTime = (int)this.turnManager.TurnDuration ;
         this.TimeText.text = currentTime.ToString();
+        this.question.text = "";
         this.localSelection = "";
         this.remoteSelection = "";
         IsShowingResults = false;
@@ -194,12 +194,14 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
     public IEnumerator initialTurn()//回合初始化
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1f);
         //存取新題目、選項、當前回合數
         quesInfo = this.turnManager.TurnQues;
         s_option = this.turnManager.TurnOption;
         TurnText.text = this.turnManager.Turn.ToString();
         xmlprocess.createRoundRecord(quesInfo[0]);//創建新的回合紀錄
+        xmlprocess.ScceneHistoryRecord("StartCompete", DateTime.Now.ToString("HH:mm:ss"));
+        achievementState[1] = xmlprocess.setCompeteCount();
 
         //銷毀上一回合的卡片
         GameObject[] tmp_cards = GameObject.FindGameObjectsWithTag("card");
@@ -409,7 +411,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
         {
             GameObject GameRank = GameObject.FindGameObjectWithTag("GameRank");
-            GameRank.GetComponentsInChildren<Text>()[i].text = player[i].NickName + "　|" + player[i].GetScore().ToString("D2")+"分";
+            GameRank.GetComponentsInChildren<Text>()[i].text = player[i].NickName + "　" + player[i].GetScore().ToString("D2")+"分";
             if (local.NickName == player[i].NickName) localRank = i+1;
         }
         if (local != null)
@@ -484,31 +486,15 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             remote.transform.localPosition = new Vector3(25, - i * 80+165, 0);
             remote.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             remote.name = (i+1)+"";
-            remote.text = player[i].NickName + "　分數:" + player[i].GetScore().ToString("D2") + "\n\n";
+            remote.text = player[i].NickName + "　" + player[i].GetScore().ToString("D2") + "分";
 
         }
+        xmlprocess.createCompeteRecord();
     }
 
     IEnumerator gameover(GameObject [] PlayerLists) {
-        /*--------------------------*/
-        //遊戲結束重置玩家分數
-        PhotonPlayer[] player = PhotonNetwork.playerList;
-        for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
-        {
-            player[i].SetScore(0);
-        }
-        //銷毀排行榜的玩家名單物件
-        if (PlayerLists.Length > 0)
-        {
-            for (int i = 0; i < PlayerLists.Length; i++)
-            {
-                Destroy(PlayerLists[i]);
-            }
-        }
-        yield return new WaitForSeconds(3.0f);
-
+        yield return new WaitForSeconds(5.0f);
         ResultUIView.SetActive(false);
-
         /*---顯示獲得獎章與稱號---*/
         for (int i = 0; i < achievementState.Length; i++) {
             if (achievementState[i] != null) {
@@ -538,8 +524,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                         break;
                 }
             }
-        }
-        ExitGame();
+        }        
+
     }
 
     #endregion
@@ -550,9 +536,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     {
         if (PhotonNetwork.room.PlayerCount > 1)
         {
-            xmlprocess.ScceneHistoryRecord("StartCompete", DateTime.Now.ToString("HH:mm:ss"));
-            achievementState[1] = xmlprocess.setCompeteCount("compete_count");
-            xmlprocess.createCompeteRecord();
+
             this.photonView.RPC("GameStart", PhotonTargets.All);
         }
         else
@@ -587,11 +571,28 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         }
     }
 
-    void ExitGame()
+    void ExitGame(GameObject [] PlayerLists)
     {
         //PhotonNetwork.LeaveRoom(false);
         //PhotonNetwork.Disconnect();
+        this.StartCoroutine(gameover(PlayerLists));
         SceneManager.LoadScene("Home");
+        /*--------------------------*/
+        //遊戲結束重置玩家分數
+        PhotonPlayer[] player = PhotonNetwork.playerList;
+        for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
+        {
+            player[i].SetScore(0);
+        }
+        //銷毀排行榜的玩家名單物件
+        if (PlayerLists.Length > 0)
+        {
+            for (int i = 0; i < PlayerLists.Length; i++)
+            {
+                Destroy(PlayerLists[i]);
+            }
+        }
+
     }
 
     [PunRPC]
@@ -603,6 +604,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             this.WaitingUI.SetActive(false);
             this.GameStartUI.SetActive(true);
             this.StartTurn();
+
         }
     }
 
