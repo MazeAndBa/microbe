@@ -76,19 +76,21 @@ public class Achievement : MonoBehaviour {
             switch (_targetLevel[i - 1]-1)//當前階段
             {
                 case 0:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.Load<Sprite>("Image/Main/null");
                     break;
                 case 1:
-                    _badgeBtn[i - 1].image.color = Color.white;
                     _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[2];
+                    _badgeBtn[i - 1].GetComponentsInChildren<Image>()[1].color = Color.white;
                     break;
                 case 2:
-                    _badgeBtn[i - 1].image.color = Color.white;
                     _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[1];
+                    _badgeBtn[i - 1].GetComponentsInChildren<Image>()[1].color = Color.white;
+
                     break;
                 case 3:
-                    _badgeBtn[i - 1].image.color = Color.white;
                     _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[0];
+                    _badgeBtn[i - 1].GetComponentsInChildren<Image>()[1].color = Color.white;
+
                     break;
             }
         }
@@ -119,19 +121,21 @@ public class Achievement : MonoBehaviour {
             switch (_targetLevel[i - 1] - 1)//當前階段
             {
                 case 0:
-                    _badgeBtn[i - 1].image.color = Color.gray;
+                    _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.Load<Sprite>("Image/Main/null");
                     break;
                 case 1:
-                    _badgeBtn[i - 1].image.color = Color.white;
                     _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[5];
+                    _badgeBtn[i - 1].GetComponentsInChildren<Image>()[1].color = Color.white;
                     break;
                 case 2:
-                    _badgeBtn[i - 1].image.color = Color.white;
                     _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[4];
+                    _badgeBtn[i - 1].GetComponentsInChildren<Image>()[1].color = Color.white;
+
                     break;
                 case 3:
-                    _badgeBtn[i - 1].image.color = Color.white;
                     _badgeBtn[i - 1].image.sprite = _badgeBtn[i - 1].image.sprite = Resources.LoadAll<Sprite>("Image/Main/bg")[3];
+                    _badgeBtn[i - 1].GetComponentsInChildren<Image>()[1].color = Color.white;
+
                     break;
             }
         }
@@ -151,6 +155,7 @@ public class Achievement : MonoBehaviour {
         WWW reg = new WWW(serverlink + fileName, phpform);
         yield return reg;
         string[] _tmp, _tmp1, _tmp2;
+        string _des = "";
         if (reg.error == null)
         {
             _tmp = reg.text.Split('/');//將回傳字串依據badge劃分,最後一個是空的(ex:1,完成練習,完成練習1次;2,完成練習,完成練習5次;3,完成練習,完成練習10次/....)
@@ -159,14 +164,17 @@ public class Achievement : MonoBehaviour {
                 _tmp1 = _tmp[i].Split(';');//將同一個badge分成3個階段(ex:1,完成練習,完成練習1次)
                 _tmp2 = _tmp1[0].Split(',');//將同一個階段分成3階段與敘述
                 badgeName[i] = _tmp2[1];
-                badgeDesciption[i,0] = "未獲得\n"+_tmp2[2];//目標第一階段
+                badgeDesciption[i,0] = "未獲得:\n"+_tmp2[2];//目標第一階段
 
+                _des = _tmp2[2];
                 _tmp2 = _tmp1[1].Split(',');
-                badgeDesciption[i,1] = "下一階段\n"+_tmp2[2];
+                badgeDesciption[i,1] = "已" + _des+"\n下一階段:" +_tmp2[2];
 
+                _des = _tmp2[2];
                 _tmp2 = _tmp1[2].Split(',');
-                badgeDesciption[i,2] = "下一階段\n" + _tmp2[2];
-                badgeDesciption[i,3] = "已完成\n" + _tmp2[2];//已達第三階段
+                badgeDesciption[i,2] = "已"+_des + "\n下一階段:\n" + _tmp2[2];
+
+                badgeDesciption[i,3] = "已達成" + _tmp2[2];//已達第三階段
 
             }
         }

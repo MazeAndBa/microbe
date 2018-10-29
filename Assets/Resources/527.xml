@@ -2,16 +2,16 @@
   <User ID="527" name="527" level="1" sex="1" money="100">
     <current_icon icon="" />
     <badge learning_count="0" compete_count="0" />
-    <learning review_count="0" learning_count="0" learning_correct="0" learning_wrong="0" learningImprove="0" highscore="0" />
+    <learning review_count="0" learning_count="1" learning_correct="6" learning_wrong="22" learningImprove="1" highscore="621" />
     <compete compete_count="0" compete_correct="0" compete_wrong="0" competeImprove="0" highscore="0" />
   </User>
   <badge_record>
-    <badge_learning count="0">
-      <badge1 level="0" />
-      <badge2 level="0" />
+    <badge_learning count="2">
+      <badge1 level="1" />
+      <badge2 level="1" />
       <badge3 level="0" />
       <badge4 level="0" />
-      <badge5 level="0" />
+      <badge5 level="2" />
     </badge_learning>
     <badge_compete count="0">
       <badge6 level="0" />
@@ -27,16 +27,26 @@
     <rank_record highscore="" rank="" updateTime="" />
   </rank_history>
   <touch_history>
-    <touch_achieve count="0" />
+    <touch_achieve count="5" />
     <touch_leaderboard count="0" />
   </touch_history>
-  <log_record day="2018-10-23">
-    <learning_history />
+  <log_record day="2018-10-29">
+    <learning_history>
+      <learning_record startTime="12: 49:55" score="621" correct="6" maxcorrect="3" endTime="12: 50:22" />
+    </learning_history>
     <compete_history />
     <scene_history>
-      <scene_record scence="Login" startTime="16:34:31" />
-      <scene_record scence="Compete" startTime="16:34:44" />
-      <scene_record scence="WaitingCompete" startTime="16:34:45" />
+      <scene_record scence="Login" startTime="12:44:42" />
+      <scene_record scence="Login" startTime="12:45:06" />
+      <scene_record scence="Login" startTime="12:46:27" />
+      <scene_record scence="Login" startTime="12:47:25" />
+      <scene_record scence="Login" startTime="12:49:41" />
+      <scene_record scence="Learning" startTime="12:49:53" />
+      <scene_record scence="Login" startTime="14:36:56" />
+      <scene_record scence="Login" startTime="14:39:04" />
+      <scene_record scence="Login" startTime="14:39:45" />
+      <scene_record scence="Login" startTime="16:36:42" />
+      <scene_record scence="Login" startTime="16:43:12" />
     </scene_history>
   </log_record>
 </Loadfile>
