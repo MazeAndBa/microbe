@@ -11,7 +11,8 @@ public class collectConn : PunBehaviour
 
     public GameObject obj_gamestart;
     Button btn_start;
-    Text id, username;
+    //Text id;
+    InputField username;
 
     public static string[] ques, option;
     private string serverlink = "140.115.126.137/microbe/";
@@ -26,12 +27,12 @@ public class collectConn : PunBehaviour
 
         btn_start = obj_gamestart.GetComponentInChildren<Button>();
         btn_start.onClick.AddListener(gamestart);
-        id = obj_gamestart.GetComponentsInChildren<Text>()[0];
-        username = obj_gamestart.GetComponentsInChildren<Text>()[2];
+        //id = obj_gamestart.GetComponentsInChildren<Text>()[0];
+        username = obj_gamestart.GetComponentsInChildren<InputField>()[0];
 
         xmlprocess = new Xmlprocess();
-        id.text = xmlprocess.getUserInfo()[0];
-        username.text = xmlprocess.getUserInfo()[1];
+        //id.text = xmlprocess.getUserInfo()[0];
+        //username.text = xmlprocess.getUserInfo()[1];
         UIManager.Instance.CloseAllPanel();
     }
 
@@ -48,7 +49,7 @@ public class collectConn : PunBehaviour
         {
             PhotonNetwork.AuthValues = new AuthenticationValues();
         }
-        PhotonNetwork.AuthValues.UserId = id.text;
+        PhotonNetwork.AuthValues.UserId = xmlprocess.getUserInfo()[0];//學號
         Debug.Log("playerName: " + username.text + "AuthValues userID: " + PhotonNetwork.AuthValues.UserId);
         PhotonNetwork.playerName = username.text;
  

@@ -36,6 +36,11 @@
     <scene_history>
       <scene_record scence="Login" startTime="14:08:28" />
       <scene_record scence="Learning" startTime="14:08:32" />
+      <scene_record scence="Login" startTime="14:50:51" />
+      <scene_record scence="Compete" startTime="14:50:54" />
+      <scene_record scence="Login" startTime="14:53:55" />
+      <scene_record scence="Compete" startTime="14:53:58" />
+      <scene_record scence="WaitingCompete" startTime="14:54:02" />
     </scene_history>
   </log_record>
 </Loadfile>
