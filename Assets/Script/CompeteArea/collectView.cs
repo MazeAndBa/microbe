@@ -56,6 +56,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         C_correctNum = 0;//當前連續答對題數
         max_correctNum = -1;//最大連續答對數
         correctNum = 0;//累計正確題數
+        hintLA_count = 3; hintST_count = 3;
+        c_hintLA_count = 0; c_hintST_count = 0;
         wrongNum = 0;
         RefreshConnectUI();
     }
@@ -136,8 +138,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             this.remoteSelection = move.ToString();
         }
     }
-
-    public void OnEndTurn()
+    IEnumerator OnEndTurn()
+    //public void OnEndTurn()
     {
         if (this.turnManager.Turn < 10)
         {
@@ -159,13 +161,16 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             }
             ResultUIView.GetComponentsInChildren<Text>()[1].text = c_hintLA_count.ToString();
             ResultUIView.GetComponentsInChildren<Text>()[2].text = c_hintST_count.ToString();
+            yield return new WaitForSeconds(3f);
+
+            achievementState[1] = xmlprocess.setCompeteCount();//對戰次數
             achievementState[2] = xmlprocess.setCompeteCorrectRecord(correctNum, wrongNum);//累積答對
             achievementState[3] = xmlprocess.setCompeteMaxCorrectRecord(max_correctNum);//連續答對
             string[] s_state = xmlprocess.setCompeteScoreRecord(c_hintLA_count, c_hintST_count, local.GetScore(), localRank);//提示與分數排名
             achievementState[4] = s_state[0];
             achievementState[5] = s_state[1];
             achievementState[6] = s_state[2];
-            ExitGame(PlayerLists);
+            this.StartCoroutine(gameover(PlayerLists));
         }
     }
     #endregion
@@ -199,9 +204,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         quesInfo = this.turnManager.TurnQues;
         s_option = this.turnManager.TurnOption;
         TurnText.text = this.turnManager.Turn.ToString();
-        xmlprocess.createRoundRecord(quesInfo[0]);//創建新的回合紀錄
-        xmlprocess.ScceneHistoryRecord("StartCompete", DateTime.Now.ToString("HH:mm:ss"));
-        achievementState[1] = xmlprocess.setCompeteCount();
+        xmlprocess.createRoundRecord(this.turnManager.Turn,quesInfo[0]);//創建新的回合紀錄
 
         //銷毀上一回合的卡片
         GameObject[] tmp_cards = GameObject.FindGameObjectsWithTag("card");
@@ -420,7 +423,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         }
         xmlprocess.setRoundScore(local.GetScore(),localRank);
         //回合結束
-        this.OnEndTurn();
+        StartCoroutine(this.OnEndTurn());
     }
 
     #region Recheck connect and Initialize UI
@@ -473,8 +476,6 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
         btn_hintLA = this.GameStartUI.GetComponentsInChildren<Button>()[0];
         btn_hintST = this.GameStartUI.GetComponentsInChildren<Button>()[1];
-        hintLA_count = 3;hintST_count = 3;
-        c_hintLA_count = 0; c_hintST_count = 0;
         for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
         {
             PhotonPlayer local = PhotonNetwork.player;
@@ -490,10 +491,10 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
         }
         xmlprocess.createCompeteRecord();
+        xmlprocess.ScceneHistoryRecord("StartCompete", DateTime.Now.ToString("HH:mm:ss"));
     }
 
     IEnumerator gameover(GameObject [] PlayerLists) {
-        yield return new WaitForSeconds(5.0f);
         ResultUIView.SetActive(false);
         /*---顯示獲得獎章與稱號---*/
         for (int i = 0; i < achievementState.Length; i++) {
@@ -524,8 +525,9 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                         break;
                 }
             }
-        }        
-
+        }
+        yield return new WaitForSeconds(1.5f);
+        ExitGame(PlayerLists);
     }
 
     #endregion
@@ -546,27 +548,26 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     }
 
     void ListenAgain() {
-        if (c_hintLA_count < hintLA_count)
+
+        vol_pronun.Play();
+        c_hintLA_count = c_hintLA_count+1;
+        btn_hintLA.GetComponentsInChildren<Text>()[0].text = (hintLA_count- c_hintLA_count) + "/"+ hintLA_count;
+        xmlprocess.setRoundHintcount("hint_LA", c_hintLA_count);
+
+        if (c_hintLA_count >= hintLA_count)
         {
-            vol_pronun.Play();
-            c_hintLA_count++;
-            btn_hintLA.GetComponentsInChildren<Text>()[0].text = (hintLA_count- c_hintLA_count) + "/"+ hintLA_count;
-            xmlprocess.setRoundHintcount("hint_LA");
-        }
-        else {
             btn_hintLA.interactable = false;
         }
     }
 
     void ShowTranslation() {
-        if (c_hintST_count < hintST_count)
+
+        this.question.text = quesInfo[1];
+        c_hintST_count = c_hintST_count+1;
+        btn_hintST.GetComponentsInChildren<Text>()[0].text = (hintST_count - c_hintST_count) + "/" + hintST_count;
+        xmlprocess.setRoundHintcount("hint_ST", c_hintST_count);
+        if (c_hintST_count >= hintST_count)
         {
-            this.question.text = quesInfo[1];
-            c_hintST_count++;
-            btn_hintST.GetComponentsInChildren<Text>()[0].text = (hintST_count - c_hintST_count) + "/" + hintST_count;
-            xmlprocess.setRoundHintcount("hint_ST");
-        }
-        else {
             btn_hintST.interactable = false;
         }
     }
@@ -575,7 +576,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     {
         //PhotonNetwork.LeaveRoom(false);
         //PhotonNetwork.Disconnect();
-        this.StartCoroutine(gameover(PlayerLists));
+
         SceneManager.LoadScene("Home");
         /*--------------------------*/
         //遊戲結束重置玩家分數

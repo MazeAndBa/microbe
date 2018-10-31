@@ -100,6 +100,14 @@ public class PracticeManager {
     public void startLeaning() {
         xmlprocess.createLearningRecord();
     }
+    /// <summary>
+    /// 更新回合單字練習不同題型的成績紀錄
+    /// </summary>
+    public void setLearningTypeScore(string typeName,int score)
+    {
+        xmlprocess.setLearningTypeScoreRecord(typeName,score);
+    }
+
 
     /// <summary>
     /// 更新單字總練習次數

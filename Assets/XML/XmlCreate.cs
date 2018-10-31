@@ -28,10 +28,6 @@ public class XmlCreate{
             User.SetAttribute("sex", "");
             User.SetAttribute("money", "100");
 
-			XmlElement current_icon = xmlDoc.CreateElement("current_icon");//目前頭像編號
-            User.AppendChild(current_icon);
-            current_icon.SetAttribute("icon","");
-
         /*====================================---兩區域獲得的獎章總數量---====================================*/
             XmlElement badge = xmlDoc.CreateElement("badge");
             User.AppendChild(badge);
@@ -45,7 +41,7 @@ public class XmlCreate{
             learning.SetAttribute("learning_count", Strcount);//完成練習的次數
             learning.SetAttribute("learning_correct", Strcount);//累積答對題數
             learning.SetAttribute("learning_wrong", Strcount);//累積答錯題數
-            learning.SetAttribute("learningImprove", Strcount);//練習進步的次數
+            learning.SetAttribute("learning_improve", Strcount);//練習進步的次數
             learning.SetAttribute("highscore", Strcount);
 
         /*===============================---每一關卡的對戰狀況---===============================*/
@@ -54,30 +50,8 @@ public class XmlCreate{
             compete.SetAttribute("compete_count", Strcount);//對戰的次數
             compete.SetAttribute("compete_correct", Strcount);//累積答對題數
             compete.SetAttribute("compete_wrong", Strcount);//累積答錯題數
-            compete.SetAttribute("competeImprove", Strcount);//對戰進步的次數
+            compete.SetAttribute("compete_improve", Strcount);//對戰進步的次數
             compete.SetAttribute("highscore", Strcount);//對戰的最高分數
-
-
-        /* ----商店物品
-			XmlElement goods = xmlDoc.CreateElement("goods_item");
-			goods.SetAttribute("count",Strcount);
-			Loadfile.AppendChild(goods);
-				XmlElement _baby = xmlDoc.CreateElement("baby");
-				_baby.SetAttribute("price","2400");
-				_baby.SetAttribute("state", "0");
-				_baby.SetAttribute("time", "");
-				goods.AppendChild(_baby);
-				XmlElement _glass = xmlDoc.CreateElement("glass");
-				_glass.SetAttribute("price","400");
-				_glass.SetAttribute("state", "0");
-				_glass.SetAttribute("time", "");
-				goods.AppendChild(_glass);
-				XmlElement _guitar = xmlDoc.CreateElement("guitar");
-				_guitar.SetAttribute("price","500");
-				_guitar.SetAttribute("state", "0");
-				_guitar.SetAttribute("time", "");
-				goods.AppendChild(_guitar);
-    -----*/
 
         /*====================================---各類獎章獲得紀錄---====================================*/
         XmlElement badge_record = xmlDoc.CreateElement("badge_record");
@@ -114,12 +88,15 @@ public class XmlCreate{
         /*====================================---查看排行榜與成就次數---====================================*/
         XmlElement touch_history = xmlDoc.CreateElement("touch_history");
         Loadfile.AppendChild(touch_history);
-        XmlElement touch_achieve = xmlDoc.CreateElement("touch_achieve");//點擊成就頁面的次數
+        XmlElement touch_achieve = xmlDoc.CreateElement("touch_achieve");//查看成就頁面的次數
         touch_history.AppendChild(touch_achieve);
-        touch_achieve.SetAttribute("count", Strcount);
+        touch_achieve.SetAttribute("showcount", Strcount);//主動點擊次數
+        touch_achieve.SetAttribute("clickcount", Strcount);//畫面顯示次數
+        /*
         XmlElement touch_leaderboard = xmlDoc.CreateElement("touch_leaderboard");
         touch_history.AppendChild(touch_leaderboard);
         touch_leaderboard.SetAttribute("count", Strcount);
+        */
 
         /*====================================---Log紀錄---====================================*/
         XmlElement log_record = xmlDoc.CreateElement("log_record");

@@ -15,14 +15,6 @@ public class Xmlprocess
     public string Strtime = (System.DateTime.Now).ToString();
     public static string path, _FileName;
 
-    /*
-    private static MySqlConnection dbConnection;
-    static string host = "140.115.126.137";
-    static string id = "maze";
-    static string pwd = "106524006";
-    static string database = "microbe";
-    public static string result = "";
-    */
 
     ///<summary>
     ///initial file,search the same xml file with the same userID
@@ -40,9 +32,6 @@ public class Xmlprocess
         }
 
         _FileName = filename + ".xml";
-       // string connectionString = "Server=" + host + ";Database=" + database + ";User ID=" + id + ";Password=" + pwd + ";Pooling=false;CharSet=utf8";
-       //openSqlConnection(connectionString);
-
 
         if (isExits())
         {
@@ -76,59 +65,9 @@ public class Xmlprocess
         xmlDoc.Save(path + _FileName);
     }
 
- /*
-    public static void OnApplicationQuit()
-    {
-        closeSqlConnection();
-    }
+
 
    
-    #region SQL
-    // Connect to database
-    private static void openSqlConnection(string connectionString)
-    {
-        dbConnection = new MySqlConnection(connectionString);
-        dbConnection.Open();
-        result = dbConnection.ServerVersion;
-    }
-
-    private static void closeSqlConnection()
-    {
-        dbConnection.Close();
-        dbConnection = null;
-    }
-
-    // MySQL Query
-    public static void doQuery(string sqlQuery)
-    {
-        IDbCommand dbCommand = dbConnection.CreateCommand();
-        dbCommand.CommandText = sqlQuery;
-        IDataReader reader = dbCommand.ExecuteReader();
-        reader.Close();
-        reader = null;
-        dbCommand.Dispose();
-        dbCommand = null;
-    }
-    #endregion
-    
-    #region Get DataSet  
-    public DataSet GetDataSet(string sqlString)
-    {
-        DataSet ds = new DataSet();
-        try
-        {
-            MySqlDataAdapter da = new MySqlDataAdapter(sqlString, dbConnection);
-            da.Fill(ds);
-        }
-        catch (Exception ee)
-        {
-            throw new Exception("SQL:" + sqlString + "\n" + ee.Message.ToString());
-        }
-        return ds;
-    }
-    #endregion
-    */
-
     //---------------------------------個人狀態--------------------------------------
 
     ///<summary>
@@ -363,6 +302,8 @@ public class Xmlprocess
             learning_history.AppendChild(learning_record);
 
             learning_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
+            learning_record.SetAttribute("option_score", "0");
+            learning_record.SetAttribute("cloze_score", "0");
             learning_record.SetAttribute("score", "0");
             learning_record.SetAttribute("correct", "0");
             learning_record.SetAttribute("maxcorrect", "0");
@@ -371,6 +312,42 @@ public class Xmlprocess
             saveData();
         }
     }
+
+    /// <summary>
+    /// 更新每回單字學習紀錄中，不同題型的分數
+    /// </summary>
+    /// <param name="quesType">option_score or cloze_score</param>
+    public void setLearningTypeScoreRecord(string TypeName,int score)
+    {
+        if (isExits())
+        {
+            XmlNode nodeLastLearning = null;
+            XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//learning_record");
+            foreach (XmlNode itemsNode in nodelist_Previous)
+            {
+                XmlAttributeCollection xAT2 = itemsNode.Attributes;
+                for (int j = 0; j < xAT2.Count; j++)
+                {
+                    nodeLastLearning = itemsNode;
+                }
+            }
+            XmlElement element = (XmlElement)nodeLastLearning;
+            XmlAttribute attr_optionscore = element.GetAttributeNode("option_score");
+
+            switch (TypeName) {
+                case "option":
+                    attr_optionscore.Value = score.ToString();
+                    break;
+                case "cloze":
+                    int optionScore = XmlConvert.ToInt32(attr_optionscore.Value);
+                    XmlAttribute attr_clozescore = element.GetAttributeNode("cloze_score");
+                    attr_clozescore.Value = (score - optionScore).ToString();//總分減選擇題分數
+                    break;
+            }
+            saveData();
+        }
+    }
+
 
     /// <summary>
     /// 更新每回單字學習紀錄的分數與結束時間
@@ -500,38 +477,21 @@ public class Xmlprocess
     {
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/learning");
         XmlElement element = (XmlElement)node;
-        XmlAttribute attribute = element.GetAttributeNode("learningImprove");
-        int count = XmlConvert.ToInt32(attribute.Value);
-        count = count + 1;
-        attribute.Value = count.ToString();
-        saveData();
-
-        return count;
+        XmlAttribute attr_count = element.GetAttributeNode("learning_count");
+        XmlAttribute attr_improve = element.GetAttributeNode("learning_improve");
+        if (attr_count.Value != "0")
+        {
+            int count = XmlConvert.ToInt32(attr_improve.Value);
+            count = count + 1;
+            attr_improve.Value = count.ToString();
+            saveData();
+            return count;
+        }
+        return 0;
     }
 
 
     /*===============================---同儕對戰區的紀錄---===============================*/
-
-    /// <summary>
-    /// 更新個人對戰的次數
-    /// </summary>
-    /// <param name="attributeName"></param>
-    public string setCompeteCount()
-    {
-        if (isExits())
-        {
-            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete");
-            XmlElement element = (XmlElement)node;
-            XmlAttribute attribute = element.GetAttributeNode("compete_count");
-            int count = XmlConvert.ToInt32(attribute.Value);
-            count = count + 1;
-            attribute.Value = count.ToString();
-            saveData();
-            return setBadgeCompeteCounts(count);
-        }
-        return null;
-    }
-
     /// <summary>
     /// 新增一筆對戰紀錄
     /// </summary>
@@ -570,13 +530,20 @@ public class Xmlprocess
             }
             else
             {
-                XmlNode n_compete_history = nodeLast.SelectSingleNode("compete_history");//在最近一筆的log下。找到learning節點
+                XmlNode n_compete_history = nodeLast.SelectSingleNode("compete_history");//在最近一筆的log下。找到節點
                 compete_history = (XmlElement)n_compete_history;
             }
 
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete");//根據當前對戰完成次數+1作為對戰id
+            XmlElement element_compete = (XmlElement)node;
+            XmlAttribute attr_competecount = element_compete.GetAttributeNode("compete_count");
+            int count = XmlConvert.ToInt32(attr_competecount.Value);
+            int compete_id = ++count;
+
+
             XmlElement compete_record = xmlDoc.CreateElement("compete_record");
             compete_history.AppendChild(compete_record);
-
+            compete_record.SetAttribute("compete_id", compete_id.ToString());
             compete_record.SetAttribute("startTime", DateTime.Now.ToString("HH: mm:ss"));
             compete_record.SetAttribute("endTime", "");
             compete_record.SetAttribute("hint_LA", "0");//使用提示再聽一次的總次數
@@ -588,6 +555,28 @@ public class Xmlprocess
             saveData();
         }
     }
+
+    /// <summary>
+    /// 進入遊戲，更新個人對戰的次數
+    /// </summary>
+    /// <param name="attributeName"></param>
+    public string setCompeteCount()
+    {
+        if (isExits())
+        {
+            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete");
+            XmlElement element = (XmlElement)node;
+            XmlAttribute attribute = element.GetAttributeNode("compete_count");
+            int count = XmlConvert.ToInt32(attribute.Value);
+            count = count + 1;
+            attribute.Value = count.ToString();
+
+            saveData();
+            return setBadgeCompeteCounts(count);
+        }
+        return null;
+    }
+
 
     /// <summary>
     ///對戰結束更新對戰紀錄 0:improve;1:highscore;2:rank
@@ -723,7 +712,7 @@ public class Xmlprocess
     {
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/compete");
         XmlElement element = (XmlElement)node;
-        XmlAttribute attribute = element.GetAttributeNode("competeImprove");
+        XmlAttribute attribute = element.GetAttributeNode("compete_improve");
         int count = XmlConvert.ToInt32(attribute.Value);
         count = count + 1;
         attribute.Value = count.ToString();
@@ -737,7 +726,7 @@ public class Xmlprocess
     /// 新增每回合的對戰紀錄
     /// </summary>
     /// <param name="quesID">題號</param>
-    public void createRoundRecord(string quesID)
+    public void createRoundRecord(int turn,string quesID)
     {
         XmlNode nodeLast = null;
         if (isExits())
@@ -753,9 +742,15 @@ public class Xmlprocess
                 }
             }
 
+
             XmlElement compete_record = (XmlElement)nodeLast;
+            XmlAttribute attr_competeid = compete_record.GetAttributeNode("compete_id");
+
             XmlElement round_record = xmlDoc.CreateElement("round_record");
             compete_record.AppendChild(round_record);
+
+            round_record.SetAttribute("compete_id", attr_competeid.Value);
+            round_record.SetAttribute("round_id", turn.ToString());//當前回合
             round_record.SetAttribute("ques_id", quesID.ToString());//題號
             round_record.SetAttribute("ans_state", "");//作答正確或錯誤
             round_record.SetAttribute("duration", "0");//作答時間
@@ -801,7 +796,7 @@ public class Xmlprocess
     /// 當回合使用提示次數
     /// </summary>
     /// <param name="hintName">提示名稱</param>
-    public void setRoundHintcount(string hintName)
+    public void setRoundHintcount(string hintName,int currentcount)
     {
         XmlNode nodeLast = null;
         XmlNodeList nodelist = xmlDoc.SelectNodes("//round_record");
@@ -815,9 +810,7 @@ public class Xmlprocess
         }
         XmlElement round_record = (XmlElement)nodeLast;
         XmlAttribute attr_hint = round_record.GetAttributeNode(hintName);
-        int count = XmlConvert.ToInt32(attr_hint.Value);
-        count = count + 1;
-        attr_hint.Value = count.ToString();
+        attr_hint.Value = currentcount.ToString();
 
         saveData();
     }
@@ -879,14 +872,14 @@ public class Xmlprocess
     /// <summary>
     ///成就UI點擊次數
     /// </summary>
-    /// <param name="attributeName"></param>
-    public void setTouchACount()
+    /// <param name="attributeName">showcount or clickcount</param>
+    public void setTouchACount(string attributeName)
     {
         if (isExits())
         {
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/touch_history/touch_achieve");
             XmlElement element = (XmlElement)node;
-            XmlAttribute attribute = element.GetAttributeNode("count");
+            XmlAttribute attribute = element.GetAttributeNode(attributeName);
             int count = XmlConvert.ToInt32(attribute.Value);
             count = count + 1;
             attribute.Value = count.ToString();
@@ -1074,14 +1067,13 @@ public class Xmlprocess
         if (learningCounts > 0 && learningCounts < 5) {
             if (attribute.Value == "0"){//首次獲得
                 _state = "獲得新獎章!";
-
                 XmlNode node2 = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning");//個人學習區獎章+1
                 XmlElement element2 = (XmlElement)node2;
                 XmlAttribute attr_count = element2.GetAttributeNode("count");
                 int count = XmlConvert.ToInt32(attr_count.Value);
                 count = count + 1;
                 attr_count.Value = count.ToString();
-
+              
             }
             _level = 1;
         }
@@ -1239,7 +1231,7 @@ public class Xmlprocess
         XmlAttribute attribute = element.GetAttributeNode("level");
         string _state = null;
         int _level = 0;
-        if (max_correct >= 1 && max_correct < 3)
+        if (max_correct >= 7 && max_correct < 14)
         {
             if (attribute.Value == "0")
             {
@@ -1255,11 +1247,11 @@ public class Xmlprocess
             }
             _level = 1;
         }
-        else if (max_correct >= 3 && max_correct < 5)
+        else if (max_correct >= 14 && max_correct < 20)
         {
             _level = 2;
         }
-        else if (max_correct >= 5)
+        else if (max_correct >= 20)
         {
             if (attribute.Value == "2")
             {
@@ -1433,7 +1425,7 @@ public class Xmlprocess
             }
             _level = 1;
         }
-        else if (max_correct >= 4 && max_correct < 6)
+        else if (max_correct >= 4 && max_correct < 8)
         {
             _level = 2;
         }

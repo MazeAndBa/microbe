@@ -23,7 +23,7 @@ public class PersonalInfo : MonoBehaviour {
                 userImg.sprite = Resources.Load("Image/girl", typeof(Sprite)) as Sprite;
                 break;
         }
-        btn_achievement.onClick.AddListener(showAchievementUI);
+        btn_achievement.onClick.AddListener(clickshowAchievementUI);
 
         //如果初次進入主畫面，顯示成就UI
         if (Home.showAchieve)
@@ -47,8 +47,15 @@ public class PersonalInfo : MonoBehaviour {
         }
     }
 
+    void clickshowAchievementUI()
+    {
+        xmlprocess.setTouchACount("clickcount");
+        AchieveUI.SetActive(true);
+    }
+
     void showAchievementUI()
     {
         AchieveUI.SetActive(true);
     }
+
 }

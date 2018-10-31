@@ -422,9 +422,11 @@ public class PracticeView : MonoBehaviour {
                 switch (functionName)
                 {
                     case "practice":
+                        pm.setLearningTypeScore("option", p_score);
                         StartCoroutine(PracticeEnd());
                         break;
                     case "compose":
+                        pm.setLearningTypeScore("cloze", p_score);
                         StartCoroutine(ComposeEnd());
                         //Debug.Log("Learning End");
                         break;

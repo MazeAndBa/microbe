@@ -85,6 +85,18 @@
     <Reference Include="websocket-sharp">
       <HintPath>Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing">
+      <HintPath>Assets/Plugins/System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N.CJK">
+      <HintPath>Assets/Plugins/I18N.CJK.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N.West">
+      <HintPath>Assets/Plugins/I18N.West.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N">
+      <HintPath>Assets/Plugins/I18N.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>G:/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
@@ -103,6 +115,7 @@
     <None Include="Assets\Resources\527.xml" />
     <None Include="Assets\Resources\5270.xml" />
     <None Include="Assets\Resources\5271.xml" />
+    <None Include="Assets\Resources\528.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

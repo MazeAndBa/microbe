@@ -207,7 +207,7 @@ public class Achievement : MonoBehaviour {
     }
 
     void closeAchieveUI() {
-        xmlprocess.setTouchACount();
+        xmlprocess.setTouchACount("showcount");
         showBadgeDes(-1);//隱藏全部
         gameObject.SetActive(false);
     }
