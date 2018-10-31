@@ -53,7 +53,7 @@ public class PracticeView : MonoBehaviour {
         max_correctNum = -1;//最大連續答對數
         correctNum = 0;//累計正確題數
         wrongNum = 0;//累計錯誤題數
-        totalQuesNum = 14;//練習題數
+        totalQuesNum = 13;//練習題數
         showAchieve = false;
         StartCoroutine(showReviewVocabulary());
         UIManager.Instance.CloseAllPanel();

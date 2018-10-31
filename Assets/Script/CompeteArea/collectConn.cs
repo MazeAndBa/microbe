@@ -32,7 +32,7 @@ public class collectConn : PunBehaviour
 
         xmlprocess = new Xmlprocess();
         //id.text = xmlprocess.getUserInfo()[0];
-        //username.text = xmlprocess.getUserInfo()[1];
+        username.text = xmlprocess.getUserInfo()[1];
         UIManager.Instance.CloseAllPanel();
     }
 
