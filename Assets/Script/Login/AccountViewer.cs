@@ -73,6 +73,11 @@ public class AccountViewer : MonoBehaviour {
         {
             showerror("帳號或密碼不正確");
         }
+        else if (am.state == 2)
+        {
+            showerror("連線失敗");
+        }
+
     }
 
 

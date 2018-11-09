@@ -18,8 +18,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     int currentTime;
     int max_correctNum, C_correctNum, correctNum, wrongNum;
     int cardCount;//卡牌數量
-    int c_hintLA_count, c_hintST_count;//當前使用提示的次數
-    int hintLA_count, hintST_count;//使用提示的最大次數
+    static int c_hintLA_count, c_hintST_count;//當前使用提示的次數
+    static int hintLA_count, hintST_count;//使用提示的最大次數
     string[] s_option;//該回合的選項
     string[] quesInfo, optionInfo;
     DateTime TurnStartTime;
@@ -60,6 +60,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         c_hintLA_count = 0; c_hintST_count = 0;
         wrongNum = 0;
         RefreshConnectUI();
+
+
     }
 
 
@@ -164,12 +166,13 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             yield return new WaitForSeconds(3f);
 
             achievementState[1] = xmlprocess.setCompeteCount();//對戰次數
-            achievementState[2] = xmlprocess.setCompeteCorrectRecord(correctNum, wrongNum);//累積答對
-            achievementState[3] = xmlprocess.setCompeteMaxCorrectRecord(max_correctNum);//連續答對
+            if(xmlprocess.setCompeteCorrectRecord(correctNum, wrongNum)!=null) achievementState[2] = xmlprocess.setCompeteCorrectRecord(correctNum, wrongNum);//累積答對
+            if (xmlprocess.setCompeteMaxCorrectRecord(max_correctNum) != null) achievementState[3] = xmlprocess.setCompeteMaxCorrectRecord(max_correctNum);//連續答對
             string[] s_state = xmlprocess.setCompeteScoreRecord(c_hintLA_count, c_hintST_count, local.GetScore(), localRank);//提示與分數排名
-            achievementState[4] = s_state[0];
-            achievementState[5] = s_state[1];
-            achievementState[6] = s_state[2];
+            if (s_state[0] != null) achievementState[4] = s_state[0];//有進步
+            if (s_state[1] != null) achievementState[5] = s_state[1];//有刷新分數
+            if (s_state[2] != null) achievementState[6] = s_state[2];//有進榜
+
             this.StartCoroutine(gameover(PlayerLists));
         }
     }
@@ -224,9 +227,6 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
         timerflag = true;
         TurnStartTime = DateTime.Now;
-        //提示按鈕監聽事件
-        btn_hintLA.onClick.AddListener(ListenAgain);
-        btn_hintST.onClick.AddListener(ShowTranslation);
 
     }
 
@@ -270,6 +270,19 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public void MakeTurn(string cardName)
     {
         this.turnManager.SendMove(cardName, true);
+        //禁止修改答案
+        GameObject[] tmp_cards = GameObject.FindGameObjectsWithTag("card");
+        if (tmp_cards.Length > 0)
+        {
+            for (int i = 0; i < tmp_cards.Length; i++)
+            {
+                if (tmp_cards[i].name != cardName)
+                {
+                    tmp_cards[i].GetComponent<Button>().interactable = false;
+                }
+            }
+        }
+
     }
 
     //作答耗費的時間
@@ -372,7 +385,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         switch (this.result)
         {
             case ResultType.CorrectAns:
-                PhotonNetwork.player.AddScore((int)(restTime * 1.5 + local.GetScore() * 0.3 - (_hintLA * 1) - (_hintST *3)+ (PhotonNetwork.room.PlayerCount * 0.5) ));//剩餘時間*1.5+原本分數*0.3-使用提示+房間人數*0.5
+                PhotonNetwork.player.AddScore((int)(restTime * 0.8+ local.GetScore() * 0.2 - (_hintLA * 1) - (_hintST *3)+ (PhotonNetwork.room.PlayerCount * 0.25) ));//剩餘時間*0.8+原本分數*0.2-使用提示+房間人數*0.5
                 resultState = "correct";
                 break;
             case ResultType.None:
@@ -476,6 +489,10 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
         btn_hintLA = this.GameStartUI.GetComponentsInChildren<Button>()[0];
         btn_hintST = this.GameStartUI.GetComponentsInChildren<Button>()[1];
+        //提示按鈕監聽事件
+        btn_hintLA.onClick.AddListener(ListenAgain);
+        btn_hintST.onClick.AddListener(ShowTranslation);
+
         for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
         {
             PhotonPlayer local = PhotonNetwork.player;
@@ -550,6 +567,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     void ListenAgain() {
 
         vol_pronun.Play();
+        Debug.Log("funtion:"+c_hintLA_count);
         c_hintLA_count = c_hintLA_count+1;
         btn_hintLA.GetComponentsInChildren<Text>()[0].text = (hintLA_count- c_hintLA_count) + "/"+ hintLA_count;
         xmlprocess.setRoundHintcount("hint_LA", c_hintLA_count);
@@ -557,6 +575,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         if (c_hintLA_count >= hintLA_count)
         {
             btn_hintLA.interactable = false;
+            btn_hintLA.image.color = Color.gray;
         }
     }
 

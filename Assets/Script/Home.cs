@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Home : MonoBehaviour {
 
-    Button btn_practice, btn_compete;
+    Button btn_practice, btn_compete,btn_exit;
     Button btn_LPractice, btn_LCompete;//排行榜
     Xmlprocess xmlprocess;
     public static bool showAchieve;
@@ -22,10 +22,12 @@ public class Home : MonoBehaviour {
         btn_compete = GetComponentsInChildren<Button>()[1];
         btn_LPractice = GetComponentsInChildren<Button>()[2];
         btn_LCompete = GetComponentsInChildren<Button>()[3];
+        btn_exit = GetComponentsInChildren<Button>()[4];
 
         btn_practice.onClick.AddListener(goPractice);
         btn_LPractice.onClick.AddListener(delegate() { showLeaderboard(0); });
         btn_LCompete.onClick.AddListener(delegate () { showLeaderboard(1); });
+        btn_exit.onClick.AddListener(UploadData);
 
         /*//必須先完成練習1次才可以進入對戰區
         if (!xmlprocess.getLearningCount())
@@ -65,4 +67,7 @@ public class Home : MonoBehaviour {
         }
     }
 
+    void UploadData() {
+        gameObject.AddComponent<UpdateSQL>();
+    }
 }

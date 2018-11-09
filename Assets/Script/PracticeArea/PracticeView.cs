@@ -188,7 +188,7 @@ public class PracticeView : MonoBehaviour {
             {
                 btn_option[optionID].GetComponent<Button>().interactable = false;//避免重複點擊,增加分數
                 StartCoroutine(showfeedback(0));
-                p_score += (int)(p_score * 0.5) + 30;
+                p_score += (int)(p_score *0.2+ max_correctNum*0.3+correctNum*0.15) + 3;
                 text_score.text = p_score.ToString();
             }
             else//答錯
@@ -373,11 +373,13 @@ public class PracticeView : MonoBehaviour {
         yield return new WaitForSeconds(2f);
         UIManager.Instance.TogglePanel("P_ResultUI",false);
         achievementState[0] = pm.setLearningCount("learning_count");//更新單字練習次數
+
         string[] s_state = pm.setLearningScore(p_score);//紀錄此次單字練習成績
-        achievementState[1] = s_state[0];
-        achievementState[2] = s_state[1];
-        achievementState[3] = pm.setLearningCorrect(correctNum, wrongNum);//更新單字答對與錯誤題數
-        achievementState[4] = pm.setLearningMaxCorrect(max_correctNum);//更新單字最高連續答對題數
+        if (s_state[0] != null)achievementState[1] = s_state[0];//有達標
+        if (s_state[1] != null)achievementState[2] = s_state[1];//分數進步
+        if (pm.setLearningCorrect(correctNum, wrongNum) != null) achievementState[3] = pm.setLearningCorrect(correctNum, wrongNum);//更新單字答對與錯誤題數
+        if (pm.setLearningMaxCorrect(max_correctNum) != null) achievementState[4] = pm.setLearningMaxCorrect(max_correctNum);//連續答對題數
+
         /*---顯示獲得獎章與稱號---*/
         for (int i = 0; i < achievementState.Length; i++)
         {

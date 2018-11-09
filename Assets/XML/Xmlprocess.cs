@@ -374,7 +374,10 @@ public class Xmlprocess
             attr_endTime.Value = DateTime.Now.ToString("HH: mm:ss");
             string[] _state = updateHighScore(score);
             saveData();
-            return _state;
+            if (_state != null) {//表示刷新分數
+                return _state;
+            }
+            return null;
         }
         return null;
     }
@@ -433,7 +436,7 @@ public class Xmlprocess
 
             /*更新獎章狀況*/
             string state = null;
-            state = setBadgeLearningCorrect(correctCount);
+            state = setBadgeLearningCorrect(correctSum + correctCount);
             saveData();
             return state;
         }
@@ -1102,9 +1105,10 @@ public class Xmlprocess
         XmlAttribute attribute = element.GetAttributeNode("level");
         string _state = null;
         int _level = 0;
-        if (highscore >= 500 && highscore < 1000)
+        if (highscore >= 100 && highscore < 250)
         {
-            if (attribute.Value=="0") {
+            if (attribute.Value == "0")
+            {
                 _state = "獲得新獎章!";
 
                 XmlNode node2 = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning");//個人學習區獎章+1
@@ -1117,17 +1121,20 @@ public class Xmlprocess
             }
             _level = 1;
         }
-        else if (highscore >= 1000 && highscore < 2000)
+        else if (highscore >= 250 && highscore < 400)
         {
             _level = 2;
         }
-        else if (highscore >= 2000)
+        else if (highscore >= 400)
         {
             if (attribute.Value == "2")
             {
                 _state = "了解\"得分魔人\"稱號!";
             }
             _level = 3;
+        }
+        else {
+            return null;
         }
         attribute.Value = _level.ToString();
         saveData();

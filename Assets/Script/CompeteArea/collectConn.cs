@@ -44,7 +44,6 @@ public class collectConn : PunBehaviour
         //obj_gamestart.gameObject.SetActive(false);
         //-----------------------------------------------------------
         xmlprocess.ScceneHistoryRecord("WaitingCompete", DateTime.Now.ToString("HH:mm:ss"));
-        UIManager.Instance.ShowPanel("UI_ShowMes");
         if (PhotonNetwork.AuthValues == null)
         {
             PhotonNetwork.AuthValues = new AuthenticationValues();

@@ -1,13 +1,13 @@
 <Loadfile>
   <User ID="527" name="527" level="1" sex="1" money="100">
     <badge learning_count="0" compete_count="0" />
-    <learning review_count="0" learning_count="1" learning_correct="9" learning_wrong="19" learning_improve="1" highscore="1618" />
-    <compete compete_count="1" compete_correct="1" compete_wrong="9" compete_improve="1" highscore="14" />
+    <learning review_count="1" learning_count="1" learning_correct="0" learning_wrong="0" learning_improve="1" highscore="15" />
+    <compete compete_count="2" compete_correct="17" compete_wrong="3" compete_improve="1" highscore="719" />
   </User>
   <badge_record>
     <badge_learning count="1">
       <badge1 level="1" />
-      <badge2 level="2" />
+      <badge2 level="0" />
       <badge3 level="0" />
       <badge4 level="0" />
       <badge5 level="0" />
@@ -16,61 +16,96 @@
       <badge6 level="0" />
       <badge7 level="1" />
       <badge8 level="0" />
-      <badge9 level="0" />
-      <badge10 level="0" />
+      <badge9 level="2" />
+      <badge10 level="3" />
       <badge11 level="0" />
-      <badge12 level="3" />
+      <badge12 level="2" />
     </badge_compete>
   </badge_record>
   <rank_history>
     <rank_record highscore="" rank="" updateTime="" />
   </rank_history>
   <touch_history>
-    <touch_achieve showcount="2" clickcount="2" />
+    <touch_achieve showcount="0" clickcount="0" />
   </touch_history>
-  <log_record day="2018-10-31">
+  <log_record day="2018-11-09">
     <learning_history>
-      <learning_record startTime="14: 08:34" option_score="1471" cloze_score="147" score="1618" correct="9" maxcorrect="6" endTime="14: 09:23" />
-      <learning_record startTime="18: 03:49" option_score="75" cloze_score="0" score="0" correct="0" maxcorrect="0" endTime="" />
+      <learning_record startTime="14: 24:25" option_score="15" cloze_score="0" score="15" correct="0" maxcorrect="0" endTime="14: 24:58" />
+      <learning_record startTime="15: 27:49" option_score="0" cloze_score="0" score="0" correct="0" maxcorrect="0" endTime="" />
     </learning_history>
     <compete_history>
-      <compete_record compete_id="1" startTime="16: 46:35" endTime="16: 47:54" hint_LA="6" hint_ST="4" correct="1" maxcorrect="1" score="14" rank="1">
-        <round_record compete_id="1" round_id="1" ques_id="5" ans_state="wrong" duration="11" hint_LA="0" hint_ST="1" score="0" rank="2" />
-        <round_record compete_id="1" round_id="2" ques_id="6" ans_state="wrong" duration="2" hint_LA="2" hint_ST="0" score="0" rank="2" />
-        <round_record compete_id="1" round_id="3" ques_id="8" ans_state="wrong" duration="2" hint_LA="0" hint_ST="4" score="0" rank="2" />
-        <round_record compete_id="1" round_id="4" ques_id="10" ans_state="correct" duration="2" hint_LA="6" hint_ST="0" score="14" rank="1" />
-        <round_record compete_id="1" round_id="5" ques_id="11" ans_state="wrong" duration="1" hint_LA="0" hint_ST="0" score="14" rank="1" />
-        <round_record compete_id="1" round_id="6" ques_id="13" ans_state="wrong" duration="6" hint_LA="0" hint_ST="0" score="14" rank="1" />
-        <round_record compete_id="1" round_id="7" ques_id="16" ans_state="wrong" duration="1" hint_LA="0" hint_ST="0" score="14" rank="1" />
-        <round_record compete_id="1" round_id="8" ques_id="19" ans_state="wrong" duration="0" hint_LA="0" hint_ST="0" score="14" rank="1" />
-        <round_record compete_id="1" round_id="9" ques_id="22" ans_state="wrong" duration="0" hint_LA="0" hint_ST="0" score="14" rank="1" />
-        <round_record compete_id="1" round_id="10" ques_id="23" ans_state="wrong" duration="1" hint_LA="0" hint_ST="0" score="14" rank="1" />
+      <compete_record compete_id="1" startTime="15: 29:53" endTime="15: 31:13" hint_LA="0" hint_ST="5" correct="10" maxcorrect="-1" score="719" rank="1">
+        <round_record compete_id="1" round_id="1" ques_id="4" ans_state="correct" duration="4" hint_LA="0" hint_ST="0" score="17" rank="1" />
+        <round_record compete_id="1" round_id="2" ques_id="7" ans_state="correct" duration="3" hint_LA="0" hint_ST="0" score="41" rank="1" />
+        <round_record compete_id="1" round_id="3" ques_id="10" ans_state="correct" duration="2" hint_LA="0" hint_ST="0" score="73" rank="1" />
+        <round_record compete_id="1" round_id="4" ques_id="11" ans_state="correct" duration="1" hint_LA="0" hint_ST="0" score="116" rank="1" />
+        <round_record compete_id="1" round_id="5" ques_id="15" ans_state="correct" duration="7" hint_LA="0" hint_ST="5" score="148" rank="1" />
+        <round_record compete_id="1" round_id="6" ques_id="17" ans_state="correct" duration="3" hint_LA="0" hint_ST="0" score="211" rank="1" />
+        <round_record compete_id="1" round_id="7" ques_id="19" ans_state="correct" duration="3" hint_LA="0" hint_ST="0" score="293" rank="1" />
+        <round_record compete_id="1" round_id="8" ques_id="21" ans_state="correct" duration="2" hint_LA="0" hint_ST="0" score="401" rank="1" />
+        <round_record compete_id="1" round_id="9" ques_id="24" ans_state="correct" duration="2" hint_LA="0" hint_ST="0" score="541" rank="1" />
+        <round_record compete_id="1" round_id="10" ques_id="26" ans_state="correct" duration="5" hint_LA="0" hint_ST="0" score="719" rank="1" />
+      </compete_record>
+      <compete_record compete_id="2" startTime="15: 49:56" endTime="" hint_LA="0" hint_ST="0" correct="0" maxcorrect="0" score="0" rank="0">
+        <round_record compete_id="2" round_id="1" ques_id="3" ans_state="wrong" duration="5" hint_LA="0" hint_ST="1" score="0" rank="1" />
+        <round_record compete_id="2" round_id="2" ques_id="8" ans_state="" duration="0" hint_LA="0" hint_ST="3" score="0" rank="0" />
+      </compete_record>
+      <compete_record compete_id="2" startTime="15: 54:58" endTime="" hint_LA="0" hint_ST="0" correct="0" maxcorrect="0" score="0" rank="0">
+        <round_record compete_id="2" round_id="1" ques_id="2" ans_state="correct" duration="1" hint_LA="0" hint_ST="0" score="4" rank="1" />
+        <round_record compete_id="2" round_id="2" ques_id="3" ans_state="" duration="0" hint_LA="0" hint_ST="2" score="0" rank="0" />
+      </compete_record>
+      <compete_record compete_id="2" startTime="15: 58:39" endTime="" hint_LA="0" hint_ST="0" correct="0" maxcorrect="0" score="0" rank="0">
+        <round_record compete_id="2" round_id="1" ques_id="1" ans_state="correct" duration="3" hint_LA="0" hint_ST="0" score="4" rank="1" />
+        <round_record compete_id="2" round_id="2" ques_id="4" ans_state="none" duration="8" hint_LA="0" hint_ST="2" score="-1" rank="1" />
+        <round_record compete_id="2" round_id="3" ques_id="5" ans_state="none" duration="24" hint_LA="3" hint_ST="5" score="-6" rank="1" />
+        <round_record compete_id="2" round_id="4" ques_id="6" ans_state="" duration="0" hint_LA="0" hint_ST="0" score="0" rank="0" />
+      </compete_record>
+      <compete_record compete_id="2" startTime="16: 03:20" endTime="" hint_LA="0" hint_ST="0" correct="0" maxcorrect="0" score="0" rank="0">
+        <round_record compete_id="2" round_id="1" ques_id="3" ans_state="correct" duration="3" hint_LA="0" hint_ST="0" score="4" rank="1" />
+        <round_record compete_id="2" round_id="2" ques_id="5" ans_state="wrong" duration="10" hint_LA="4" hint_ST="2" score="4" rank="1" />
+        <round_record compete_id="2" round_id="3" ques_id="7" ans_state="" duration="0" hint_LA="0" hint_ST="0" score="0" rank="0" />
+      </compete_record>
+      <compete_record compete_id="2" startTime="16: 10:18" endTime="16: 11:35" hint_LA="1" hint_ST="1" correct="7" maxcorrect="5" score="38" rank="2">
+        <round_record compete_id="2" round_id="1" ques_id="3" ans_state="correct" duration="3" hint_LA="0" hint_ST="0" score="4" rank="1" />
+        <round_record compete_id="2" round_id="2" ques_id="9" ans_state="correct" duration="4" hint_LA="1" hint_ST="1" score="4" rank="1" />
+        <round_record compete_id="2" round_id="3" ques_id="13" ans_state="wrong" duration="1" hint_LA="0" hint_ST="0" score="4" rank="1" />
+        <round_record compete_id="2" round_id="4" ques_id="15" ans_state="correct" duration="3" hint_LA="0" hint_ST="0" score="8" rank="1" />
+        <round_record compete_id="2" round_id="5" ques_id="16" ans_state="correct" duration="1" hint_LA="0" hint_ST="0" score="14" rank="2" />
+        <round_record compete_id="2" round_id="6" ques_id="17" ans_state="correct" duration="2" hint_LA="0" hint_ST="0" score="21" rank="1" />
+        <round_record compete_id="2" round_id="7" ques_id="18" ans_state="correct" duration="2" hint_LA="0" hint_ST="0" score="29" rank="2" />
+        <round_record compete_id="2" round_id="8" ques_id="19" ans_state="correct" duration="4" hint_LA="0" hint_ST="0" score="38" rank="2" />
+        <round_record compete_id="2" round_id="9" ques_id="24" ans_state="wrong" duration="1" hint_LA="0" hint_ST="0" score="38" rank="2" />
+        <round_record compete_id="2" round_id="10" ques_id="26" ans_state="wrong" duration="1" hint_LA="0" hint_ST="0" score="38" rank="2" />
       </compete_record>
     </compete_history>
     <scene_history>
-      <scene_record scence="Login" startTime="14:08:28" />
-      <scene_record scence="Learning" startTime="14:08:32" />
-      <scene_record scence="Login" startTime="14:50:51" />
-      <scene_record scence="Compete" startTime="14:50:54" />
-      <scene_record scence="Login" startTime="14:53:55" />
-      <scene_record scence="Compete" startTime="14:53:58" />
-      <scene_record scence="WaitingCompete" startTime="14:54:02" />
-      <scene_record scence="Login" startTime="16:41:09" />
-      <scene_record scence="Compete" startTime="16:41:45" />
-      <scene_record scence="WaitingCompete" startTime="16:41:49" />
-      <scene_record scence="Login" startTime="16:43:16" />
-      <scene_record scence="Compete" startTime="16:43:19" />
-      <scene_record scence="WaitingCompete" startTime="16:43:21" />
-      <scene_record scence="Login" startTime="16:44:16" />
-      <scene_record scence="Compete" startTime="16:44:19" />
-      <scene_record scence="Login" startTime="16:45:30" />
-      <scene_record scence="Compete" startTime="16:45:33" />
-      <scene_record scence="WaitingCompete" startTime="16:45:38" />
-      <scene_record scence="Login" startTime="16:45:52" />
-      <scene_record scence="Compete" startTime="16:45:55" />
-      <scene_record scence="StartCompete" startTime="16:46:35" />
-      <scene_record scence="Login" startTime="18:03:45" />
-      <scene_record scence="Learning" startTime="18:03:47" />
+      <scene_record scence="Login" startTime="14:24:21" />
+      <scene_record scence="Learning" startTime="14:24:24" />
+      <scene_record scence="Login" startTime="15:27:20" />
+      <scene_record scence="Learning" startTime="15:27:23" />
+      <scene_record scence="Login" startTime="15:29:08" />
+      <scene_record scence="Compete" startTime="15:29:34" />
+      <scene_record scence="StartCompete" startTime="15:29:53" />
+      <scene_record scence="Login" startTime="15:37:48" />
+      <scene_record scence="Compete" startTime="15:37:51" />
+      <scene_record scence="WaitingCompete" startTime="15:38:33" />
+      <scene_record scence="Login" startTime="15:49:43" />
+      <scene_record scence="Compete" startTime="15:49:48" />
+      <scene_record scence="StartCompete" startTime="15:49:56" />
+      <scene_record scence="Login" startTime="15:54:34" />
+      <scene_record scence="Compete" startTime="15:54:52" />
+      <scene_record scence="StartCompete" startTime="15:54:58" />
+      <scene_record scence="Login" startTime="15:58:16" />
+      <scene_record scence="Compete" startTime="15:58:32" />
+      <scene_record scence="StartCompete" startTime="15:58:39" />
+      <scene_record scence="Login" startTime="16:02:45" />
+      <scene_record scence="Compete" startTime="16:03:12" />
+      <scene_record scence="StartCompete" startTime="16:03:20" />
+      <scene_record scence="Login" startTime="16:09:22" />
+      <scene_record scence="Compete" startTime="16:09:25" />
+      <scene_record scence="Login" startTime="16:10:09" />
+      <scene_record scence="Compete" startTime="16:10:12" />
+      <scene_record scence="StartCompete" startTime="16:10:18" />
     </scene_history>
   </log_record>
 </Loadfile>
