@@ -153,23 +153,20 @@ public class UpdateSQL : MonoBehaviour {
         XmlNodeList nodelist = xmlDoc.SelectNodes("//learning_record");
         foreach (XmlNode itemsNode in nodelist)
         {
-            XmlAttributeCollection xAT2 = itemsNode.Attributes;
-            for (int j = 0; j < xAT2.Count; j++)
-            {
-                element = (XmlElement)itemsNode;
-                string[] learning_record = new string[9];
-                learning_record[0] = userID;
-                learning_record[1] = element.GetAttributeNode("startTime").Value;
-                learning_record[2] = element.GetAttributeNode("endTime").Value; 
-                learning_record[3] = element.GetAttributeNode("option_score").Value; 
-                learning_record[4] = element.GetAttributeNode("cloze_score").Value; 
-                learning_record[5] = element.GetAttributeNode("score").Value; 
-                learning_record[6] = element.GetAttributeNode("correct").Value; 
-                learning_record[7] = element.GetAttributeNode("maxcorrect").Value; 
-                learning_record[8] = DateTime.Now.ToString();
-                mySQLAccess.InsertInto("learning_record", learning_record_col, learning_record);
+            element = (XmlElement)itemsNode;
+            string[] learning_record = new string[9];
+            learning_record[0] = userID;
+            learning_record[1] = element.GetAttributeNode("startTime").Value;
+            learning_record[2] = element.GetAttributeNode("endTime").Value; 
+            learning_record[3] = element.GetAttributeNode("option_score").Value; 
+            learning_record[4] = element.GetAttributeNode("cloze_score").Value; 
+            learning_record[5] = element.GetAttributeNode("score").Value; 
+            learning_record[6] = element.GetAttributeNode("correct").Value; 
+            learning_record[7] = element.GetAttributeNode("maxcorrect").Value; 
+            learning_record[8] = DateTime.Now.ToString();
+            mySQLAccess.InsertInto("learning_record", learning_record_col, learning_record);
 
-            }
+            
         }
 
         /*對戰紀錄*/
@@ -189,25 +186,20 @@ public class UpdateSQL : MonoBehaviour {
         nodelist = xmlDoc.SelectNodes("//compete_record ");
         foreach (XmlNode itemsNode in nodelist)
         {
-            XmlAttributeCollection xAT2 = itemsNode.Attributes;
-            for (int j = 0; j < xAT2.Count; j++)
-            {
-                element = (XmlElement)itemsNode;
-                string[] compete_record = new string[11];
-                compete_record[0] = userID;
-                compete_record[1] = element.GetAttributeNode("compete_id").Value;
-                compete_record[2] = element.GetAttributeNode("startTime").Value; 
-                compete_record[3] = element.GetAttributeNode("endTime").Value; 
-                compete_record[4] = element.GetAttributeNode("hint_LA").Value;
-                compete_record[5] = element.GetAttributeNode("hint_ST").Value; 
-                compete_record[6] = element.GetAttributeNode("correct").Value; 
-                compete_record[7] = element.GetAttributeNode("maxcorrect").Value; 
-                compete_record[8] = element.GetAttributeNode("score").Value; 
-                compete_record[9] = element.GetAttributeNode("rank").Value; 
-                compete_record[10] = DateTime.Now.ToString();
-                mySQLAccess.InsertInto("compete_record", compete_record_col, compete_record);
-
-            }
+            element = (XmlElement)itemsNode;
+            string[] compete_record = new string[11];
+            compete_record[0] = userID;
+            compete_record[1] = element.GetAttributeNode("compete_id").Value;
+            compete_record[2] = element.GetAttributeNode("startTime").Value; 
+            compete_record[3] = element.GetAttributeNode("endTime").Value; 
+            compete_record[4] = element.GetAttributeNode("hint_LA").Value;
+            compete_record[5] = element.GetAttributeNode("hint_ST").Value; 
+            compete_record[6] = element.GetAttributeNode("correct").Value; 
+            compete_record[7] = element.GetAttributeNode("maxcorrect").Value; 
+            compete_record[8] = element.GetAttributeNode("score").Value; 
+            compete_record[9] = element.GetAttributeNode("rank").Value; 
+            compete_record[10] = DateTime.Now.ToString();
+            mySQLAccess.InsertInto("compete_record", compete_record_col, compete_record);
         }
 
         /*回合紀錄*/
@@ -227,49 +219,41 @@ public class UpdateSQL : MonoBehaviour {
         nodelist = xmlDoc.SelectNodes("//round_record ");
         foreach (XmlNode itemsNode in nodelist)
         {
-            XmlAttributeCollection xAT2 = itemsNode.Attributes;
-            for (int j = 0; j < xAT2.Count; j++)
-            {
-                element = (XmlElement)itemsNode;
-                string[] round_record = new string[11];
-                round_record[0] = userID;
-                round_record[1] = element.GetAttributeNode("compete_id").Value;
-                round_record[2] = element.GetAttributeNode("round_id").Value;
-                round_record[3] = element.GetAttributeNode("ques_id").Value; 
-                round_record[4] = element.GetAttributeNode("ans_state").Value; 
-                round_record[5] = element.GetAttributeNode("duration").Value;
-                round_record[6] = element.GetAttributeNode("hint_LA").Value; 
-                round_record[7] = element.GetAttributeNode("hint_ST").Value; 
-                round_record[8] = element.GetAttributeNode("score").Value;
-                round_record[9] = element.GetAttributeNode("rank").Value;
-                round_record[10] = DateTime.Now.ToString();
-                mySQLAccess.InsertInto("round_record", round_record_col, round_record);
-
-            }
+            element = (XmlElement)itemsNode;
+            string[] round_record = new string[11];
+            round_record[0] = userID;
+            round_record[1] = element.GetAttributeNode("compete_id").Value;
+            round_record[2] = element.GetAttributeNode("round_id").Value;
+            round_record[3] = element.GetAttributeNode("ques_id").Value; 
+            round_record[4] = element.GetAttributeNode("ans_state").Value; 
+            round_record[5] = element.GetAttributeNode("duration").Value;
+            round_record[6] = element.GetAttributeNode("hint_LA").Value; 
+            round_record[7] = element.GetAttributeNode("hint_ST").Value; 
+            round_record[8] = element.GetAttributeNode("score").Value;
+            round_record[9] = element.GetAttributeNode("rank").Value;
+            round_record[10] = DateTime.Now.ToString();
+            mySQLAccess.InsertInto("round_record", round_record_col, round_record);
         }
 
         /*場景紀錄*/
         string[] scene_record_col = new string[4];
         scene_record_col[0] = "user_id";
-        scene_record_col[1] = "scence";
+        scene_record_col[1] = "scene";
         scene_record_col[2] = "startTime";
-        scene_record_col[4] = "uploadTime";
+        scene_record_col[3] = "uploadTime";
 
         nodelist = xmlDoc.SelectNodes("//scene_record ");
         foreach (XmlNode itemsNode in nodelist)
         {
-            XmlAttributeCollection xAT2 = itemsNode.Attributes;
-            for (int j = 0; j < xAT2.Count; j++)
-            {
-                element = (XmlElement)itemsNode;
-                string[] scene_record = new string[4];
-                scene_record[0] = userID;
-                scene_record[1] = element.GetAttributeNode("scence").Value;
-                scene_record[2] = element.GetAttributeNode("startTime").Value;
-                scene_record[3] = DateTime.Now.ToString();
-                mySQLAccess.InsertInto("scene_record", scene_record_col, scene_record);
+            element = (XmlElement)itemsNode;
+            string[] scene_record = new string[4];
+            scene_record[0] = userID;
+            scene_record[1] = element.GetAttributeNode("scene").Value;
+            scene_record[2] = element.GetAttributeNode("startTime").Value;
+            scene_record[3] = DateTime.Now.ToString();
+            mySQLAccess.InsertInto("scene_record", scene_record_col, scene_record);
 
-            }
+            
         }
     }
 

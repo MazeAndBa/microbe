@@ -145,7 +145,7 @@ public class XmlCreate{
         /*
         XmlElement scene_record = xmlDoc.CreateElement("scene_record");
         scene_history.AppendChild(scene_record);
-        scene_record.SetAttribute("scence", "");
+        scene_record.SetAttribute("scene", "");
         scene_record.SetAttribute("startTime", "");
         */
 

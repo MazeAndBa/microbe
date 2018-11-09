@@ -181,7 +181,7 @@ public class Xmlprocess
             //XmlNode nodeLast = null;
             XmlNode nodeLast_Previous = null;
 
-            // Find the previous scence start time ********************************************************************************************
+            // Find the previous scene start time ********************************************************************************************
             XmlNodeList nodelist_Previous = xmlDoc.SelectNodes("//time_history_day");
             foreach (XmlNode item_File_Previous in nodelist_Previous)
             {
@@ -910,7 +910,7 @@ public class Xmlprocess
 
     /*===============================---場景紀錄---===============================*/
 
-    public void ScceneHistoryRecord(string scence, string starttime)
+    public void ScceneHistoryRecord(string scene, string starttime)
     {
         XmlNode nodeLast = null;
         XmlElement scene_history = null;
@@ -949,7 +949,7 @@ public class Xmlprocess
 
             XmlElement scene_record = xmlDoc.CreateElement("scene_record"); ;
             scene_history.AppendChild(scene_record);
-            scene_record.SetAttribute("scence", scence);
+            scene_record.SetAttribute("scene", scene);
             scene_record.SetAttribute("startTime", starttime);
             saveData();
         }
@@ -1460,7 +1460,7 @@ public class Xmlprocess
         int _level = 0;
         string _state = null;
 
-        if (highscore >= 30 && highscore < 60)
+        if (highscore >= 60 && highscore < 120)
         {
             if (attribute.Value == "0")
             {
@@ -1476,11 +1476,11 @@ public class Xmlprocess
             }
             _level = 1;
         }
-        else if (highscore >= 60 && highscore < 100)
+        else if (highscore >= 120 && highscore < 200)
         {
             _level = 2;
         }
-        else if (highscore >= 100)
+        else if (highscore >= 200)
         {
             if (attribute.Value == "2")
             {

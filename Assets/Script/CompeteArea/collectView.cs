@@ -53,7 +53,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         this.turnManager.TurnManagerListener = this;
         this.turnManager.TurnDuration = 15f;
         cardCount = 12;
-        C_correctNum = 0;//當前連續答對題數
+        C_correctNum = -1;//當前連續答對題數
         max_correctNum = -1;//最大連續答對數
         correctNum = 0;//累計正確題數
         hintLA_count = 3; hintST_count = 3;
@@ -260,7 +260,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 }
                     cardObj.GetComponent<Button>().onClick.AddListener(delegate () { MakeTurn(cardObj.name); });
                     cardObj.transform.SetParent(cardgroup.transform);
-                    cardObj.transform.localPosition = new Vector3(-350 + (i % 4) * 160, (i / 4) * -150+150, 0);
+                    cardObj.transform.localPosition = new Vector3(-275 + (i % 4) * 160, (i / 4) * -160+160, 0);
                     cardObj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             }
         }
@@ -307,7 +307,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             if (C_correctNum >= max_correctNum)
             {
                 max_correctNum = C_correctNum;
-                C_correctNum = 0;
+                C_correctNum = -1;
             }
             wrongNum++;
             return;
@@ -324,6 +324,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             Debug.Log("Correct answer!");
             C_correctNum++;
             correctNum ++;
+            max_correctNum = C_correctNum;
         }
         else {
             this.result = ResultType.WrongAns;
@@ -331,7 +332,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             if (C_correctNum >= max_correctNum)
             {
                 max_correctNum = C_correctNum;
-                C_correctNum = 0;
+                C_correctNum = -1;
             }
             wrongNum++;
 
