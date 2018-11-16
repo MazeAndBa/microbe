@@ -17,7 +17,7 @@ public class collectConn : PunBehaviour
     public static string[] ques, option;
     private string serverlink = "140.115.126.137/microbe/";
     string UserID;
-    string previousRoomPlayerPrefKey = "Microbe:PreviousRoom";
+    string previousRoomPlayerPrefKey = null;
     ///
     public string previousRoom;
     const string NickNamePlayerPrefsKey = "";
@@ -51,7 +51,6 @@ public class collectConn : PunBehaviour
         PhotonNetwork.AuthValues.UserId = xmlprocess.getUserInfo()[0];//學號
         Debug.Log("playerName: " + username.text + "AuthValues userID: " + PhotonNetwork.AuthValues.UserId);
         PhotonNetwork.playerName = username.text;
- 
 
         PlayerPrefs.SetString(NickNamePlayerPrefsKey, username.text);
         PhotonNetwork.ConnectUsingSettings("0.5");
@@ -117,20 +116,20 @@ public class collectConn : PunBehaviour
         {
             this.previousRoom = PlayerPrefs.GetString(previousRoomPlayerPrefKey);
             PlayerPrefs.DeleteKey(previousRoomPlayerPrefKey);
-        }
-
-        // 重新連回原本的房間
-        if (!string.IsNullOrEmpty(this.previousRoom))
-        {
-            Debug.Log("ReJoining previous room: " + this.previousRoom);
-            PhotonNetwork.ReJoinRoom(this.previousRoom);
-            this.previousRoom = null; 
+            // 重新連回原本的房間
+            if (!string.IsNullOrEmpty(this.previousRoom))
+            {
+                Debug.Log("ReJoining previous room: " + this.previousRoom);
+                PhotonNetwork.ReJoinRoom(this.previousRoom);
+                this.previousRoom = null; 
+            }
         }
         else
         {
             PhotonNetwork.JoinRandomRoom();//隨機加入房間
         }
     }
+
     public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)//如果先前房間不存在，則刪除key
     {
         Debug.Log("previousRoom isn't exist");
