@@ -53,7 +53,7 @@ public class PracticeView : MonoBehaviour {
         max_correctNum = -1;//最大連續答對數
         correctNum = 0;//累計正確題數
         wrongNum = 0;//累計錯誤題數
-        totalQuesNum = 13;//練習題數
+        totalQuesNum = 10;//練習題數
         showAchieve = false;
         StartCoroutine(showReviewVocabulary());
         UIManager.Instance.CloseAllPanel();
@@ -293,7 +293,7 @@ public class PracticeView : MonoBehaviour {
             Button g_btnObj = Instantiate(btn_alphabet);//Options
             g_btnObj.transform.SetParent(GameObject.Find("Content").transform);
             g_btnObj.GetComponentInChildren<Text>().text = randomAns[pointer].ToString();
-            g_btnObj.transform.localPosition = new Vector3(0 + pointer * 150, 0.0f, 0.0f);
+            g_btnObj.transform.localPosition = new Vector3(80 + pointer * 150, 0.0f, 0.0f);
             g_btnObj.transform.localScale = Vector3.one;
             g_btnObj.name = randomAns[pointer].ToString();
             g_btnObj.onClick.AddListener(() => clickAlphabet(g_btnObj));
@@ -375,8 +375,10 @@ public class PracticeView : MonoBehaviour {
         achievementState[0] = pm.setLearningCount("learning_count");//更新單字練習次數
 
         string[] s_state = pm.setLearningScore(p_score);//紀錄此次單字練習成績
-        if (s_state[0] != null)achievementState[1] = s_state[0];//有達標
-        if (s_state[1] != null)achievementState[2] = s_state[1];//分數進步
+        if (s_state!=null) {
+            if (s_state[0] != null) achievementState[1] = s_state[0];//有達標
+            if (s_state[1] != null) achievementState[2] = s_state[1];//分數進步
+        }
         if (pm.setLearningCorrect(correctNum, wrongNum) != null) achievementState[3] = pm.setLearningCorrect(correctNum, wrongNum);//更新單字答對與錯誤題數
         if (pm.setLearningMaxCorrect(max_correctNum) != null) achievementState[4] = pm.setLearningMaxCorrect(max_correctNum);//連續答對題數
 

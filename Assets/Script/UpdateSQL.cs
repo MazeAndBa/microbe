@@ -44,6 +44,9 @@ public class UpdateSQL : MonoBehaviour {
         XmlAttribute attribute = element.GetAttributeNode("ID");
         userID = attribute.Value;
 
+        /*等級*/
+        string userlevel = element.GetAttributeNode("level").Value;
+        mySQLAccess.UpdateInto("member", "level", userlevel, "user_id", userID.ToString());
 
         /*學習狀態*/
         string[] learning_task_col = new string[8];
@@ -255,6 +258,7 @@ public class UpdateSQL : MonoBehaviour {
 
             
         }
+        Application.Quit();
     }
 
 

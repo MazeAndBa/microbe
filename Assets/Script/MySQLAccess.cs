@@ -5,11 +5,11 @@ using MySql.Data.MySqlClient;
 public class MySQLAccess
 {
 
-    public static MySqlConnection mySqlConnection;//連接類對象
-    private static string host;     //IP地址。如果只是在本地的話，寫localhost就可以。
-    private static string id;       //用户名。
-    private static string pwd;      //密碼。
-    private static string dataBase; //數據庫名稱。
+    private static MySqlConnection mySqlConnection;//連接類對象
+     static string host;     //IP地址。如果只是在本地的話，寫localhost就可以。
+     static string id;       //用户名。
+     static string pwd;      //密碼。
+     static string dataBase; //數據庫名稱。
 
     public MySQLAccess(string _host, string _id, string _pwd, string _dataBase)
     {
@@ -28,8 +28,10 @@ public class MySQLAccess
         try
         {
             //string.Format是將指定的 String類型的數據中的每個格式項替換為相應對象的值的文本等效項。  
-            string mySqlString = string.Format("Database={0};Data Source={1};User Id={2};Password={3};", dataBase, host, id, pwd, "3306");
+            //string mySqlString = string.Format("Database={0};Data Source={1};User Id={2};Password={3};", dataBase, host, id, pwd, "3306");
+            string mySqlString = "Server=" + host + ";Database=" + dataBase + ";User ID=" + id + ";Password=" + pwd + ";Pooling=false;CharSet=utf8";
             mySqlConnection = new MySqlConnection(mySqlString);
+
             mySqlConnection.Open();
         }
         catch (Exception e)
@@ -52,6 +54,8 @@ public class MySQLAccess
             query += ", " + "'" + values[i] + "'";
         }
         query += ")";
+        MySqlCommand cmd = new MySqlCommand(query, mySqlConnection);
+        cmd.ExecuteNonQuery();
         return QuerySet(query);
     }
 
@@ -79,6 +83,22 @@ public class MySQLAccess
             query += ", " + "'" + values[i] + "'";
         }
         query += ")";
+        return QuerySet(query);
+    }
+
+    /// <summary>  
+    /// 更新表數據單欄 
+    /// </summary>  
+    /// <param name="tableName">表名</param>  
+    /// <param name="cols">更新列</param>  
+    /// <param name="colsvalues">更新的值</param>  
+    /// <param name="selectkey">條件：列</param>  
+    /// <param name="selectvalue">條件：值</param>  
+    /// <returns></returns>  
+    public DataSet UpdateInto(string tableName, string col, string colsvalue, string selectkey, string selectvalue)
+    {
+        string query = "UPDATE " + tableName + " SET " + col + " = " + colsvalue;
+        query += " WHERE " + selectkey + " = " + selectvalue + " ";
         return QuerySet(query);
     }
 

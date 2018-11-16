@@ -12,7 +12,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public GameObject ConnectUiView, WaitingUI, GameStartUI,ShowResultMes, ResultUIView,ShowMesUI, cardgroup, card;
     public Text question, RemotePlayerText, LocalPlayerText, TurnText, TimeText;
     public AudioSource vol_pronun;
-    Button btn_gamestart, btn_exit,btn_hintLA,btn_hintST;
+    Button btn_gamestart, btn_Wexit,btn_hintLA,btn_hintST;
     bool timerflag = false;
 
     int currentTime;
@@ -56,7 +56,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         C_correctNum = -1;//當前連續答對題數
         max_correctNum = -1;//最大連續答對數
         correctNum = 0;//累計正確題數
-        hintLA_count = 3; hintST_count = 3;
+        hintLA_count = 10000; hintST_count = 10000;
         c_hintLA_count = 0; c_hintST_count = 0;
         wrongNum = 0;
         RefreshConnectUI();
@@ -143,7 +143,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     IEnumerator OnEndTurn()
     //public void OnEndTurn()
     {
-        if (this.turnManager.Turn < 10)
+        if (this.turnManager.Turn <= 10)
         {
             this.StartCoroutine("ShowResultsBeginNextTurnCoroutine");
         }
@@ -163,6 +163,14 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             }
             ResultUIView.GetComponentsInChildren<Text>()[1].text = c_hintLA_count.ToString();
             ResultUIView.GetComponentsInChildren<Text>()[2].text = c_hintST_count.ToString();
+            Button btn_learn = ResultUIView.GetComponentsInChildren<Button>()[0];
+            Button btn_play = ResultUIView.GetComponentsInChildren<Button>()[1];
+            Button btn_exit = ResultUIView.GetComponentsInChildren<Button>()[2];
+
+            btn_learn.onClick.AddListener(delegate() { gameover(0, PlayerLists); });
+            btn_play.onClick.AddListener(delegate () { gameover(1, PlayerLists); });
+            btn_exit.onClick.AddListener(delegate() { gameover(2, PlayerLists); });
+
             yield return new WaitForSeconds(3f);
 
             achievementState[1] = xmlprocess.setCompeteCount();//對戰次數
@@ -173,33 +181,34 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             if (s_state[1] != null) achievementState[5] = s_state[1];//有刷新分數
             if (s_state[2] != null) achievementState[6] = s_state[2];//有進榜
 
-            this.StartCoroutine(gameover(PlayerLists));
         }
     }
     #endregion
 
-
     public void StartTurn()
     {
         Debug.Log("start");
-        if (this.turnManager.Turn == 0) {
-            InitialGameUI();
-        }
-        //房主抓取題目、選項、當前回合數
-        if (PhotonNetwork.isMasterClient)
+        if (this.turnManager.Turn < 10)
         {
-            this.turnManager.BeginTurn();
-            this.turnManager.selectQues(collectConn.ques);
-            this.turnManager.randomOptions(collectConn.option);
+            if (this.turnManager.Turn == 0)
+            {
+                InitialGameUI();
+            }
+            //房主抓取題目、選項、當前回合數
+            if (PhotonNetwork.isMasterClient)
+            {
+                this.turnManager.BeginTurn();
+                this.turnManager.selectQues(collectConn.ques);
+                this.turnManager.randomOptions(collectConn.option);
+            }
+            currentTime = (int)this.turnManager.TurnDuration;
+            this.TimeText.text = currentTime.ToString();
+            this.question.text = "";
+            this.localSelection = "";
+            this.remoteSelection = "";
+            IsShowingResults = false;
         }
-        currentTime = (int)this.turnManager.TurnDuration ;
-        this.TimeText.text = currentTime.ToString();
-        this.question.text = "";
-        this.localSelection = "";
-        this.remoteSelection = "";
-        IsShowingResults = false;
     }
-
     public IEnumerator initialTurn()//回合初始化
     {
         yield return new WaitForSeconds(1f);
@@ -394,7 +403,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 resultState = "none";
                 break;
             case ResultType.WrongAns:
-                PhotonNetwork.player.AddScore(0);
+                PhotonNetwork.player.AddScore(-2);
                 resultState = "wrong";
                 break;
         }
@@ -453,36 +462,46 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     }
 
     void RefreshWaitUI() {
-        btn_gamestart = this.WaitingUI.GetComponentsInChildren<Button>()[0];
-        btn_gamestart.onClick.AddListener(ClickGameStart);
-        //btn_exit = this.WaitingUI.GetComponentsInChildren<Button>()[1];
-        //btn_exit.onClick.AddListener(ExitGame);
+        if (PhotonNetwork.room.PlayerCount <= 5)
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                //房主才有遊戲開始的按鈕
+                btn_gamestart.gameObject.SetActive(true);
+                btn_gamestart.onClick.AddListener(ClickGameStart);
+            }
+            else
+            {
+                btn_gamestart.gameObject.SetActive(false);
+            }
+            Debug.Log("Waiting for another player");
+        }
+
 
         PhotonPlayer hostPlayer = PhotonNetwork.masterClient;
         GameObject HostInfo = GameObject.FindGameObjectWithTag("Host");
         HostInfo.GetComponentsInChildren<Text>()[0].text = hostPlayer.NickName;
 
-
         //Initialize players'name
         for (int i = 1; i < 5; i++)
         {
-            PhotonPlayer[] player = PhotonNetwork.playerList;
             GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + i);
             PlayerInfo.GetComponentsInChildren<Text>()[0].text = "";
-            PlayerInfo.GetComponentsInChildren<Image>()[0].sprite = Resources.LoadAll<Sprite>("Image/Compete/compete")[1];
-
         }
+
         if (PhotonNetwork.room.PlayerCount > 1)
         {
-            for (int i = 1; i < PhotonNetwork.room.PlayerCount; i++)
+            for (int i = 0,j=1; i < PhotonNetwork.room.PlayerCount; i++)
             {
                 PhotonPlayer[] player = PhotonNetwork.playerList;
-                GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + i);
-                PlayerInfo.GetComponentsInChildren<Text>()[0].text = player[i].NickName;
-
+                GameObject PlayerInfo = GameObject.FindGameObjectWithTag("Player" + j);
+                if (player[i].NickName!= hostPlayer.NickName) {
+                    Debug.Log(player[i].NickName);
+                    PlayerInfo.GetComponentsInChildren<Text>()[0].text = player[i].NickName;
+                    j++;
+                }
             }
         }
-
     }
 
     void InitialGameUI() {
@@ -512,8 +531,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         xmlprocess.ScceneHistoryRecord("StartCompete", DateTime.Now.ToString("HH:mm:ss"));
     }
 
-    IEnumerator gameover(GameObject [] PlayerLists) {
-        ResultUIView.SetActive(false);
+    void gameover(int sceneNum,GameObject [] PlayerLists) {
+        //ResultUIView.SetActive(false);
         /*---顯示獲得獎章與稱號---*/
         for (int i = 0; i < achievementState.Length; i++) {
             if (achievementState[i] != null) {
@@ -544,8 +563,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 }
             }
         }
-        yield return new WaitForSeconds(1.5f);
-        ExitGame(PlayerLists);
+        ExitGame(sceneNum,PlayerLists);
     }
 
     #endregion
@@ -570,7 +588,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         vol_pronun.Play();
         Debug.Log("funtion:"+c_hintLA_count);
         c_hintLA_count = c_hintLA_count+1;
-        btn_hintLA.GetComponentsInChildren<Text>()[0].text = (hintLA_count- c_hintLA_count) + "/"+ hintLA_count;
+        btn_hintLA.GetComponentsInChildren<Text>()[0].text = c_hintLA_count + "次";
         xmlprocess.setRoundHintcount("hint_LA", c_hintLA_count);
 
         if (c_hintLA_count >= hintLA_count)
@@ -584,7 +602,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
         this.question.text = quesInfo[1];
         c_hintST_count = c_hintST_count+1;
-        btn_hintST.GetComponentsInChildren<Text>()[0].text = (hintST_count - c_hintST_count) + "/" + hintST_count;
+        btn_hintST.GetComponentsInChildren<Text>()[0].text = c_hintST_count + "次";
         xmlprocess.setRoundHintcount("hint_ST", c_hintST_count);
         if (c_hintST_count >= hintST_count)
         {
@@ -592,12 +610,15 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
         }
     }
 
-    void ExitGame(GameObject [] PlayerLists)
+    void ExitGame()
     {
-        //PhotonNetwork.LeaveRoom(false);
-        //PhotonNetwork.Disconnect();
+        PhotonNetwork.Disconnect();
+        SceneManager.LoadScene("CompeteArea");
+    }
 
-        SceneManager.LoadScene("Home");
+
+    void ExitGame(int sceneNum ,GameObject [] PlayerLists)
+    {
         /*--------------------------*/
         //遊戲結束重置玩家分數
         PhotonPlayer[] player = PhotonNetwork.playerList;
@@ -613,7 +634,21 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 Destroy(PlayerLists[i]);
             }
         }
-
+        switch (sceneNum) {
+            case 0://exit
+                xmlprocess.ScceneHistoryRecord("Learning", DateTime.Now.ToString("HH:mm:ss"));
+                SceneManager.LoadScene("LearningArea");
+                break;
+            case 1://practice
+                xmlprocess.ScceneHistoryRecord("Compete", DateTime.Now.ToString("HH:mm:ss"));
+                SceneManager.LoadScene("CompeteArea");
+                break;
+            case 2://compete
+                SceneManager.LoadScene("Home");
+                break;
+        }
+        //PhotonNetwork.LeaveRoom(false);
+        //PhotonNetwork.Disconnect();
     }
 
     [PunRPC]
@@ -634,22 +669,13 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public override void OnJoinedRoom()
     {
         RefreshConnectUI();
-        RefreshWaitUI();
-        if (PhotonNetwork.room.PlayerCount <= 5)
+        if (this.WaitingUI.GetActive())
         {
-
-            if (PhotonNetwork.isMasterClient)
-            {
-                //房主才有遊戲開始的按鈕
-                btn_gamestart.gameObject.SetActive(true);
-            }
-            else
-            {
-                btn_gamestart.gameObject.SetActive(false);
-            }
-            Debug.Log("Waiting for another player");
+            btn_gamestart = this.WaitingUI.GetComponentsInChildren<Button>()[0];
+            btn_Wexit = this.WaitingUI.GetComponentsInChildren<Button>()[1];
+            btn_Wexit.onClick.AddListener(ExitGame);
         }
-
+        RefreshWaitUI();
     }
 
     public override void OnLeftRoom()
@@ -662,10 +688,8 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
     public override void OnMasterClientSwitched(PhotonPlayer player)
     {
         Debug.Log("OnMasterClientSwitchedto: " + PhotonNetwork.masterClient.NickName);
-        RefreshWaitUI();
         string message;
         InRoomChat chatComponent = GetComponent<InRoomChat>();  // if we find a InRoomChat component, we print out a short message
-
         if (chatComponent != null)
         {
             // to check if this client is the new master...
@@ -681,6 +705,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
 
             chatComponent.AddLine(message); // the Chat method is a RPC. as we don't want to send an RPC and neither create a PhotonMessageInfo, lets call AddLine()
         }
+        RefreshWaitUI();
     }
 
 

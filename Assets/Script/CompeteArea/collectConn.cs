@@ -142,7 +142,7 @@ public class collectConn : PunBehaviour
     {
         Debug.Log("Joined other room: " + PhotonNetwork.room.Name);
 
-        UIManager.Instance.ClosePanel("UI_ShowMes");
+        //UIManager.Instance.ClosePanel("UI_ShowMes");
         this.previousRoom = PhotonNetwork.room.Name;
         PlayerPrefs.SetString(previousRoomPlayerPrefKey, this.previousRoom);
     }

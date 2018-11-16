@@ -27,6 +27,8 @@ public class AccountViewer : MonoBehaviour {
     private void Awake()
     {
         am = new AccountManager();
+        Screen.fullScreen = true;
+        //Screen.SetResolution(1920, 1080, false);
     }
 
     void Start() {
@@ -72,6 +74,8 @@ public class AccountViewer : MonoBehaviour {
         else if (am.state == 0)
         {
             showerror("帳號或密碼不正確");
+            //showerror(am.s_state);
+
         }
         else if (am.state == 2)
         {

@@ -12,6 +12,7 @@ public class Xmlprocess
     public XmlDocument xmlDoc;
     XmlCreate xmlCreate;
     public int count_onetime = 0;
+    public static float levelVal = 0.0f;
     public string Strtime = (System.DateTime.Now).ToString();
     public static string path, _FileName;
 
@@ -89,7 +90,7 @@ public class Xmlprocess
     }
 
     ///<summary>
-    ///return an array, 0=ID,1=name,2=level,3=sex, 4=money
+    ///return an array, 0=ID,1=name,2=level,3=sex
     ///</summary>
     public string[] getUserInfo()
     {
@@ -98,7 +99,7 @@ public class Xmlprocess
             string[] info = new string[4];
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
             XmlElement element = (XmlElement)node;
-            XmlAttribute[] attribute = { element.GetAttributeNode("ID"), element.GetAttributeNode("name"), element.GetAttributeNode("level"), element.GetAttributeNode("sex"), element.GetAttributeNode("money") };
+            XmlAttribute[] attribute = { element.GetAttributeNode("ID"), element.GetAttributeNode("name"), element.GetAttributeNode("level"), element.GetAttributeNode("sex")};
             for (int i = 0; i < info.Length; i++)
             {
                 info[i] = attribute[i].Value.ToString();
@@ -110,69 +111,26 @@ public class Xmlprocess
         return null;
     }
 
-    public int getmoney(int money, bool cost)
-    {
 
+    public void setLevel()//升等
+    {
         if (isExits())
         {
             XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
             XmlElement element = (XmlElement)node;
-            XmlAttribute attribute = element.GetAttributeNode("money");
-            int count = XmlConvert.ToInt32(attribute.Value);
-            if (cost)
-            {
-                attribute.Value = money.ToString();
-                xmlDoc.Save(path + _FileName);
-                return count;
+            XmlAttribute attribute = element.GetAttributeNode("level");
+            int level = XmlConvert.ToInt32(attribute.Value);
+            float standardVal = 100 + ((level-1) * 35f);
+            if (levelVal >= standardVal){
+                level++;
+                attribute.Value = level.ToString();
+                levelVal = levelVal - standardVal;
+                saveData();
             }
-            else if (!cost)
-            {
-                return count;//how mach you have.
-            }
-            return 0;
         }
-        return 0;
     }
 
 
-    // 解鎖新關卡	
-    public int write_allstarstate(string kind, int state)
-    {
-
-        if (isExits())
-        {
-
-            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/" + kind);
-            XmlElement element = (XmlElement)node;
-            XmlAttribute attribute = element.GetAttributeNode("state_count");
-            int Newstate = XmlConvert.ToInt32(attribute.Value);
-            if (Newstate < state)
-            {
-                Newstate++;
-                attribute.Value = Newstate.ToString();
-            }
-            else
-            {
-                attribute.Value = Newstate.ToString();
-            }
-            saveData();
-        }
-        return 0;
-    }
-
-    // 讀取目前解鎖關卡	
-    public int unlockstate(string kind)
-    {
-
-        if (isExits())
-        {
-            XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User/" + kind);
-            XmlElement element = (XmlElement)node;
-            XmlAttribute attribute = element.GetAttributeNode("state_count");
-            return XmlConvert.ToInt32(attribute.Value);
-        }
-        return 0;
-    }
 
     public void ExitTimeHistoryRecord(string endTime)
     {
@@ -1062,6 +1020,8 @@ public class Xmlprocess
     /// </summary>
     /// <param name="learningCounts">當前練習總次數</param>
     string setBadgeLearningCounts(int learningCounts) {
+        levelVal += 30f;
+        setLevel();
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge1");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1100,6 +1060,8 @@ public class Xmlprocess
     /// </summary>
     /// <param name="highscore">最高分數</param>
     string setBadgeLearningHighScore(int highscore) {
+        levelVal += 50f;
+        setLevel();
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge2");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1149,6 +1111,8 @@ public class Xmlprocess
     /// <param name="improveCounts">當前進步總次數</param>
     string setBadgeLearningImprove(int improveCounts)
     {
+        levelVal += 35.3f;
+        setLevel();
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge3");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1184,11 +1148,9 @@ public class Xmlprocess
     /// <summary>
     /// badge4練習累積答對題數獎章
     /// </summary>
-    /// <param name="highscore">最高分數</param>
+    /// <param name="correct">累積正確題數</param>
     string setBadgeLearningCorrect(int correct)
     {
-
-
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge4");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1233,6 +1195,8 @@ public class Xmlprocess
     /// <param name="max_correct">連續答對題數</param>
     string setBadgeLearningMaxCorrect(int max_correct)
     {
+        levelVal += 10.2f* max_correct;
+        setLevel();
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge5");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1276,6 +1240,7 @@ public class Xmlprocess
     /// <param name="spendtime">答題時間</param>
     string setBadgeCompeteSpendtime(int spendtime)
     {
+
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge9");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1321,6 +1286,8 @@ public class Xmlprocess
     /// <param name="competeCounts">當前對戰總次數</param>
     string setBadgeCompeteCounts(int competeCounts)
     {
+        levelVal += 36f;
+        setLevel();
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge7");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1363,7 +1330,7 @@ public class Xmlprocess
     /// <summary>
     /// badge8對戰累積答對題數獎章
     /// </summary>
-    /// <param name="highscore">最高分數</param>
+    /// <param name="correct">累積答對</param>
     string setBadgeCompeteCorrect(int correct)
     {
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge8");
@@ -1411,6 +1378,8 @@ public class Xmlprocess
     /// <param name="max_correct">連續答對題數</param>
     string setBadgeCompeteMaxCorrect(int max_correct)
     {
+        levelVal += 13.6f* max_correct;
+        setLevel();
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge9");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1454,6 +1423,9 @@ public class Xmlprocess
     /// </summary>
     /// <param name="highscore">最高分數</param>
     string setBadgeCompeteHighScore(int highscore) {
+        levelVal += 54f;
+        setLevel();
+
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge10");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1500,6 +1472,8 @@ public class Xmlprocess
     /// <param name="improveCounts">當前進步總次數</param>
     string setBadgeCompeteImprove(int improveCounts)
     {
+        levelVal += 44.7f;
+        setLevel();
         XmlNode node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge11");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("level");
@@ -1547,6 +1521,7 @@ public class Xmlprocess
         int _level = 0;
         if (rank==3)
         {
+            levelVal += 20f;
             if (attribute.Value == "0")
             {
                 _state = "獲得新獎章!";
@@ -1563,6 +1538,7 @@ public class Xmlprocess
         }
         else if (rank==2)
         {
+            levelVal += 30f;
             _level = 2;
         }
         else if (rank==1)
@@ -1571,10 +1547,12 @@ public class Xmlprocess
             {
                 _state = "了解\"榜上有名!!!\"稱號!";
             }
+            levelVal += 40f;
             _level = 3;
         }
         attribute.Value = _level.ToString();
         saveData();
+        setLevel();
         return _state;
     }
 

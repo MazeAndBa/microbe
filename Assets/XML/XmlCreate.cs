@@ -26,7 +26,6 @@ public class XmlCreate{
 			User.SetAttribute("name","");
 			User.SetAttribute("level", "");
             User.SetAttribute("sex", "");
-            User.SetAttribute("money", "100");
 
         /*====================================---兩區域獲得的獎章總數量---====================================*/
             XmlElement badge = xmlDoc.CreateElement("badge");

@@ -36,6 +36,7 @@ public class PersonalInfo : MonoBehaviour {
         //如果完成練習，顯示成就UI
         if (PracticeView.showAchieve)
         {
+            Debug.Log(Xmlprocess.levelVal);
             showAchievementUI();
             PracticeView.showAchieve = false;
         }
