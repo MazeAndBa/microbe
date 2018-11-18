@@ -5,7 +5,7 @@ using System.Net;
 using UnityEngine;
 
 public class PracticeManager {
-    private string serverlink = "140.115.126.137/microbe/";
+    private string serverlink = "http://140.115.126.137/microbe/";
     HttpWebRequest request;
     Xmlprocess xmlprocess;
     public Dictionary<int, string> E_vocabularyDic = new Dictionary<int, string>();//key=單字ID,val=英文單字

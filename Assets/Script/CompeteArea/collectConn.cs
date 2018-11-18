@@ -15,7 +15,7 @@ public class collectConn : PunBehaviour
     InputField username;
 
     public static string[] ques, option;
-    private string serverlink = "140.115.126.137/microbe/";
+    private string serverlink = "http://140.115.126.137/microbe/";
     string UserID;
     string previousRoomPlayerPrefKey = null;
     ///

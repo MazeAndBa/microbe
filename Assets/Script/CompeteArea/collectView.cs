@@ -269,7 +269,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
                 }
                     cardObj.GetComponent<Button>().onClick.AddListener(delegate () { MakeTurn(cardObj.name); });
                     cardObj.transform.SetParent(cardgroup.transform);
-                    cardObj.transform.localPosition = new Vector3(-275 + (i % 4) * 160, (i / 4) * -160+160, 0);
+                    cardObj.transform.localPosition = new Vector3(-220 + (i % 4) * 130, (i / 4) * -160+160, 0);
                     cardObj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             }
         }
@@ -524,7 +524,7 @@ public class collectView : PunBehaviour, IPunTurnManagerCallbacks
             Text remote = Instantiate(RemotePlayerText);
             GameObject GameRank = GameObject.FindGameObjectWithTag("GameRank");
             remote.transform.SetParent(GameRank.transform);
-            remote.transform.localPosition = new Vector3(25, - i * 80+165, 0);
+            remote.transform.localPosition = new Vector3(28, - i * 80+140, 0);
             remote.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             remote.name = (i+1)+"";
             remote.text = player[i].NickName + "　" + player[i].GetScore().ToString("D2") + "分";

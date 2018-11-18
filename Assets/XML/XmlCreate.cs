@@ -13,10 +13,15 @@ public class XmlCreate{
 	public XmlCreate(string path,string filename) {
 		//檔案不存在，因此初次創建table
 
-			string Strcount = count.ToString();
-			xmlDoc = new XmlDocument();	
-
-			XmlElement Loadfile = xmlDoc.CreateElement("Loadfile");
+		string Strcount = count.ToString();
+		xmlDoc = new XmlDocument();
+        
+        XmlDeclaration xmldecl;
+        xmldecl = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", "yes");
+        XmlElement root = xmlDoc.DocumentElement;
+        xmlDoc.InsertBefore(xmldecl, root);
+        
+        XmlElement Loadfile = xmlDoc.CreateElement("Loadfile");
 			xmlDoc.AppendChild(Loadfile);
 
         /*====================================---基本資料---====================================*/

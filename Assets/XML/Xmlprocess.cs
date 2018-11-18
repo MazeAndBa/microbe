@@ -66,9 +66,12 @@ public class Xmlprocess
         xmlDoc.Save(path + _FileName);
     }
 
+    public string getPath()
+    {
+        return path + _FileName;
+    }
 
 
-   
     //---------------------------------個人狀態--------------------------------------
 
     ///<summary>

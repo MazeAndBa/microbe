@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Loadfile>
   <User ID="5" name="測試者5" level="1" sex="0">
     <badge learning_count="0" compete_count="0" />
@@ -28,15 +29,11 @@
   <touch_history>
     <touch_achieve showcount="0" clickcount="0" />
   </touch_history>
-  <log_record day="2018-11-16">
+  <log_record day="2018-11-17">
     <learning_history />
     <compete_history />
     <scene_history>
-      <scene_record scene="Login" startTime="20:54:00" />
-      <scene_record scene="Compete" startTime="20:54:06" />
-      <scene_record scene="WaitingCompete" startTime="20:54:07" />
-      <scene_record scene="Compete" startTime="20:54:19" />
-      <scene_record scene="WaitingCompete" startTime="20:54:20" />
+      <scene_record scene="Login" startTime="23:52:18" />
     </scene_history>
   </log_record>
 </Loadfile>

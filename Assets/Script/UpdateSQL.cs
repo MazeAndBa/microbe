@@ -29,6 +29,7 @@ public class UpdateSQL : MonoBehaviour {
 
     void Start () {
         mySQLAccess = new MySQLAccess(host, id, pwd, database);
+        xmlprocess = new Xmlprocess();
         StartCoroutine("ReloadXMLtoDB", 0.5F);
     }
 
@@ -36,10 +37,9 @@ public class UpdateSQL : MonoBehaviour {
     IEnumerator ReloadXMLtoDB(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        xmlDoc = new XmlDocument();
-        xmlDoc.Load(Xmlprocess.path + Xmlprocess._FileName);
-
-        XmlNode node = xmlDoc.SelectSingleNode("Loadfile/User");
+       // xmlDoc = new XmlDocument();
+        //xmlDoc.Load(xmlprocess.getPath());
+        XmlNode node = xmlprocess.xmlDoc.SelectSingleNode("Loadfile/User");
         XmlElement element = (XmlElement)node;
         XmlAttribute attribute = element.GetAttributeNode("ID");
         userID = attribute.Value;
@@ -59,7 +59,7 @@ public class UpdateSQL : MonoBehaviour {
         learning_task_col[6] = "highscore";
         learning_task_col[7] = "uploadTime";
 
-        node = xmlDoc.SelectSingleNode("Loadfile/User/learning");
+        node = xmlprocess.xmlDoc.SelectSingleNode("Loadfile/User/learning");
         element = (XmlElement)node;
         string[] learning_task = new string[8];
         learning_task[0] = userID;
@@ -82,7 +82,7 @@ public class UpdateSQL : MonoBehaviour {
         compete_task_col[5] = "highscore";
         compete_task_col[6] = "uploadTime";
 
-        node = xmlDoc.SelectSingleNode("Loadfile/User/compete");
+        node = xmlprocess.xmlDoc.SelectSingleNode("Loadfile/User/compete");
         element = (XmlElement)node;
         string[] compete_task = new string[7];
         compete_task[0] = userID;
@@ -105,7 +105,7 @@ public class UpdateSQL : MonoBehaviour {
             string[] badge_learning = new string[4];
             badge_learning[0] = userID;
             badge_learning[1] = i.ToString();
-            node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge"+i);
+            node = xmlprocess.xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_learning/badge"+i);
             element = (XmlElement)node;
             badge_learning[2] = element.GetAttributeNode("level").Value;
             badge_learning[3] = DateTime.Now.ToString();
@@ -117,7 +117,7 @@ public class UpdateSQL : MonoBehaviour {
             string[] badge_compete = new string[4];
             badge_compete[0] = userID;
             badge_compete[1] = i.ToString();
-            node = xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge" + i);
+            node = xmlprocess.xmlDoc.SelectSingleNode("Loadfile/badge_record/badge_compete/badge" + i);
             element = (XmlElement)node;
             badge_compete[2] = element.GetAttributeNode("level").Value;
             badge_compete[3] = DateTime.Now.ToString();
@@ -131,7 +131,7 @@ public class UpdateSQL : MonoBehaviour {
         touch_record_col[2] = "showcount";
         touch_record_col[3] = "uploadTime";
 
-        node = xmlDoc.SelectSingleNode("Loadfile/touch_history/touch_achieve");
+        node = xmlprocess.xmlDoc.SelectSingleNode("Loadfile/touch_history/touch_achieve");
         element = (XmlElement)node;
         string[] touch_record = new string[4];
         touch_record[0] = userID;
@@ -153,7 +153,7 @@ public class UpdateSQL : MonoBehaviour {
         learning_record_col[7] = "maxcorrect";
         learning_record_col[8] = "uploadTime";
 
-        XmlNodeList nodelist = xmlDoc.SelectNodes("//learning_record");
+        XmlNodeList nodelist = xmlprocess.xmlDoc.SelectNodes("//learning_record");
         foreach (XmlNode itemsNode in nodelist)
         {
             element = (XmlElement)itemsNode;
@@ -186,7 +186,7 @@ public class UpdateSQL : MonoBehaviour {
         compete_record_col[9] = "rank";
         compete_record_col[10] = "uploadTime";
 
-        nodelist = xmlDoc.SelectNodes("//compete_record ");
+        nodelist = xmlprocess.xmlDoc.SelectNodes("//compete_record ");
         foreach (XmlNode itemsNode in nodelist)
         {
             element = (XmlElement)itemsNode;
@@ -219,7 +219,7 @@ public class UpdateSQL : MonoBehaviour {
         round_record_col[9] = "rank";
         round_record_col[10] = "uploadTime";
 
-        nodelist = xmlDoc.SelectNodes("//round_record ");
+        nodelist = xmlprocess.xmlDoc.SelectNodes("//round_record ");
         foreach (XmlNode itemsNode in nodelist)
         {
             element = (XmlElement)itemsNode;
@@ -245,7 +245,7 @@ public class UpdateSQL : MonoBehaviour {
         scene_record_col[2] = "startTime";
         scene_record_col[3] = "uploadTime";
 
-        nodelist = xmlDoc.SelectNodes("//scene_record ");
+        nodelist = xmlprocess.xmlDoc.SelectNodes("//scene_record ");
         foreach (XmlNode itemsNode in nodelist)
         {
             element = (XmlElement)itemsNode;
@@ -265,6 +265,7 @@ public class UpdateSQL : MonoBehaviour {
     public static void OnApplicationQuit()
     {
         MySQLAccess.Close();
+        
     }
 
 

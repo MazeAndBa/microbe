@@ -15,7 +15,7 @@ public class Achievement : MonoBehaviour {
     string [,] badgeDesciption;
 
     Xmlprocess xmlprocess;
-    private string serverlink = "140.115.126.137/microbe/";
+    private string serverlink = "http://140.115.126.137/microbe/";
     private string fileName = "getBadgeDescription";
 
     private int[] _targetLevel;//存取X區所有獎章的階段
